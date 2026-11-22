@@ -1,0 +1,62 @@
+/**
+ * Alba – Sichtbarkeit pro Sprache für jeden Block (Editor, Block-Widgets, Website-Editor).
+ * Fügt allen Blöcken das Attribut "mmlLangs" (Liste der Sprachcodes) und in der Seitenleiste den Bereich "Sprachen" hinzu.
+ * Leere Liste = in allen Sprachen sichtbar. Das Ausblenden passiert serverseitig im Frontend.
+ */
+(function (wp) {
+	'use strict';
+	function mmlT(s) { return (window.mmlI18n && window.mmlI18n[s]) || s; }
+	function mmlF(s) { var a = Array.prototype.slice.call(arguments, 1), i = 0; return mmlT(s).replace(/%(\d+\$)?s/g, function (m, p) { var k = p ? parseInt(p, 10) - 1 : i++; return a[k]; }); }
+
+	var cfg = window.mmlVis;
+	if (!cfg || !cfg.langs || !wp || !wp.hooks || !wp.compose || !wp.element || !wp.blockEditor || !wp.components) {
+		return;
+	}
+
+	var el = wp.element.createElement;
+	var Fragment = wp.element.Fragment;
+	var InspectorControls = wp.blockEditor.InspectorControls;
+	var PanelBody = wp.components.PanelBody;
+	var CheckboxControl = wp.components.CheckboxControl;
+
+	wp.hooks.addFilter('blocks.registerBlockType', 'alba/visibility-attr', function (settings) {
+		settings.attributes = Object.assign({}, settings.attributes, {
+			mmlLangs: { type: 'array', items: { type: 'string' }, default: [] }
+		});
+		return settings;
+	});
+
+	var withPanel = wp.compose.createHigherOrderComponent(function (BlockEdit) {
+		return function (props) {
+			if (!props.isSelected) {
+				return el(BlockEdit, props);
+			}
+			var sel = Array.isArray(props.attributes.mmlLangs) ? props.attributes.mmlLangs : [];
+			var boxes = cfg.langs.map(function (l) {
+				return el(CheckboxControl, {
+					key: l.code,
+					label: l.name,
+					checked: sel.indexOf(l.code) !== -1,
+					onChange: function (on) {
+						var next = sel.filter(function (c) { return c !== l.code; });
+						if (on) {
+							next.push(l.code);
+						}
+						props.setAttributes({ mmlLangs: next });
+					}
+				});
+			});
+			return el(Fragment, null,
+				el(BlockEdit, props),
+				el(InspectorControls, null,
+					el(PanelBody, { title: mmlT('Languages'), initialOpen: sel.length > 0 },
+						el('p', { style: { marginTop: 0, color: '#646970' } }, mmlT('Show block only in these languages. Nothing selected: in all languages.')),
+						boxes
+					)
+				)
+			);
+		};
+	}, 'withMmlLangPanel');
+
+	wp.hooks.addFilter('editor.BlockEdit', 'alba/visibility-ui', withPanel);
+})(window.wp);
