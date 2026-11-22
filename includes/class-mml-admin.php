@@ -340,6 +340,9 @@ class MML_Admin {
 								<option value="off" <?php selected(get_option('mml_dd_arrow', 'auto'), 'off'); ?>><?php echo esc_html__('Never show', 'alba'); ?></option>
 							</select>
 							<p class="mml-hint"><?php echo esc_html__('"Automatic" shows the arrow if your theme (e.g. Salient: option for dropdown arrows in the header navigation) marks menu items that have a submenu with an arrow. If it does not appear even though the theme option is enabled, choose "Always show". Applies to the dropdown in the menu, not to block navigation (WordPress draws the arrow itself there).', 'alba'); ?></p>
+													<?php $arr = $this->core->frontend ? $this->core->frontend->arrow_report() : null; if ($arr) : ?>
+								<p class="mml-hint"><strong><?php echo esc_html__('Automatic currently means:', 'alba'); ?></strong> <?php echo $arr[0] ? esc_html__('arrow shown', 'alba') : esc_html__('no arrow', 'alba'); ?> – <?php echo esc_html($arr[1]); ?></p>
+							<?php endif; ?>
 						</div></div>
 					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Block navigation (block themes)', 'alba'); ?></div><div class="mml-ctl">
 							<select name="mml_nav_switcher">

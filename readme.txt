@@ -4,7 +4,7 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.11.1
+Stable tag: 0.11.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,11 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 
 == Changelog ==
 
+= 0.11.2 =
+* Fixed: automatic translation suggestions did not work in the translation editor (script error since 0.11.0)
+* Strings: new "Find texts of your theme and plugins" panel with theme/plugin selection and a "Scan now" button
+* Dropdown arrow: "Automatic" is more reliable and the settings page shows why an arrow is or is not shown
+
 = 0.11.1 =
 * GitHub updater now also finds pre-releases (beta) and accepts "owner/repo" as update source
 
@@ -90,6 +95,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.11.2 =
+Fixes the translation suggestions in the editor and makes finding theme texts easier.
 
 = 0.11.1 =
 Beta. Fixes update detection for GitHub pre-releases.

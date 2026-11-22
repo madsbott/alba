@@ -33,6 +33,7 @@ class MML_Strings {
 			add_action('admin_init', [$this, 'register']);
 			add_action('admin_post_mml_save_strings', [$this, 'save']);
 			add_action('admin_post_mml_clear_strings', [$this, 'clear']);
+			add_action('admin_post_mml_scan', [$this, 'scan_action']);
 			return;
 		}
 
@@ -221,10 +222,12 @@ class MML_Strings {
 		?>
 		<div class="wrap">
 			<h1><?php echo esc_html__('Translate strings', 'alba'); ?></h1>
-			<?php settings_errors(); ?>
+			<?php settings_errors(); $this->scan_notice(); ?>
 			<?php if (!empty($_GET['mml_saved'])) : ?>
 				<div class="notice notice-success is-dismissible"><p><?php echo esc_html__('Saved.', 'alba'); ?></p></div>
 			<?php endif; ?>
+
+			<?php $this->scan_panel(); ?>
 
 			<form method="get" style="margin:12px 0">
 				<input type="hidden" name="page" value="alba-strings">
@@ -241,7 +244,7 @@ class MML_Strings {
 			</form>
 
 			<?php if (!$slice) : ?>
-				<p><?php echo esc_html__('No strings yet. Use', 'alba'); ?> <code>mml__()</code>, <code>[mml_string]</code> <?php echo esc_html__('or enable the scan for a text domain below.', 'alba'); ?></p>
+				<p><?php echo esc_html__('No texts yet. Choose your theme under "Find texts of your theme and plugins" above and click "Save and scan now".', 'alba'); ?></p>
 			<?php else : ?>
 			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
 				<input type="hidden" name="action" value="mml_save_strings">
@@ -289,15 +292,6 @@ class MML_Strings {
 
 
 			<hr>
-			<h2><?php echo esc_html__('Scan (gettext)', 'alba'); ?></h2>
-			<p><?php echo esc_html__('While visitors browse frontend pages, this collects all texts of the specified text domains (e.g. the slug of your theme) so you can translate them here. At most', 'alba'); ?> <?php echo (int) self::MAX; ?> <?php echo esc_html__('entries. Switch the scan off again after collecting.', 'alba'); ?></p>
-			<form method="post" action="options.php">
-				<?php settings_fields('mml_str'); ?>
-				<p><label><input type="checkbox" name="mml_scan" value="1" <?php checked(1, (int) get_option('mml_scan', 0)); ?>> <?php echo esc_html__('Scan active', 'alba'); ?></label></p>
-				<p><label><?php echo esc_html__('Text domains (comma-separated)', 'alba'); ?><br><input type="text" class="regular-text" name="mml_scan_domains" value="<?php echo esc_attr(get_option('mml_scan_domains', '')); ?>" placeholder="<?php echo esc_attr__('my-theme, woocommerce', 'alba'); ?>"></label></p>
-				<?php submit_button(__('Save scan settings', 'alba'), 'secondary', 'submit', false); ?>
-			</form>
-
 			<h2><?php echo esc_html__('Clean up', 'alba'); ?></h2>
 			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" onsubmit="return confirm('<?php echo esc_js(__('Delete all entries without a translation?', 'alba')); ?>');">
 				<input type="hidden" name="action" value="mml_clear_strings">
@@ -311,6 +305,175 @@ class MML_Strings {
 [mml_string domain="Theme" name="footer-claim"]Wir freuen uns auf Sie[/mml_string]</pre>
 		</div>
 		<?php
+	}
+
+	/* ---------------------------------------------------------------
+	 * Texte von Theme und Plugins finden (gettext-Scan)
+	 * ------------------------------------------------------------- */
+
+	/** Mögliche Textdomains: Domain => Beschriftung */
+	private function detect_domains() {
+		$out = [];
+		$t = wp_get_theme();
+		$td = (string) $t->get('TextDomain');
+		$out[$td !== '' ? $td : $t->get_stylesheet()] = sprintf(
+			/* translators: %s: theme name */
+			__('Active theme: %s', 'alba'),
+			$t->get('Name')
+		);
+		if ($t->parent()) {
+			$p = $t->parent();
+			$pd = (string) $p->get('TextDomain');
+			$out[$pd !== '' ? $pd : $p->get_stylesheet()] = sprintf(
+				/* translators: %s: theme name */
+				__('Parent theme: %s', 'alba'),
+				$p->get('Name')
+			);
+		}
+		$out['default'] = __('WordPress core (many texts, e.g. "Search", "Read more")', 'alba');
+		if (!function_exists('get_plugins')) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$active = (array) get_option('active_plugins', []);
+		foreach (get_plugins() as $file => $data) {
+			if (!in_array($file, $active, true)) {
+				continue;
+			}
+			$d = (string) $data['TextDomain'];
+			if ($d === '') {
+				$d = dirname($file) === '.' ? basename($file, '.php') : dirname($file);
+			}
+			if ($d === 'alba' || isset($out[$d])) {
+				continue;
+			}
+			/* translators: %s: plugin name */
+			$out[$d] = sprintf(__('Plugin: %s', 'alba'), $data['Name']);
+		}
+		return $out;
+	}
+
+	private function scan_panel() {
+		$saved = array_values(array_filter(array_map('trim', explode(',', (string) get_option('mml_scan_domains', '')))));
+		$detected = $this->detect_domains();
+		$extra = array_diff($saved, array_keys($detected));
+		?>
+		<div class="card" style="max-width:none;margin:12px 0;padding:12px 16px">
+			<h2 style="margin-top:0"><?php echo esc_html__('Find texts of your theme and plugins', 'alba'); ?></h2>
+			<ol style="margin:0 0 8px 18px">
+				<li><?php echo esc_html__('Choose where the texts come from (usually your theme).', 'alba'); ?></li>
+				<li><?php echo esc_html__('Click "Save and scan now". Alba visits your site in the default language and collects the texts.', 'alba'); ?></li>
+				<li><?php echo esc_html__('Translate the texts in the table below and save.', 'alba'); ?></li>
+			</ol>
+			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+				<input type="hidden" name="action" value="mml_scan">
+				<?php wp_nonce_field('mml_scan'); ?>
+				<p style="margin:8px 0 4px"><strong><?php echo esc_html__('Collect texts from these sources', 'alba'); ?></strong></p>
+				<?php foreach ($detected as $d => $label) : ?>
+					<label style="display:block;margin:2px 0"><input type="checkbox" name="mml_dom[]" value="<?php echo esc_attr($d); ?>" <?php checked(in_array($d, $saved, true)); ?>> <?php echo esc_html($label); ?> <code><?php echo esc_html($d); ?></code></label>
+				<?php endforeach; ?>
+				<p style="margin:8px 0 4px"><label><?php echo esc_html__('Other text domains (comma-separated)', 'alba'); ?><br><input type="text" class="regular-text" name="mml_dom_extra" value="<?php echo esc_attr(implode(', ', $extra)); ?>"></label></p>
+				<p>
+					<button type="submit" class="button button-primary" name="mml_do" value="scan"><?php echo esc_html__('Save and scan now', 'alba'); ?></button>
+					<button type="submit" class="button" name="mml_do" value="save"><?php echo esc_html__('Only save the selection', 'alba'); ?></button>
+				</p>
+				<p class="description"><?php echo esc_html__('Texts are collected whenever a page is built, so also while visitors browse. Pages delivered from a cache (e.g. LiteSpeed) collect nothing; "Scan now" asks for your pages without the cache.', 'alba'); ?></p>
+				<p class="description"><?php echo esc_html__('Not found what you are looking for? Texts typed into theme options (for example a search placeholder in the theme settings) or into page builder elements are not theme texts. Translate them where they are entered, or write them as a shortcode: [mml_string domain="Theme" name="search"]Your text[/mml_string].', 'alba'); ?></p>
+			</form>
+		</div>
+		<?php
+	}
+
+	/** Seiten, die der Scan besucht (Standardsprache) */
+	private function scan_urls() {
+		$home = home_url('/');
+		$urls = [$home, add_query_arg('s', 'a', $home), add_query_arg('p', 999999999, $home)];
+		$def = $this->core->default;
+		foreach (['page' => 6, 'post' => 3] as $type => $n) {
+			$ids = get_posts(['post_type' => $type, 'post_status' => 'publish', 'numberposts' => 40, 'fields' => 'ids', 'orderby' => $type === 'page' ? 'menu_order title' : 'date', 'order' => $type === 'page' ? 'ASC' : 'DESC', 'suppress_filters' => true]);
+			$k = 0;
+			foreach ($ids as $id) {
+				if ($this->core->post_lang($id) !== $def) {
+					continue;
+				}
+				$u = get_permalink($id);
+				if ($u) {
+					$urls[] = $u;
+				}
+				if (++$k >= $n) {
+					break;
+				}
+			}
+		}
+		$stamp = (string) time();
+		return array_map(function ($u) use ($stamp) {
+			return add_query_arg('mml_scan', $stamp, $u);
+		}, array_values(array_unique($urls)));
+	}
+
+	public function scan_action() {
+		check_admin_referer('mml_scan');
+		if (!current_user_can('manage_options')) {
+			wp_die(__('Not allowed.', 'alba'));
+		}
+		$dom = isset($_POST['mml_dom']) ? array_map('sanitize_text_field', (array) wp_unslash($_POST['mml_dom'])) : [];
+		$extra = isset($_POST['mml_dom_extra']) ? explode(',', sanitize_text_field(wp_unslash($_POST['mml_dom_extra']))) : [];
+		$dom = array_values(array_unique(array_filter(array_map('trim', array_merge($dom, $extra)))));
+		update_option('mml_scan_domains', implode(', ', $dom));
+		update_option('mml_scan', $dom ? 1 : 0);
+
+		$back = admin_url('admin.php?page=alba-strings');
+		if (!$dom) {
+			wp_safe_redirect(add_query_arg('mml_scanmsg', 'none', $back));
+			exit;
+		}
+		if (!isset($_POST['mml_do']) || $_POST['mml_do'] !== 'scan') {
+			wp_safe_redirect(add_query_arg('mml_saved', 1, $back));
+			exit;
+		}
+		if (function_exists('set_time_limit')) {
+			@set_time_limit(180);
+		}
+		$before = count((array) get_option(self::OPT, []));
+		$urls = $this->scan_urls();
+		$fail = 0;
+		foreach ($urls as $u) {
+			$r = wp_remote_get($u, [
+				'timeout'     => 20,
+				'redirection' => 3,
+				'user-agent'  => 'Alba-Scan/' . MML_VERSION,
+				'sslverify'   => apply_filters('https_local_ssl_verify', false),
+				'cookies'     => [],
+			]);
+			if (is_wp_error($r) || (int) wp_remote_retrieve_response_code($r) >= 500) {
+				$fail++;
+			}
+		}
+		wp_cache_delete(self::OPT, 'options');
+		wp_cache_delete('alloptions', 'options');
+		$after = count((array) get_option(self::OPT, []));
+		wp_safe_redirect(add_query_arg(['mml_scanmsg' => 'done', 'mml_new' => max(0, $after - $before), 'mml_pages' => count($urls), 'mml_fail' => $fail], $back));
+		exit;
+	}
+
+	private function scan_notice() {
+		$m = isset($_GET['mml_scanmsg']) ? sanitize_key(wp_unslash($_GET['mml_scanmsg'])) : '';
+		if ($m === 'none') {
+			echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html__('Please select at least one source first.', 'alba') . '</p></div>';
+		} elseif ($m === 'done') {
+			$new = (int) $_GET['mml_new'];
+			$pages = (int) $_GET['mml_pages'];
+			$fail = (int) $_GET['mml_fail'];
+			/* translators: 1: number of new texts, 2: number of visited pages */
+			$txt = sprintf(__('Scan finished: %1$d new texts found on %2$d pages.', 'alba'), $new, $pages);
+			echo '<div class="notice notice-' . ($fail >= $pages ? 'error' : 'success') . ' is-dismissible"><p>' . esc_html($txt);
+			if ($fail) {
+				/* translators: %d: number of pages that could not be reached */
+				echo ' ' . esc_html(sprintf(__('%d pages could not be reached. Your host may block requests to its own site. In that case open your site in the default language once while logged out.', 'alba'), $fail));
+			} elseif (!$new) {
+				echo ' ' . esc_html__('Nothing new: either everything was found already, or the texts do not come from the selected sources.', 'alba');
+			}
+			echo '</p></div>';
+		}
 	}
 
 	public function save() {

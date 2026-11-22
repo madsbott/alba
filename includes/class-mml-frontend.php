@@ -174,22 +174,42 @@ class MML_Frontend {
 		return in_array('salient', [strtolower((string) $t->get_stylesheet()), strtolower((string) $t->get_template())], true);
 	}
 
-	/** Zeigt das Theme (Salient: „Header Dropdown Arrows“) bei Menüpunkten mit Untermenü einen Pfeil? */
-	private function theme_shows_arrows($items_html) {
-		if (strpos((string) $items_html, 'sf-sub-indicator') !== false) {
-			return true;   // andere Menüpunkte des Themes tragen bereits einen Pfeil
+	/**
+	 * Zeigt das Theme (Salient: „Header Dropdown Arrows“) bei Menüpunkten mit Untermenü einen Pfeil?
+	 * Gibt [bool, Begründung] zurück (die Begründung erscheint in den Einstellungen).
+	 */
+	public function arrow_report($items_html = '') {
+		$items_html = (string) $items_html;
+		if (strpos($items_html, 'sf-sub-indicator') !== false) {
+			return [true, __('Other menu items with a submenu already show an arrow.', 'alba')];
+		}
+		if ($items_html !== '' && preg_match('/menu-item-has-children/', $items_html)) {
+			return [false, __('Other menu items with a submenu show no arrow.', 'alba')];
 		}
 		if ($this->is_salient()) {
 			$o = function_exists('get_nectar_theme_options') ? get_nectar_theme_options() : get_option('salient_redux', []);
 			if (is_array($o)) {
 				foreach ($o as $k => $v) {
-					if (is_string($k) && preg_match('/dropdown.*arrow|arrow.*dropdown/i', $k) && in_array(strtolower((string) $v), ['1', 'on', 'true', 'yes'], true)) {
-						return true;
+					if (!is_string($k) || !preg_match('/arrow/i', $k) || preg_match('/slider|carousel|lightbox|back-?to|woo|portfolio|blog|related|next|prev|scroll/i', $k)) {
+						continue;
+					}
+					if (in_array(strtolower(is_scalar($v) ? (string) $v : ''), ['1', 'on', 'true', 'yes'], true)) {
+						/* translators: %s: name of a theme option */
+						return [true, sprintf(__('Salient option "%s" is on.', 'alba'), $k)];
 					}
 				}
 			}
+			return [false, __('No active arrow option found in the Salient settings. Choose "Always show" if the arrow is wanted anyway.', 'alba')];
 		}
-		return (bool) apply_filters('mml_theme_dropdown_arrow', false);
+		if (apply_filters('mml_theme_dropdown_arrow', false)) {
+			return [true, __('Enabled by the filter mml_theme_dropdown_arrow.', 'alba')];
+		}
+		return [false, __('The theme could not be asked about arrows. Choose "Always show" if the arrow is wanted.', 'alba')];
+	}
+
+	private function theme_shows_arrows($items_html) {
+		$r = $this->arrow_report($items_html);
+		return $r[0];
 	}
 
 	/** Pfeil-Markup für den Dropdown-Menüpunkt (Einstellung: automatisch / immer / nie) */
@@ -313,6 +333,7 @@ class MML_Frontend {
 		foreach ($links as $code => $url) {
 			echo '<link rel="alternate" hreflang="' . esc_attr($code) . '" href="' . esc_url($url) . '" />' . "\n";
 		}
+		$c = $this->core;
 		$x = isset($links[$c->default]) ? $links[$c->default] : reset($links);
 		echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($x) . '" />' . "\n";
 	}

@@ -1,4 +1,6 @@
 (function () {
+	function mmlT(s) { return (window.mmlI18n && window.mmlI18n[s]) || s; }
+	function mmlF(s) { var a = Array.prototype.slice.call(arguments, 1), i = 0; return mmlT(s).replace(/%(\d+\$)?s/g, function (m, p) { var k = p ? parseInt(p, 10) - 1 : i++; return a[k]; }); }
 	var form = document.getElementById('mml-tr-form');
 	if (!form) {
 		return;

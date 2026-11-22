@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Alba 0.11.1\n"
+"Project-Id-Version: Alba 0.11.2\n"
 "Report-Msgid-Bugs-To: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -219,7 +219,7 @@ msgstr " · Frist "
 msgid " · Please leave HTML tags in the text unchanged (they are protected as placeholders)."
 msgstr " · HTML-Tags im Text bitte unverändert lassen (sie sind als Platzhalter geschützt)."
 
-#: class-mml-admin.php:557 class-mml-admin.php:562
+#: class-mml-admin.php:560 class-mml-admin.php:565
 msgid " – original changed, update translation"
 msgstr " – Original geändert, Übersetzung aktualisieren"
 
@@ -287,6 +287,10 @@ msgstr "%1$s „%2$s“ (%3$s)"
 msgid "%1$s of %2$s translated"
 msgstr "%1$s von %2$s übersetzt"
 
+#: class-mml-strings.php:471
+msgid "%d pages could not be reached. Your host may block requests to its own site. In that case open your site in the default language once while logged out."
+msgstr "%d Seiten konnten nicht erreicht werden. Dein Hoster blockiert möglicherweise Anfragen an die eigene Seite. Öffne dann deine Seite einmal in der Standardsprache, ohne angemeldet zu sein."
+
 #: class-mml-areas.php:165
 msgid "(Appearance → Widgets): Every widget has a \"Languages\" field at the bottom. Nothing ticked = visible in all languages."
 msgstr "(Design → Widgets): Jedes Widget hat unten das Feld „Sprachen“. Nichts angehaltet = in allen Sprachen sichtbar."
@@ -315,7 +319,7 @@ msgstr "(Editor, Block-Widgets, Website-Editor): Im Block-Reiter der Seitenleist
 msgid "(meta keys, one per line;"
 msgstr "(Meta-Schlüssel, einer pro Zeile;"
 
-#: class-mml-admin.php:659 class-mml-admin.php:674 class-mml-bulk.php:139
+#: class-mml-admin.php:662 class-mml-admin.php:677 class-mml-bulk.php:139
 msgid "(no title)"
 msgstr "(ohne Titel)"
 
@@ -331,7 +335,7 @@ msgstr "(Original)"
 msgid ") and in block settings that should be translated in addition to the default names (title, text, heading, label, caption, header, btn_text …). One per line."
 msgstr ") und in Block-Einstellungen, die zusätzlich zu den Standardnamen (title, text, heading, label, caption, header, btn_text …) übersetzt werden sollen. Einer pro Zeile."
 
-#: class-mml-admin.php:377
+#: class-mml-admin.php:380
 msgid ") remembers the language; after that there is never another redirect, and visitors can switch freely using the switcher. Search engines and other bots are never redirected; neither are requests with"
 msgstr ") merkt sich die Sprache; danach wird nie mehr weitergeleitet, und der Besucher kann über den Umschalter frei wechseln. Suchmaschinen und andere Bots werden nie weitergeleitet; mit"
 
@@ -343,7 +347,7 @@ msgstr "), alle anderen bekommen ihn ("
 msgid "). The locale controls the theme/plugin translation on the frontend (the language pack must be installed)."
 msgstr "). Die Locale steuert die Theme-/Plugin-Übersetzung im Frontend (Sprachpaket muss installiert sein)."
 
-#: class-mml-admin.php:404
+#: class-mml-admin.php:407
 msgid "). The public service libretranslate.com requires an API key; your own servers often do not."
 msgstr "). Der öffentliche Dienst libretranslate.com benötigt einen API-Schlüssel; eigene Server oft nicht."
 
@@ -375,7 +379,7 @@ msgstr ". Empfohlen: unter Einstellungen > Permalinks eine Struktur wählen."
 msgid ". The texts are in the side-by-side editor"
 msgstr ". Die Texte stehen im Links-rechts-Editor"
 
-#: class-mml-admin.php:434
+#: class-mml-admin.php:437
 msgid "1 year"
 msgstr "1 Jahr"
 
@@ -383,7 +387,7 @@ msgstr "1 Jahr"
 msgid "1. Export"
 msgstr "1. Export"
 
-#: class-mml-admin.php:434
+#: class-mml-admin.php:437
 msgid "180 days"
 msgstr "180 Tage"
 
@@ -391,11 +395,11 @@ msgstr "180 Tage"
 msgid "2. Import"
 msgstr "2. Import"
 
-#: class-mml-admin.php:434
+#: class-mml-admin.php:437
 msgid "30 days"
 msgstr "30 Tage"
 
-#: class-mml-admin.php:434
+#: class-mml-admin.php:437
 msgid "90 days"
 msgstr "90 Tage"
 
@@ -411,23 +415,23 @@ msgstr ": im Editor gespeichert, im Frontend noch nicht sichtbar."
 msgid ": the original was changed after the last translation."
 msgstr ": das Original wurde nach der letzten Übersetzung geändert."
 
-#: class-mml-admin.php:564
+#: class-mml-admin.php:567
 msgid ": translated (editor)"
 msgstr ": übersetzt (Editor)"
 
-#: class-mml-admin.php:566
+#: class-mml-admin.php:569
 msgid ": translation not published yet"
 msgstr ": Übersetzung noch nicht freigegeben"
 
-#: class-mml-admin.php:354
+#: class-mml-admin.php:357
 msgid "= dropdown menu) or in the theme"
 msgstr "= Dropdown-Menü) oder im Theme"
 
-#: class-mml-admin.php:354
+#: class-mml-admin.php:357
 msgid "= select field,"
 msgstr "= Auswahlfeld,"
 
-#: class-mml-admin.php:377
+#: class-mml-admin.php:380
 msgid "A cookie ("
 msgstr "Ein Cookie ("
 
@@ -466,6 +470,10 @@ msgstr "Kürzel (DE, EN)"
 #: class-mml-log.php:273
 msgid "Action"
 msgstr "Aktion"
+
+#: class-mml-strings.php:321
+msgid "Active theme: %s"
+msgstr "Aktives Theme: %s"
 
 #: class-mml-admin.php:249
 msgid "Add language"
@@ -519,11 +527,11 @@ msgstr "Alba: Text und Bild für diese Sprache"
 msgid "All content types"
 msgstr "Alle Inhaltstypen"
 
-#: class-mml-po.php:72 class-mml-strings.php:232
+#: class-mml-po.php:72 class-mml-strings.php:235
 msgid "All domains"
 msgstr "Alle Domains"
 
-#: class-mml-admin.php:579 class-mml-log.php:184
+#: class-mml-admin.php:582 class-mml-log.php:184
 msgid "All languages"
 msgstr "Alle Sprachen"
 
@@ -555,7 +563,7 @@ msgstr "Die Freigabe erteilt ein Redakteur."
 msgid "Appearance"
 msgstr "Darstellung"
 
-#: class-mml-admin.php:348
+#: class-mml-admin.php:351
 msgid "Append to all navigations"
 msgstr "An alle Navigationen anhängen"
 
@@ -563,15 +571,15 @@ msgstr "An alle Navigationen anhängen"
 msgid "Append to menu automatically"
 msgstr "Automatisch an Menü anhängen"
 
-#: class-mml-admin.php:347
+#: class-mml-admin.php:350
 msgid "Append to the first navigation"
 msgstr "An die erste Navigation anhängen"
 
-#: class-mml-admin.php:350
+#: class-mml-admin.php:353
 msgid "Appends the language links to the navigation blocks. The links of the navigation itself are translated automatically regardless of this setting."
 msgstr "Hängt die Sprachlinks an die Navigations-Blöcke an. Die Links der Navigation selbst werden unabhängig davon automatisch übersetzt."
 
-#: class-mml-admin.php:450
+#: class-mml-admin.php:453
 msgid "Applies only to \"Delete\" in the plugin list, not to \"Deactivate\" and not to replacing the plugin with an uploaded new version. Removed are settings, strings, and language and translation data on posts and terms (including translations from the side-by-side editor). Separate translation posts (copies) remain as normal content but lose their language assignment."
 msgstr "Gilt nur für „Löschen“ in der Plugin-Liste, nicht für „Deaktivieren“ und nicht fürs Ersetzen durch eine hochgeladene neue Version. Entfernt werden Einstellungen, Zeichenfolgen sowie Sprach- und Übersetzungsdaten an Beiträgen und Begriffen (auch die Übersetzungen aus dem Links-rechts-Editor). Eigene Übersetzungs-Beiträge (Kopien) bleiben als normale Inhalte bestehen, verlieren aber ihre Sprachzuordnung."
 
@@ -639,11 +647,15 @@ msgstr "Attribut"
 msgid "Automatic (as set in the theme)"
 msgstr "Automatisch (wie im Theme eingestellt)"
 
+#: class-mml-admin.php:344
+msgid "Automatic currently means:"
+msgstr "„Automatisch“ bedeutet aktuell:"
+
 #: class-mml-i18n.php:53 class-mml-i18n.php:53
 msgid "Automatic suggestion (%s) – please check:"
 msgstr "Automatischer Vorschlag (%s) – bitte prüfen:"
 
-#: class-mml-admin.php:386
+#: class-mml-admin.php:389
 msgid "Automatic translation"
 msgstr "Automatische Übersetzung"
 
@@ -651,7 +663,7 @@ msgstr "Automatische Übersetzung"
 msgid "Automatic translation is turned off."
 msgstr "Die automatische Übersetzung ist ausgeschaltet."
 
-#: class-mml-admin.php:358
+#: class-mml-admin.php:361
 msgid "Automatically redirect visitors to their browser language on their first visit."
 msgstr "Besucher beim ersten Aufruf automatisch in ihre Browsersprache leiten."
 
@@ -679,7 +691,7 @@ msgstr "Block-Attribute"
 msgid "Block field"
 msgstr "Block-Feld"
 
-#: class-mml-admin.php:344
+#: class-mml-admin.php:347
 msgid "Block navigation (block themes)"
 msgstr "Block-Navigation (Block-Themes)"
 
@@ -723,7 +735,7 @@ msgstr "Kategorien, Schlagwörter & Co.: Sprache pro Begriff, Übersetzungen im 
 msgid "Categories, tags and other terms that can be translated."
 msgstr "Kategorien, Schlagwörter und weitere Begriffe, die übersetzt werden können."
 
-#: class-mml-admin.php:430 class-mml-log.php:177
+#: class-mml-admin.php:433 class-mml-log.php:177
 msgid "Change log"
 msgstr "Änderungsprotokoll"
 
@@ -743,7 +755,7 @@ msgstr "Prüfung"
 msgid "Check file"
 msgstr "Datei prüfen"
 
-#: class-mml-admin.php:466
+#: class-mml-admin.php:469
 msgid "Check for updates now"
 msgstr "Jetzt nach Updates suchen"
 
@@ -755,6 +767,10 @@ msgstr "Bild wählen"
 msgid "Choose the languages your website appears in."
 msgstr "Lege fest, in welchen Sprachen deine Website erscheint."
 
+#: class-mml-strings.php:363
+msgid "Choose where the texts come from (usually your theme)."
+msgstr "Wähle, woher die Texte stammen (meistens dein Theme)."
+
 #: class-mml-areas.php:181
 msgid "Choose, per menu and language, which other menu appears instead. This applies to theme locations (e.g. footer), navigation menu widgets and navigation blocks. \"Create copy\" creates a menu with the same items and assigns it; after that you only change what differs. Linked pages automatically point to their translation."
 msgstr "Wähle je Menü und Sprache, welches andere Menü stattdessen erscheint. Das gilt für Theme-Positionen (z. B. Footer), Navigations-Menü-Widgets und Navigations-Blöcke. „Kopie anlegen“ erzeugt ein Menü mit denselben Einträgen und ordnet es zu, danach änderst du nur noch, was abweicht. Verlinkte Seiten zeigen automatisch auf ihre Übersetzung."
@@ -763,7 +779,7 @@ msgstr "Wähle je Menü und Sprache, welches andere Menü stattdessen erscheint.
 msgid "Classic widgets"
 msgstr "Klassische Widgets"
 
-#: class-mml-strings.php:301
+#: class-mml-strings.php:295
 msgid "Clean up"
 msgstr "Aufräumen"
 
@@ -771,7 +787,7 @@ msgstr "Aufräumen"
 msgid "Clear"
 msgstr "Leeren"
 
-#: class-mml-admin.php:423
+#: class-mml-admin.php:426
 msgid "Clear cache now"
 msgstr "Cache jetzt leeren"
 
@@ -779,9 +795,13 @@ msgstr "Cache jetzt leeren"
 msgid "Clear log"
 msgstr "Protokoll leeren"
 
-#: class-mml-admin.php:417
+#: class-mml-admin.php:420
 msgid "Clear page cache"
 msgstr "Seiten-Cache leeren"
+
+#: class-mml-strings.php:364
+msgid "Click \"Save and scan now\". Alba visits your site in the default language and collects the texts."
+msgstr "Klicke auf „Speichern und jetzt scannen“. Alba besucht deine Seite in der Standardsprache und sammelt die Texte."
 
 #: class-mml-dashboard.php:94
 msgid "Code"
@@ -790,6 +810,10 @@ msgstr "Code"
 #: class-mml-admin.php:229
 msgid "Code (URL)"
 msgstr "Code (URL)"
+
+#: class-mml-strings.php:370
+msgid "Collect texts from these sources"
+msgstr "Texte aus diesen Quellen sammeln"
 
 #: class-mml-areas.php:150
 msgid "Comments"
@@ -839,11 +863,11 @@ msgstr "Gezählt werden Titel, Auszug, SEO-Texte und alle Textabschnitte (inkl. 
 msgid "Create a database backup before importing."
 msgstr "Vor dem Import eine Datenbank-Sicherung anlegen."
 
-#: class-mml-admin.php:669
+#: class-mml-admin.php:672
 msgid "Create a separate post as a copy instead? An existing editor translation will be replaced."
 msgstr "Stattdessen einen eigenen Beitrag als Kopie anlegen? Eine vorhandene Editor-Übersetzung wird dadurch abgelöst."
 
-#: class-mml-admin.php:669
+#: class-mml-admin.php:672
 msgid "Create as separate post"
 msgstr "als eigenen Beitrag anlegen"
 
@@ -899,11 +923,11 @@ msgstr "Standard"
 msgid "Default language: "
 msgstr "Standardsprache: "
 
-#: class-mml-strings.php:302
+#: class-mml-strings.php:296
 msgid "Delete all entries without a translation?"
 msgstr "Alle Einträge ohne Übersetzung löschen?"
 
-#: class-mml-strings.php:305
+#: class-mml-strings.php:299
 msgid "Delete untranslated entries"
 msgstr "Unübersetzte Einträge löschen"
 
@@ -931,7 +955,7 @@ msgstr "Anzeige"
 msgid "Do not overwrite existing translations"
 msgstr "Vorhandene Übersetzungen nicht überschreiben"
 
-#: class-mml-strings.php:252
+#: class-mml-strings.php:255
 msgid "Domain"
 msgstr "Domain"
 
@@ -987,11 +1011,11 @@ msgstr "Jetzt Menüpunkte bearbeiten"
 msgid "Edit original"
 msgstr "Original bearbeiten"
 
-#: class-mml-admin.php:666
+#: class-mml-admin.php:669
 msgid "Edit translation"
 msgstr "Übersetzung bearbeiten"
 
-#: class-mml-admin.php:666
+#: class-mml-admin.php:669
 msgid "Edit translation (not published)"
 msgstr "Übersetzung bearbeiten (nicht freigegeben)"
 
@@ -1011,7 +1035,11 @@ msgstr "Leere Felder erscheinen im Frontend im Original. Bearbeitest du den Orig
 msgid "Empty fields show the text of the original on the frontend. A different image replaces the file wherever the media item is output via WordPress functions (featured image, image block, theme, WPBakery)."
 msgstr "Leere Felder zeigen im Frontend den Text des Originals. Ein anderes Bild ersetzt die Datei, wo das Medium über WordPress-Funktionen (Beitragsbild, Bildblock, Theme, WPBakery) ausgegeben wird."
 
-#: class-mml-strings.php:240 class-mml-wpml.php:107
+#: class-mml-frontend.php:205
+msgid "Enabled by the filter mml_theme_dropdown_arrow."
+msgstr "Durch den Filter mml_theme_dropdown_arrow aktiviert."
+
+#: class-mml-strings.php:243 class-mml-wpml.php:107
 msgid "Entries"
 msgstr "Einträge"
 
@@ -1027,7 +1055,7 @@ msgstr "Fehler"
 msgid "Error."
 msgstr "Fehler."
 
-#: class-mml-admin.php:365
+#: class-mml-admin.php:368
 msgid "Every page, if a translation exists"
 msgstr "Jede Seite, sofern eine Übersetzung existiert"
 
@@ -1035,7 +1063,7 @@ msgstr "Jede Seite, sofern eine Übersetzung existiert"
 msgid "Every saved section is remembered. If the same text appears elsewhere, the editor suggests the known translation."
 msgstr "Jeder gespeicherte Abschnitt wird gemerkt. Steht derselbe Text woanders, schlägt der Editor die bekannte Übersetzung vor."
 
-#: class-mml-admin.php:354
+#: class-mml-admin.php:357
 msgid "Everywhere else: shortcode"
 msgstr "Überall sonst: Shortcode"
 
@@ -1079,9 +1107,13 @@ msgstr "Nur leere Felder füllen,"
 msgid "Fill empty fields with the original"
 msgstr "Leere Felder mit Original füllen"
 
-#: class-mml-log.php:195 class-mml-roles.php:354 class-mml-strings.php:239
+#: class-mml-log.php:195 class-mml-roles.php:354 class-mml-strings.php:242
 msgid "Filter"
 msgstr "Filtern"
+
+#: class-mml-strings.php:361
+msgid "Find texts of your theme and plugins"
+msgstr "Texte von Theme und Plugins finden"
 
 #: class-mml-areas.php:188
 msgid "First add a second language."
@@ -1111,7 +1143,7 @@ msgstr "Zur Prüfung"
 msgid "For review: "
 msgstr "Zur Prüfung: "
 
-#: class-mml-admin.php:396
+#: class-mml-admin.php:399
 msgid "For suggestions, the original texts are sent to the selected service. This only happens when you click in the editor, never automatically in the background."
 msgstr "Für Vorschläge werden die Originaltexte an den gewählten Dienst gesendet. Das gilt nur bei Klick im Editor, nie automatisch im Hintergrund."
 
@@ -1135,7 +1167,7 @@ msgstr "Aus Übersetzungsspeicher:"
 msgid "Generate from translated title"
 msgstr "Aus übersetztem Titel erzeugen"
 
-#: class-mml-admin.php:466
+#: class-mml-admin.php:469
 msgid "GitHub repository (latest release) or URL of a JSON file. If a version higher than"
 msgstr "GitHub-Repository (neuestes Release) oder URL einer JSON-Datei. Liegt dort eine höhere Version als"
 
@@ -1183,7 +1215,7 @@ msgstr "Im Frontend ausblenden"
 msgid "Home page"
 msgstr "Startseite"
 
-#: class-mml-admin.php:364
+#: class-mml-admin.php:367
 msgid "Home page only (recommended)"
 msgstr "Nur die Startseite (empfohlen)"
 
@@ -1239,7 +1271,7 @@ msgstr "In Arbeit"
 msgid "In the editor, box \"Language & Translations\": translate in the side-by-side editor (red ⟳ in the language code = original changed), or create a separate post or link one. The lists have the \"Languages\" column and the language filter."
 msgstr "Im Editor, Box „Sprache & Übersetzungen“: im Links-rechts-Editor übersetzen (rotes ⟳ im Sprachkürzel = Original geändert), alternativ als eigenen Beitrag anlegen oder verknüpfen. In den Listen gibt es die Spalte „Sprachen“ und den Sprachfilter."
 
-#: class-mml-admin.php:395
+#: class-mml-admin.php:398
 msgid "In the editor, every field has a \"Suggest automatically\" button. The suggestion is only displayed; it is put into the field only when you click \"Apply\", and it is saved as usual with \"Save\". Glossary terms are protected and inserted correctly afterwards."
 msgstr "Im Editor erscheint bei jedem Feld „Automatisch vorschlagen“. Der Vorschlag wird nur angezeigt; erst „Übernehmen“ setzt ihn ins Feld, gespeichert wird wie immer mit „Speichern“. Glossar-Begriffe werden dabei geschützt und danach richtig eingesetzt."
 
@@ -1287,7 +1319,7 @@ msgstr "Ungültige Anfrage."
 msgid "Invalid target language."
 msgstr "Ungültige Zielsprache."
 
-#: class-mml-admin.php:448
+#: class-mml-admin.php:451
 msgid "Keep data"
 msgstr "Daten behalten"
 
@@ -1307,15 +1339,15 @@ msgstr "Beschriftung"
 msgid "Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:"
 msgstr "Beschriftungen, Platzhalter, Auswahlfelder, Schaltflächen, Fehlermeldungen, Bestätigung und Mail-Texte (Betreff und Inhalt). Erkannt:"
 
-#: class-mml-areas.php:513 class-mml-dashboard.php:205 class-mml-frontend.php:214
+#: class-mml-areas.php:513 class-mml-dashboard.php:205 class-mml-frontend.php:234
 msgid "Language"
 msgstr "Sprache"
 
-#: class-mml-admin.php:605
+#: class-mml-admin.php:608
 msgid "Language & Translations"
 msgstr "Sprache & Übersetzungen"
 
-#: class-mml-admin.php:210 class-mml-admin.php:358
+#: class-mml-admin.php:210 class-mml-admin.php:361
 msgid "Language detection"
 msgstr "Spracherkennung"
 
@@ -1331,7 +1363,7 @@ msgstr "Sprachname"
 msgid "Language name (full)"
 msgstr "Sprachname (Deutsch)"
 
-#: class-mml-admin.php:638
+#: class-mml-admin.php:641
 msgid "Language of this content"
 msgstr "Sprache dieses Inhalts"
 
@@ -1343,7 +1375,7 @@ msgstr "Sprache dieses Begriffs. Übersetzungen legst du nach dem Speichern an."
 msgid "Language switcher"
 msgstr "Sprachumschalter"
 
-#: class-mml-admin.php:225 class-mml-admin.php:540 class-mml-areas.php:542
+#: class-mml-admin.php:225 class-mml-admin.php:543 class-mml-areas.php:542
 msgid "Languages"
 msgstr "Sprachen"
 
@@ -1355,7 +1387,7 @@ msgstr "Sprachen & Inhalte"
 msgid "Languages (Alba)"
 msgstr "Sprachen (Alba)"
 
-#: class-mml-admin.php:436
+#: class-mml-admin.php:439
 msgid "Languages > Log"
 msgstr "Sprachen > Protokoll"
 
@@ -1363,7 +1395,7 @@ msgstr "Sprachen > Protokoll"
 msgid "Languages side by side as menu items"
 msgstr "Sprachen nebeneinander als Menüpunkte"
 
-#: class-mml-admin.php:352
+#: class-mml-admin.php:355
 msgid "Languages without translation"
 msgstr "Sprachen ohne Übersetzung"
 
@@ -1387,7 +1419,7 @@ msgstr "Sprachen – XLIFF"
 msgid "Lean multilingual plugin: languages, posts, taxonomies, strings, .po import/export and block navigation."
 msgstr "Schlankes Mehrsprachigkeits-Plugin: Sprachen, Beiträge, Taxonomien, Zeichenfolgen, .po-Import/-Export und Block-Navigation."
 
-#: class-mml-admin.php:393
+#: class-mml-admin.php:396
 msgid "LibreTranslate (own server or service)"
 msgstr "LibreTranslate (eigener Server oder Dienst)"
 
@@ -1395,7 +1427,7 @@ msgstr "LibreTranslate (eigener Server oder Dienst)"
 msgid "LibreTranslate is not reachable: "
 msgstr "LibreTranslate ist nicht erreichbar: "
 
-#: class-mml-admin.php:406
+#: class-mml-admin.php:409
 msgid "LibreTranslate: API key"
 msgstr "LibreTranslate: API-Schlüssel"
 
@@ -1403,7 +1435,7 @@ msgstr "LibreTranslate: API-Schlüssel"
 msgid "LibreTranslate: Please enter the server URL in the settings."
 msgstr "LibreTranslate: Bitte in den Einstellungen die Adresse des Servers eintragen."
 
-#: class-mml-admin.php:402
+#: class-mml-admin.php:405
 msgid "LibreTranslate: URL"
 msgstr "LibreTranslate: Adresse"
 
@@ -1455,7 +1487,7 @@ msgstr "Medien"
 msgid "Media imported"
 msgstr "Medien übernommen"
 
-#: class-mml-admin.php:376
+#: class-mml-admin.php:379
 msgid "Memory & exceptions"
 msgstr "Gedächtnis & Ausnahmen"
 
@@ -1479,7 +1511,7 @@ msgstr "Menüs zugeordnet"
 msgid "Menus per language"
 msgstr "Menüs pro Sprache"
 
-#: class-mml-admin.php:369
+#: class-mml-admin.php:372
 msgid "Method"
 msgstr "Methode"
 
@@ -1499,7 +1531,7 @@ msgstr "Die meisten offenen Texte:"
 msgid "My translations"
 msgstr "Meine Übersetzungen"
 
-#: class-mml-admin.php:392
+#: class-mml-admin.php:395
 msgid "MyMemory (free, no key)"
 msgstr "MyMemory (kostenlos, ohne Schlüssel)"
 
@@ -1507,7 +1539,7 @@ msgstr "MyMemory (kostenlos, ohne Schlüssel)"
 msgid "MyMemory is not reachable: "
 msgstr "MyMemory ist nicht erreichbar: "
 
-#: class-mml-admin.php:398
+#: class-mml-admin.php:401
 msgid "MyMemory: email"
 msgstr "MyMemory: E-Mail"
 
@@ -1535,7 +1567,7 @@ msgstr "Netzwerkfehler"
 msgid "Network error."
 msgstr "Netzwerkfehler."
 
-#: class-mml-admin.php:421
+#: class-mml-admin.php:424
 msgid "Never automatically"
 msgstr "Nie automatisch"
 
@@ -1558,6 +1590,10 @@ msgstr "Sprachen neu"
 #: class-mml-workflow.php:255
 msgid "New translation assignment: "
 msgstr "Neuer Übersetzungsauftrag: "
+
+#: class-mml-frontend.php:202
+msgid "No active arrow option found in the Salient settings. Choose \"Always show\" if the arrow is wanted anyway."
+msgstr "In den Salient-Einstellungen wurde keine aktive Pfeil-Option gefunden. Wähle „Immer anzeigen“, wenn du den Pfeil trotzdem möchtest."
 
 #: class-mml-roles.php:358
 msgid "No content found."
@@ -1595,13 +1631,13 @@ msgstr "Keine String-Tabellen gefunden."
 msgid "No strings captured yet."
 msgstr "Noch keine Zeichenfolgen erfasst."
 
-#: class-mml-strings.php:244
-msgid "No strings yet. Use"
-msgstr "Noch keine Zeichenfolgen. Nutze"
-
 #: class-mml-i18n.php:47 class-mml-i18n.php:47
 msgid "No suggestion:"
 msgstr "Kein Vorschlag:"
+
+#: class-mml-strings.php:247
+msgid "No texts yet. Choose your theme under \"Find texts of your theme and plugins\" above and click \"Save and scan now\"."
+msgstr "Noch keine Texte. Wähle oben unter „Texte von Theme und Plugins finden“ dein Theme aus und klicke auf „Speichern und jetzt scannen“."
 
 #: class-mml-dashboard.php:375
 msgid "No translatable content types selected."
@@ -1623,13 +1659,17 @@ msgstr "Nicht erlaubt oder keine WPML-Daten gefunden."
 msgid "Not allowed, or automatic translation is turned off."
 msgstr "Nicht erlaubt oder die automatische Übersetzung ist ausgeschaltet."
 
-#: class-mml-admin.php:741 class-mml-areas.php:255 class-mml-bulk.php:124
+#: class-mml-admin.php:744 class-mml-areas.php:255 class-mml-bulk.php:124
 msgid "Not allowed."
 msgstr "Nicht erlaubt."
 
 #: class-mml-roles.php:343
 msgid "Not assigned"
 msgstr "Niemandem zugewiesen"
+
+#: class-mml-strings.php:380
+msgid "Not found what you are looking for? Texts typed into theme options (for example a search placeholder in the theme settings) or into page builder elements are not theme texts. Translate them where they are entered, or write them as a shortcode: [mml_string domain=\"Theme\" name=\"search\"]Your text[/mml_string]."
+msgstr "Findest du einen Text nicht? Texte, die in Theme-Optionen (z. B. ein Such-Platzhalter in den Theme-Einstellungen) oder in Page-Builder-Elementen eingegeben wurden, sind keine Theme-Texte. Übersetze sie dort, wo sie eingegeben werden, oder schreibe sie als Shortcode: [mml_string domain=\"Theme\" name=\"search\"]Dein Text[/mml_string]."
 
 #: class-mml-wpml.php:216
 msgid "Not selected: languages and types are not adjusted."
@@ -1643,6 +1683,10 @@ msgstr "Hinweis an den Übersetzer (optional)"
 msgid "Note:"
 msgstr "Hinweis:"
 
+#: class-mml-strings.php:473
+msgid "Nothing new: either everything was found already, or the texts do not come from the selected sources."
+msgstr "Nichts Neues: Entweder wurde schon alles gefunden, oder die Texte stammen nicht aus den gewählten Quellen."
+
 #: class-mml-areas.php:546
 msgid "Nothing selected: visible in all languages."
 msgstr "Nichts gewählt: in allen Sprachen sichtbar."
@@ -1655,7 +1699,7 @@ msgstr "Nichts zu übersetzen."
 msgid "Nothing to translate. Everything is done or nothing matches the filter."
 msgstr "Nichts zu übersetzen. Alles erledigt oder nichts passend zum Filter."
 
-#: class-mml-admin.php:363 class-mml-admin.php:391
+#: class-mml-admin.php:366 class-mml-admin.php:394
 msgid "Off"
 msgstr "Aus"
 
@@ -1663,7 +1707,7 @@ msgstr "Aus"
 msgid "Off (default): translators only save. Editors and administrators decide whether a translation appears on the frontend (\"Show on the frontend\" in the editor). Translations that are already published stay published when saved."
 msgstr "Aus (Standard): Übersetzer speichern nur. Ob eine Übersetzung im Frontend erscheint, entscheiden Redakteure und Administratoren („Im Frontend anzeigen“ im Editor). Bereits freigegebene Übersetzungen bleiben beim Speichern freigegeben."
 
-#: class-mml-admin.php:436
+#: class-mml-admin.php:439
 msgid "Older entries are deleted automatically. You can find the log under"
 msgstr "Ältere Einträge werden automatisch gelöscht. Das Protokoll findest du unter"
 
@@ -1671,7 +1715,7 @@ msgstr "Ältere Einträge werden automatisch gelöscht. Das Protokoll findest du
 msgid "On assignment, submission for review, return, changed original after translation, and at the deadline (the day before and when overdue, once a day)."
 msgstr "Bei Zuweisung, Einreichung zur Prüfung, Rückgabe, geändertem Original nach der Übersetzung und zur Frist (am Vortag und wenn überfällig, einmal täglich)."
 
-#: class-mml-admin.php:367
+#: class-mml-admin.php:370
 msgid "On the first visit, visitors are redirected to the matching language based on their browser language. If there is no matching language, the page stays unchanged."
 msgstr "Beim ersten Besuch wird anhand der Browsersprache in die passende Sprache weitergeleitet. Gibt es keine passende Sprache, bleibt die Seite unverändert."
 
@@ -1695,6 +1739,10 @@ msgstr "Nur Kleinbuchstaben, Zahlen und Bindestriche."
 msgid "Only one language has been added."
 msgstr "Es ist nur eine Sprache angelegt."
 
+#: class-mml-strings.php:377
+msgid "Only save the selection"
+msgstr "Nur Auswahl speichern"
+
 #: class-mml-log.php:221
 msgid "Only this content"
 msgstr "Nur diesen Inhalt"
@@ -1711,15 +1759,15 @@ msgstr "Offen"
 msgid "Open texts"
 msgstr "Offene Texte"
 
-#: class-mml-admin.php:408
+#: class-mml-admin.php:411
 msgid "Optional, depending on the server. It is saved in the settings and only used for requests to your server."
 msgstr "Optional, je nach Server. Wird in den Einstellungen gespeichert und nur für Anfragen an deinen Server verwendet."
 
-#: class-mml-admin.php:400
+#: class-mml-admin.php:403
 msgid "Optional. With an email address MyMemory allows considerably more characters per day (about 50,000 instead of 5,000). The address is only sent to MyMemory."
 msgstr "Optional. Mit einer E-Mail-Adresse erlaubt MyMemory deutlich mehr Zeichen pro Tag (ca. 50.000 statt 5.000). Die Adresse wird nur an MyMemory übermittelt."
 
-#: class-mml-strings.php:253
+#: class-mml-strings.php:256
 msgid "Original"
 msgstr "Original"
 
@@ -1727,7 +1775,7 @@ msgstr "Original"
 msgid "Original changed"
 msgstr "Original geändert"
 
-#: class-mml-admin.php:661
+#: class-mml-admin.php:664
 msgid "Original changed – update the translation and save"
 msgstr "Original geändert – Übersetzung aktualisieren und speichern"
 
@@ -1738,6 +1786,18 @@ msgstr "Original geändert: "
 #: class-mml-log.php:232
 msgid "Original:"
 msgstr "Original:"
+
+#: class-mml-frontend.php:184
+msgid "Other menu items with a submenu already show an arrow."
+msgstr "Andere Menüpunkte mit Untermenü zeigen bereits einen Pfeil."
+
+#: class-mml-frontend.php:187
+msgid "Other menu items with a submenu show no arrow."
+msgstr "Andere Menüpunkte mit Untermenü zeigen keinen Pfeil."
+
+#: class-mml-strings.php:374
+msgid "Other text domains (comma-separated)"
+msgstr "Weitere Textdomains (durch Komma getrennt)"
 
 #: class-mml-roles.php:349
 msgid "Overdue"
@@ -1751,9 +1811,13 @@ msgstr "Überfällig: "
 msgid "Overview"
 msgstr "Übersicht"
 
-#: class-mml-admin.php:414
+#: class-mml-admin.php:417
 msgid "Page cache"
 msgstr "Seiten-Cache"
+
+#: class-mml-strings.php:329
+msgid "Parent theme: %s"
+msgstr "Eltern-Theme: %s"
 
 #: class-mml-seo.php:436
 msgid "Passed to %s."
@@ -1783,6 +1847,10 @@ msgstr "Bitte eine Zielsprache wählen (nicht die Standardsprache)."
 msgid "Please choose at least one content type."
 msgstr "Bitte mindestens einen Inhaltstyp wählen."
 
+#: class-mml-strings.php:461
+msgid "Please select at least one source first."
+msgstr "Bitte zuerst mindestens eine Quelle auswählen."
+
 #: class-mml-po.php:246
 msgid "Please upload a .po or .pot file."
 msgstr "Bitte eine .po- oder .pot-Datei hochladen."
@@ -1790,6 +1858,10 @@ msgstr "Bitte eine .po- oder .pot-Datei hochladen."
 #: class-mml-xliff.php:694
 msgid "Please upload an .xlf or .xliff file."
 msgstr "Bitte eine .xlf- oder .xliff-Datei hochladen."
+
+#: class-mml-strings.php:350
+msgid "Plugin: %s"
+msgstr "Plugin: %s"
 
 #: class-mml-wpml.php:312 class-mml-wpml.php:324
 msgid "Post missing"
@@ -1815,7 +1887,7 @@ msgstr "Pretty Permalinks sind nicht aktiv. Sprach-URLs funktionieren dann nur a
 msgid "Preview"
 msgstr "Vorschau"
 
-#: class-mml-admin.php:396
+#: class-mml-admin.php:399
 msgid "Privacy:"
 msgstr "Datenschutz:"
 
@@ -1831,7 +1903,7 @@ msgstr "Fortschritt"
 msgid "Provide a sitemap for all languages"
 msgstr "Sitemap für alle Sprachen bereitstellen"
 
-#: class-mml-admin.php:389
+#: class-mml-admin.php:392
 msgid "Provider"
 msgstr "Anbieter"
 
@@ -1879,7 +1951,7 @@ msgstr "Empfohlen: höchstens 160 Zeichen."
 msgid "Recommended: at most 60 characters."
 msgstr "Empfohlen: höchstens 60 Zeichen."
 
-#: class-mml-admin.php:361
+#: class-mml-admin.php:364
 msgid "Redirect"
 msgstr "Weiterleiten"
 
@@ -1887,11 +1959,11 @@ msgstr "Weiterleiten"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: class-mml-admin.php:446
+#: class-mml-admin.php:449
 msgid "Remove data, ask first"
 msgstr "Daten entfernen, vorher nachfragen"
 
-#: class-mml-admin.php:447
+#: class-mml-admin.php:450
 msgid "Remove data, without asking"
 msgstr "Daten entfernen, ohne Rückfrage"
 
@@ -1903,7 +1975,7 @@ msgstr "Filter entfernen"
 msgid "Result"
 msgstr "Ergebnis"
 
-#: class-mml-admin.php:432
+#: class-mml-admin.php:435
 msgid "Retention"
 msgstr "Aufbewahrung"
 
@@ -1943,6 +2015,10 @@ msgstr "SEO-Titel"
 msgid "SEO title ("
 msgstr "SEO-Titel ("
 
+#: class-mml-frontend.php:198
+msgid "Salient option \"%s\" is on."
+msgstr "Die Salient-Option „%s“ ist aktiv."
+
 #: class-mml-editor.php:1374 class-mml-editor.php:1404
 msgid "Save"
 msgstr "Speichern"
@@ -1951,11 +2027,15 @@ msgstr "Speichern"
 msgid "Save & submit for review"
 msgstr "Speichern & zur Prüfung einreichen"
 
-#: class-mml-admin.php:473
+#: class-mml-strings.php:376
+msgid "Save and scan now"
+msgstr "Speichern und jetzt scannen"
+
+#: class-mml-admin.php:476
 msgid "Save changes"
 msgstr "Änderungen speichern"
 
-#: class-mml-admin.php:646
+#: class-mml-admin.php:649
 msgid "Save first, then translations can be created."
 msgstr "Erst speichern, dann lassen sich Übersetzungen anlegen."
 
@@ -1963,11 +2043,7 @@ msgstr "Erst speichern, dann lassen sich Übersetzungen anlegen."
 msgid "Save glossary"
 msgstr "Glossar speichern"
 
-#: class-mml-strings.php:298
-msgid "Save scan settings"
-msgstr "Scan-Einstellungen speichern"
-
-#: class-mml-strings.php:276
+#: class-mml-strings.php:279
 msgid "Save translations"
 msgstr "Übersetzungen speichern"
 
@@ -1979,21 +2055,17 @@ msgstr "Im Editor gespeichert, aber noch nicht für das Frontend freigegeben"
 msgid "Saved sections"
 msgstr "Gespeicherte Abschnitte"
 
-#: class-mml-glossary.php:242 class-mml-strings.php:226
+#: class-mml-glossary.php:242 class-mml-strings.php:227
 msgid "Saved."
 msgstr "Gespeichert."
 
-#: class-mml-admin.php:473
+#: class-mml-admin.php:476
 msgid "Saves the settings of all sections."
 msgstr "Speichert die Einstellungen aller Bereiche."
 
-#: class-mml-strings.php:292
-msgid "Scan (gettext)"
-msgstr "Scan (gettext)"
-
-#: class-mml-strings.php:296
-msgid "Scan active"
-msgstr "Scan aktiv"
+#: class-mml-strings.php:467
+msgid "Scan finished: %1$d new texts found on %2$d pages."
+msgstr "Scan beendet: %1$d neue Texte auf %2$d Seiten gefunden."
 
 #: class-mml-areas.php:137
 msgid "Search"
@@ -2007,7 +2079,7 @@ msgstr "Suchmaschinen sind erlaubt."
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: class-mml-roles.php:351 class-mml-strings.php:237
+#: class-mml-roles.php:351 class-mml-strings.php:240
 msgid "Search …"
 msgstr "Suchen …"
 
@@ -2071,7 +2143,7 @@ msgstr "Übersetzer anzeigen"
 msgid "Site Editor (navigation, switcher block)"
 msgstr "Website-Editor (Navigation, Umschalter-Block)"
 
-#: class-mml-strings.php:163
+#: class-mml-strings.php:164
 msgid "Site title"
 msgstr "Site-Titel"
 
@@ -2095,7 +2167,7 @@ msgstr "Übersprungen"
 msgid "Skipped: %1$d of %2$d texts are still open."
 msgstr "Übersprungen: %1$d von %2$d Texten noch offen."
 
-#: class-mml-admin.php:414
+#: class-mml-admin.php:417
 msgid "So visitors see changes immediately."
 msgstr "Damit Besucher Änderungen sofort sehen."
 
@@ -2131,7 +2203,7 @@ msgstr "Eingereicht. Ein Redakteur prüft die Übersetzung."
 msgid "Suggest automatically"
 msgstr "Automatisch vorschlagen"
 
-#: class-mml-admin.php:386
+#: class-mml-admin.php:389
 msgid "Suggestions in the translation editor, without a DeepL key. You confirm every text yourself."
 msgstr "Vorschläge im Übersetzungseditor, ohne DeepL-Schlüssel. Du bestätigst jeden Text selbst."
 
@@ -2143,7 +2215,7 @@ msgstr "Vorschläge eingesetzt, bitte prüfen und speichern."
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: class-mml-admin.php:424
+#: class-mml-admin.php:427
 msgid "Supported: WP Rocket, LiteSpeed Cache (including the LiteSpeed server cache, e.g. on Hostinger), W3 Total Cache, WP Super Cache, WP Fastest Cache, Breeze, SG Optimizer and Nginx Helper. The entire cache is also cleared when you change language settings or strings. Caches that cannot clear individual pages (and the LiteSpeed server cache without the plugin) are always cleared completely."
 msgstr "Unterstützt werden WP Rocket, LiteSpeed Cache (auch der LiteSpeed-Server-Cache, z. B. bei Hostinger), W3 Total Cache, WP Super Cache, WP Fastest Cache, Breeze, SG Optimizer und Nginx Helper. Der gesamte Cache wird zusätzlich geleert, wenn du Spracheinstellungen oder Zeichenfolgen änderst. Caches ohne seitengenaues Leeren (und der LiteSpeed-Server-Cache ohne Plugin) werden immer komplett geleert."
 
@@ -2151,7 +2223,7 @@ msgstr "Unterstützt werden WP Rocket, LiteSpeed Cache (auch der LiteSpeed-Serve
 msgid "System"
 msgstr "System"
 
-#: class-mml-strings.php:163
+#: class-mml-strings.php:164
 msgid "Tagline"
 msgstr "Untertitel"
 
@@ -2191,9 +2263,9 @@ msgstr "Begriffe in"
 msgid "Text"
 msgstr "Text"
 
-#: class-mml-strings.php:297
-msgid "Text domains (comma-separated)"
-msgstr "Textdomains (kommagetrennt)"
+#: class-mml-strings.php:379
+msgid "Texts are collected whenever a page is built, so also while visitors browse. Pages delivered from a cache (e.g. LiteSpeed) collect nothing; \"Scan now\" asks for your pages without the cache."
+msgstr "Texte werden gesammelt, wann immer eine Seite aufgebaut wird, also auch während Besucher surfen. Seiten, die aus einem Cache ausgeliefert werden (z. B. LiteSpeed), sammeln nichts; „Jetzt scannen“ ruft deine Seiten ohne den Cache auf."
 
 #: class-mml-admin.php:290
 msgid "Texts in block settings (including ACF blocks)"
@@ -2319,7 +2391,7 @@ msgstr "Der Dienst ist nicht erreichbar."
 msgid "The sitemap is rebuilt on the next request."
 msgstr "Die Sitemap wird beim nächsten Abruf neu aufgebaut."
 
-#: class-mml-admin.php:462
+#: class-mml-admin.php:465
 msgid "The source comes from the constant"
 msgstr "Die Quelle kommt aus der Konstante"
 
@@ -2330,6 +2402,10 @@ msgstr "Die Zielsprache"
 #: class-mml-mt.php:118
 msgid "The text is too long for MyMemory. Please translate it section by section."
 msgstr "Der Text ist für MyMemory zu lang. Bitte abschnittsweise übersetzen."
+
+#: class-mml-frontend.php:207
+msgid "The theme could not be asked about arrows. Choose \"Always show\" if the arrow is wanted."
+msgstr "Das Theme konnte nicht nach Pfeilen gefragt werden. Wähle „Immer anzeigen“, wenn du den Pfeil möchtest."
 
 #: class-mml-workflow.php:97
 msgid "The user may not translate."
@@ -2423,7 +2499,7 @@ msgstr "Übersetzbare Taxonomien"
 msgid "Translate"
 msgstr "Übersetzen"
 
-#: class-mml-admin.php:666
+#: class-mml-admin.php:669
 msgid "Translate (side by side)"
 msgstr "Übersetzen (links/rechts)"
 
@@ -2435,7 +2511,7 @@ msgstr "Einheitlich übersetzen"
 msgid "Translate form texts per language"
 msgstr "Texte von Formularen pro Sprache übersetzen"
 
-#: class-mml-strings.php:223
+#: class-mml-strings.php:224
 msgid "Translate strings"
 msgstr "Zeichenfolgen übersetzen"
 
@@ -2443,11 +2519,15 @@ msgstr "Zeichenfolgen übersetzen"
 msgid "Translate texts from the original"
 msgstr "Texte aus dem Original übersetzen"
 
+#: class-mml-strings.php:365
+msgid "Translate the texts in the table below and save."
+msgstr "Übersetze die Texte in der Tabelle darunter und speichere."
+
 #: class-mml-editor.php:1276
 msgid "Translate:"
 msgstr "Übersetzen:"
 
-#: class-mml-admin.php:568
+#: class-mml-admin.php:571
 msgid "Translate: "
 msgstr "Übersetzen: "
 
@@ -2495,7 +2575,7 @@ msgstr "Status der Übersetzungen"
 msgid "Translation tools"
 msgstr "Übersetzungshilfe"
 
-#: class-mml-admin.php:651 class-mml-roles.php:114 class-mml-roles.php:114
+#: class-mml-admin.php:654 class-mml-roles.php:114 class-mml-roles.php:114
 msgid "Translations"
 msgstr "Übersetzungen"
 
@@ -2511,7 +2591,7 @@ msgstr "Übersetzer dürfen Übersetzungen im Frontend freigeben"
 msgid "Type"
 msgstr "Typ"
 
-#: class-mml-admin.php:404
+#: class-mml-admin.php:407
 msgid "URL of your LibreTranslate server (without"
 msgstr "Adresse deines LibreTranslate-Servers (ohne"
 
@@ -2527,7 +2607,7 @@ msgstr "URL-Slug (Adresse)"
 msgid "Unchanged"
 msgstr "Unverändert"
 
-#: class-mml-admin.php:441
+#: class-mml-admin.php:444
 msgid "Uninstall"
 msgstr "Deinstallation"
 
@@ -2551,15 +2631,15 @@ msgstr "Unbekannter Schritt."
 msgid "Unknown target language."
 msgstr "Unbekannte Zielsprache."
 
-#: class-mml-admin.php:460
+#: class-mml-admin.php:463
 msgid "Update source"
 msgstr "Update-Quelle"
 
-#: class-mml-admin.php:666
+#: class-mml-admin.php:669
 msgid "Update translation (original changed)"
 msgstr "Übersetzung aktualisieren (Original geändert)"
 
-#: class-mml-admin.php:457
+#: class-mml-admin.php:460
 msgid "Updates"
 msgstr "Updates"
 
@@ -2571,7 +2651,7 @@ msgstr "Updates & System"
 msgid "Upload failed."
 msgstr "Upload fehlgeschlagen."
 
-#: class-mml-strings.php:308
+#: class-mml-strings.php:302
 msgid "Usage in the theme"
 msgstr "Verwendung im Theme"
 
@@ -2623,7 +2703,7 @@ msgstr "Achtung:"
 msgid "What"
 msgstr "Was"
 
-#: class-mml-admin.php:441
+#: class-mml-admin.php:444
 msgid "What happens to your data when the plugin is deleted."
 msgstr "Was beim Löschen des Plugins mit deinen Daten passiert."
 
@@ -2635,23 +2715,23 @@ msgstr "Was Besucher in ihrer Sprache finden."
 msgid "When"
 msgstr "Wann"
 
-#: class-mml-admin.php:682
+#: class-mml-admin.php:685
 msgid "When creating, content, featured image and meta fields are copied; the new content starts as a draft."
 msgstr "Beim Erstellen werden Inhalt, Beitragsbild und Meta-Felder kopiert; der neue Inhalt startet als Entwurf."
 
-#: class-mml-admin.php:444
+#: class-mml-admin.php:447
 msgid "When deleting the plugin"
 msgstr "Beim Löschen des Plugins"
 
-#: class-mml-admin.php:591
+#: class-mml-admin.php:594
 msgid "When deleting, all settings, strings, and language and translation data of Alba are removed (including the translations from the side-by-side editor). Separate translation posts remain as normal content. Delete the plugin anyway?"
 msgstr "Beim Löschen werden alle Einstellungen, Zeichenfolgen sowie Sprach- und Übersetzungsdaten von Alba entfernt (auch die Übersetzungen aus dem Links-rechts-Editor). Eigene Übersetzungs-Beiträge bleiben als normale Inhalte bestehen. Plugin trotzdem löschen?"
 
-#: class-mml-admin.php:419
+#: class-mml-admin.php:422
 msgid "When saving a translation: affected pages and home pages"
 msgstr "Beim Speichern einer Übersetzung: betroffene Seiten und Startseiten"
 
-#: class-mml-admin.php:420
+#: class-mml-admin.php:423
 msgid "When saving a translation: the entire cache"
 msgstr "Beim Speichern einer Übersetzung: gesamten Cache"
 
@@ -2659,19 +2739,15 @@ msgstr "Beim Speichern einer Übersetzung: gesamten Cache"
 msgid "Where and how visitors switch the language."
 msgstr "Wo und wie Besucher die Sprache wechseln."
 
-#: class-mml-admin.php:457
+#: class-mml-admin.php:460
 msgid "Where updates for this plugin come from."
 msgstr "Woher Aktualisierungen für dieses Plugin kommen."
-
-#: class-mml-strings.php:293
-msgid "While visitors browse frontend pages, this collects all texts of the specified text domains (e.g. the slug of your theme) so you can translate them here. At most"
-msgstr "Sammelt beim Besuch von Frontend-Seiten alle Texte der angegebenen Textdomains (z. B. den Slug deines Themes), sodass du sie hier übersetzen kannst. Maximal"
 
 #: class-mml-log.php:204
 msgid "Who"
 msgstr "Wer"
 
-#: class-mml-admin.php:430
+#: class-mml-admin.php:433
 msgid "Who saved which translation, and when."
 msgstr "Wer hat wann welche Übersetzung gespeichert."
 
@@ -2687,7 +2763,7 @@ msgstr "Widgets und Blöcke"
 msgid "Will not be imported:"
 msgstr "Wird nicht importiert:"
 
-#: class-mml-admin.php:374
+#: class-mml-admin.php:377
 msgid "With a page cache (e.g. LiteSpeed on Hostinger) the home page is often served without PHP: in that case choose \"via JavaScript\"."
 msgstr "Bei einem Seiten-Cache (z. B. LiteSpeed bei Hostinger) wird die Startseite oft ohne PHP ausgeliefert: dann „per JavaScript“ wählen."
 
@@ -2706,6 +2782,10 @@ msgstr "Ohne schöne Permalinks nutzen die Sprach-URLs"
 #: class-mml-wpml.php:513 class-mml-wpml.php:530
 msgid "Without translation"
 msgstr "ohne Übersetzung"
+
+#: class-mml-strings.php:333
+msgid "WordPress core (many texts, e.g. \"Search\", \"Read more\")"
+msgstr "WordPress-Kern (viele Texte, z. B. „Suche“, „Weiterlesen“)"
 
 #: class-mml-dashboard.php:86
 msgid "XLIFF (Export / Import)"
@@ -2755,6 +2835,10 @@ msgstr "bereits vorhanden und beibehalten"
 msgid "also publish translations with open texts"
 msgstr "auch Übersetzungen mit offenen Texten freigeben"
 
+#: class-mml-admin.php:344
+msgid "arrow shown"
+msgstr "Pfeil wird angezeigt"
+
 #: class-mml-admin.php:297
 msgid "as a wildcard):"
 msgstr "als Platzhalter):"
@@ -2782,10 +2866,6 @@ msgstr "Einträge je Typ gezählt, auf „veraltet“ höchstens"
 #: class-mml-log.php:249
 msgid "entries ·"
 msgstr "Einträge ·"
-
-#: class-mml-strings.php:293
-msgid "entries. Switch the scan off again after collecting."
-msgstr "Einträge. Nach dem Sammeln den Scan wieder ausschalten."
 
 #: class-mml-xliff.php:907
 msgid "existing translations remain unchanged"
@@ -2815,7 +2895,7 @@ msgstr "hat keinen URL-Präfix ("
 msgid "hidden on the frontend"
 msgstr "im Frontend ausgeblendet"
 
-#: class-mml-admin.php:352
+#: class-mml-admin.php:355
 msgid "hide in the menu switcher"
 msgstr "im Menü-Umschalter ausblenden"
 
@@ -2823,7 +2903,7 @@ msgstr "im Menü-Umschalter ausblenden"
 msgid "ignored (fuzzy, empty or plural)"
 msgstr "ignoriert (fuzzy, leer oder Plural)"
 
-#: class-mml-admin.php:377
+#: class-mml-admin.php:380
 msgid "in the address."
 msgstr "an der Adresse ebenfalls nicht."
 
@@ -2831,7 +2911,7 @@ msgstr "an der Adresse ebenfalls nicht."
 msgid "is already published"
 msgstr "ist bereits freigegeben"
 
-#: class-mml-admin.php:466
+#: class-mml-admin.php:469
 msgid "is available there, the update appears like for any other plugin under Dashboard > Updates and in the plugin list."
 msgstr ", erscheint das Update wie bei jedem Plugin unter Dashboard > Aktualisierungen und in der Plugin-Liste."
 
@@ -2851,17 +2931,17 @@ msgstr "als veraltet markiert"
 msgid "missing"
 msgstr "fehlen"
 
-#: class-mml-strings.php:297
-msgid "my-theme, woocommerce"
-msgstr "mein-theme, woocommerce"
-
-#: class-mml-admin.php:399
+#: class-mml-admin.php:402
 msgid "name@example.com"
 msgstr "name@beispiel.de"
 
 #: class-mml-roles.php:389
 msgid "new"
 msgstr "neu"
+
+#: class-mml-admin.php:344
+msgid "no arrow"
+msgstr "kein Pfeil"
 
 #: class-mml-xliff.php:562
 msgid "no permission"
@@ -2894,10 +2974,6 @@ msgstr "von"
 #: class-mml-roles.php:353
 msgid "only with open texts"
 msgstr "nur mit offenen Texten"
-
-#: class-mml-strings.php:244
-msgid "or enable the scan for a text domain below."
-msgstr "oder aktiviere unten den Scan für eine Textdomain."
 
 #: class-mml-dashboard.php:122
 msgid "or gettext scan under Strings."
@@ -2959,15 +3035,15 @@ msgstr "Zeichenfolgen"
 msgid "under the domain \""
 msgstr "unter der Domain „"
 
-#: class-mml-strings.php:238
+#: class-mml-strings.php:241
 msgid "untranslated only"
 msgstr "nur unübersetzte"
 
-#: class-mml-admin.php:372
+#: class-mml-admin.php:375
 msgid "via JavaScript (cache-friendly)"
 msgstr "per JavaScript (Cache-tauglich)"
 
-#: class-mml-admin.php:371
+#: class-mml-admin.php:374
 msgid "via server (HTTP redirect)"
 msgstr "per Server (HTTP-Weiterleitung)"
 
@@ -3023,7 +3099,7 @@ msgstr "– wie Original –"
 msgid "– nobody –"
 msgstr "– niemand –"
 
-#: class-mml-admin.php:317 class-mml-admin.php:346
+#: class-mml-admin.php:317 class-mml-admin.php:349
 msgid "– not automatic –"
 msgstr "– nicht automatisch –"
 
@@ -3035,7 +3111,7 @@ msgstr "– Zuweisung entfernen –"
 msgid "… and"
 msgstr "… und"
 
-#: class-mml-admin.php:672
+#: class-mml-admin.php:675
 msgid "… or link to an existing one"
 msgstr "… oder mit vorhandenem verknüpfen"
 
