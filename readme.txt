@@ -4,7 +4,7 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.11.0
+Stable tag: 0.11.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 
 == Changelog ==
 
+= 0.11.1 =
+* GitHub updater now also finds pre-releases (beta) and accepts "owner/repo" as update source
+
 = 0.11.0 =
 * The interface is now in English (text domain `alba`), with a complete German translation
 
@@ -87,6 +90,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.11.1 =
+Beta. Fixes update detection for GitHub pre-releases.
 
 = 0.11.0 =
 Beta. The admin interface is now English by default; German sites keep German text. Make a database backup before updating.

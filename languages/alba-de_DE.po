@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Alba 0.11.0\n"
+"Project-Id-Version: Alba 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -119,7 +119,7 @@ msgstr ""
 msgid " in the file does not match any language that has been added. Please choose the target language in the form."
 msgstr " in der Datei passt zu keiner angelegten Sprache. Bitte die Zielsprache im Formular wählen."
 
-#: class-mml-updater.php:286
+#: class-mml-updater.php:300
 msgid " is available. You can update it now in the plugin list."
 msgstr " ist verfügbar. Du kannst sie jetzt in der Plugin-Liste aktualisieren."
 
@@ -243,7 +243,7 @@ msgstr "“. Dort die Übersetzungen eintragen. E-Mails an dich bleiben in der S
 msgid "\">+ Create translation</a>"
 msgstr "\">+ Übersetzung erstellen</a>"
 
-#: class-mml-updater.php:247
+#: class-mml-updater.php:261
 msgid "\">Check for updates</a>"
 msgstr "\">Nach Updates suchen</a>"
 
@@ -495,19 +495,19 @@ msgstr "Betroffene Inhalte"
 msgid "Affected fields are marked red"
 msgstr "Betroffene Felder sind rot markiert"
 
-#: class-mml-updater.php:290
+#: class-mml-updater.php:304
 msgid "Alba is up to date (version "
 msgstr "Alba ist aktuell (Version "
 
-#: class-mml-updater.php:294
+#: class-mml-updater.php:308
 msgid "Alba: No update source is set (Languages > Settings > Updates)."
 msgstr "Alba: Es ist keine Update-Quelle hinterlegt (Sprachen > Einstellungen > Updates)."
 
-#: class-mml-updater.php:298
+#: class-mml-updater.php:312
 msgid "Alba: The update source could not be read. Please check the address and release."
 msgstr "Alba: Die Update-Quelle konnte nicht gelesen werden. Bitte Adresse und Release prüfen."
 
-#: class-mml-updater.php:286
+#: class-mml-updater.php:300
 msgid "Alba: Version "
 msgstr "Alba: Version "
 
@@ -1383,7 +1383,7 @@ msgstr "Sprachen – Einstellungen"
 msgid "Languages – XLIFF"
 msgstr "Sprachen – XLIFF"
 
-#: class-mml-updater.php:191
+#: class-mml-updater.php:205
 msgid "Lean multilingual plugin: languages, posts, taxonomies, strings, .po import/export and block navigation."
 msgstr "Schlankes Mehrsprachigkeits-Plugin: Sprachen, Beiträge, Taxonomien, Zeichenfolgen, .po-Import/-Export und Block-Navigation."
 
@@ -2299,7 +2299,7 @@ msgstr ""
 msgid "The page cache has been cleared."
 msgstr "Der Seiten-Cache wurde geleert."
 
-#: class-mml-updater.php:213
+#: class-mml-updater.php:227
 msgid "The plugin folder could not be renamed."
 msgstr "Der Plugin-Ordner konnte nicht umbenannt werden."
 

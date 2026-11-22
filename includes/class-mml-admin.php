@@ -461,7 +461,7 @@ class MML_Admin {
 							<?php if (defined('MML_UPDATE_URL') && MML_UPDATE_URL !== '') : ?>
 								<p><?php echo esc_html__('The source comes from the constant', 'alba'); ?> <code>MML_UPDATE_URL</code> (wp-config.php): <code><?php echo esc_html(MML_UPDATE_URL); ?></code></p>
 							<?php else : ?>
-								<input type="url" class="regular-text" id="mml_update_url" name="mml_update_url" value="<?php echo esc_attr(get_option('mml_update_url', '')); ?>" placeholder="https://github.com/benutzer/alba">
+								<input type="url" class="regular-text" id="mml_update_url" name="mml_update_url" value="<?php echo esc_attr(get_option('mml_update_url', '')); ?>" placeholder="https://github.com/username/alba">
 							<?php endif; ?>
 							<p class="mml-hint"><?php echo esc_html__('GitHub repository (latest release) or URL of a JSON file. If a version higher than', 'alba'); ?> <?php echo esc_html(MML_VERSION); ?><?php echo esc_html__('is available there, the update appears like for any other plugin under Dashboard > Updates and in the plugin list.', 'alba'); ?> <a href="<?php echo esc_url(MML_Updater::check_url()); ?>"><?php echo esc_html__('Check for updates now', 'alba'); ?></a></p>
 						</div></div>

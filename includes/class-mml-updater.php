@@ -72,14 +72,28 @@ class MML_Updater {
 	private function load($url) {
 		$args = ['timeout' => 10, 'headers' => ['User-Agent' => 'Alba/' . MML_VERSION, 'Accept' => 'application/json']];
 
+		$url = trim($url);
+		if (preg_match('~^([\w.\-]+)/([\w.\-]+)$~', $url, $sh)) { // Kurzform "owner/repo"
+			$url = 'https://github.com/' . $sh[1] . '/' . $sh[2];
+		}
 		if (preg_match('~^https?://github\.com/([\w.\-]+)/([\w.\-]+?)(?:\.git)?/?$~i', $url, $m)) {
 			$args['headers']['Accept'] = 'application/vnd.github+json';
-			$r = wp_remote_get('https://api.github.com/repos/' . $m[1] . '/' . $m[2] . '/releases/latest', $args);
+			// /releases/latest ignoriert Vorabversionen (Beta); darum die Liste lesen und die erste veröffentlichte nehmen.
+			$r = wp_remote_get('https://api.github.com/repos/' . $m[1] . '/' . $m[2] . '/releases?per_page=10', $args);
 			if (is_wp_error($r) || (int) wp_remote_retrieve_response_code($r) !== 200) {
 				return null;
 			}
-			$d = json_decode(wp_remote_retrieve_body($r), true);
-			if (!is_array($d) || empty($d['tag_name'])) {
+			$list = json_decode(wp_remote_retrieve_body($r), true);
+			$d = null;
+			if (is_array($list)) {
+				foreach ($list as $rel) {
+					if (is_array($rel) && empty($rel['draft']) && !empty($rel['tag_name'])) {
+						$d = $rel;
+						break;
+					}
+				}
+			}
+			if (!is_array($d)) {
 				return null;
 			}
 			$version = ltrim((string) $d['tag_name'], 'vV');
