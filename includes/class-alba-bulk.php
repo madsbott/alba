@@ -4,16 +4,16 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Sammelaktionen für Übersetzungen im Editor:
- *   mt        Leere Felder maschinell vorübersetzen (nie veröffentlicht, nur als Entwurf gespeichert)
- *   publish   Im Frontend anzeigen (nur wenn keine offenen Texte, oder mit „auch unvollständige“)
+ * Bulk actions for translations in the editor:
+ *   mt        Pre-translate empty fields by machine (never published, only saved as a draft)
+ *   publish   Show on the frontend (only if there are no open texts, or with "also incomplete")
  *   unpublish Im Frontend ausblenden
- *   stale     Als veraltet markieren (alle Abschnitte werden im Editor zur Prüfung markiert)
- *   assign    Zuweisen mit Frist (oder Zuweisung entfernen)
- *   xliff     Alle als eine XLIFF-Datei exportieren
+ *   stale     Mark as outdated (all sections are marked for review in the editor)
+ *   assign    Assign with a deadline (or remove the assignment)
+ *   xliff     Export all as one XLIFF file
  *
- * Aufruf aus der Liste „Meine Übersetzungen“ oder per Sammelaktion in den Beitragslisten. Die Ausführung läuft
- * Inhalt für Inhalt per AJAX, damit lange Vorübersetzungen nicht in ein Zeitlimit laufen.
+ * Called from the "My translations" list or as a bulk action in the post lists. Execution runs
+ * item by item via AJAX so that long pre-translations do not hit a time limit.
  */
 class ALBA_Bulk {
 	const PAGE = 'alba-bulk';
@@ -37,7 +37,7 @@ class ALBA_Bulk {
 		add_submenu_page('options.php', __('Bulk action', 'alba'), __('Bulk action', 'alba'), 'read', self::PAGE, [$this, 'page']);
 	}
 
-	/** Verfügbare Aktionen für den aktuellen Benutzer: Schlüssel => Beschriftung */
+	/** Available actions for the current user: key => label */
 	public function ops() {
 		$ed = current_user_can('edit_others_posts');
 		$out = [];
@@ -61,7 +61,7 @@ class ALBA_Bulk {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Sammelaktionen in den Beitragslisten
+	 * Bulk actions in the post lists
 	 * ------------------------------------------------------------- */
 
 	public function list_hooks() {
@@ -103,7 +103,7 @@ class ALBA_Bulk {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Seite
+	 * Page
 	 * ------------------------------------------------------------- */
 
 	private function ids_from($v) {
@@ -168,7 +168,7 @@ class ALBA_Bulk {
 			} else {
 				echo '<p>' . esc_html(sprintf(/* translators: %d: number of translations */ __('Show %d translations on the frontend.', 'alba'), count($rows))) . '</p><p><label><input type="checkbox" name="force" value="1"> ' . esc_html__('also publish translations with open texts', 'alba') . '</label></p>';
 			}
-			echo '<p><button class="button button-primary">Starten</button> <a class="button" href="' . esc_url($back) . '">Abbrechen</a></p></form></div>';
+			echo '<p><button class="button button-primary">' . esc_html__('Start', 'alba') . '</button> <a class="button" href="' . esc_url($back) . '">' . esc_html__('Cancel', 'alba') . '</a></p></form></div>';
 			return;
 		}
 		if ($op === 'assign') {
@@ -223,7 +223,7 @@ class ALBA_Bulk {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Ausführen (ein Inhalt)
+	 * Run (one item)
 	 * ------------------------------------------------------------- */
 
 	public function ajax() {
@@ -242,7 +242,7 @@ class ALBA_Bulk {
 		wp_send_json_success($r);
 	}
 
-	/** Rückgabe: Fehlertext oder ['msg' => …, 'more' => bool] */
+	/** Return: error text or ['msg' => …, 'more' => bool] */
 	public function run($op, $id, $lang, array $in = []) {
 		$c = $this->core;
 		$e = $c->editor;
@@ -341,7 +341,7 @@ class ALBA_Bulk {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Maschinelle Vorübersetzung
+	 * Machine pre-translation
 	 * ------------------------------------------------------------- */
 
 	private function op_mt($post, $lang) {

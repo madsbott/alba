@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Sitemaps und Sprachverweise.
+ * Sitemaps and language references.
  *
- * - XML-Sitemap pro Sprache unter /alba-sitemap.xml (Index), /alba-sitemap-{sprache}-{n}.xml (Inhalte) und
- *   /alba-sitemap-{sprache}-terms.xml (Startseite und Begriffsarchive). Jeder Eintrag nennt alle Sprachfassungen
- *   als xhtml:link (hreflang) und x-default.
- * - Die Sitemap wird in robots.txt eingetragen und in den Index von Yoast SEO bzw. Rank Math eingehängt.
- * - og:locale passend zur Sprache (Yoast, Rank Math; ohne SEO-Plugin gibt das Plugin selbst og:locale aus).
- * - canonical: trägt eine Seite in einer Fremdsprache ein Kanonikal ohne Sprachpräfix, wird es auf die Sprach-URL korrigiert.
+ * - XML sitemap per language at /alba-sitemap.xml (index), /alba-sitemap-{language}-{n}.xml (content) and
+ *   /alba-sitemap-{language}-terms.xml (home page and term archives). Every entry lists all language versions
+ *   as xhtml:link (hreflang) and x-default.
+ * - The sitemap is added to robots.txt and hooked into the index of Yoast SEO or Rank Math.
+ * - og:locale matching the language (Yoast, Rank Math; without an SEO plugin the plugin outputs og:locale itself).
+ * - canonical: if a page in a foreign language has a canonical without a language prefix, it is corrected to the language URL.
  */
 class ALBA_Seo {
 	const PER_PAGE = 1000;
@@ -77,7 +77,7 @@ class ALBA_Seo {
 		return trailingslashit(set_url_scheme(get_option('home'))) . 'alba-sitemap-' . $lang . '-' . $part . '.xml';
 	}
 
-	/** Alle Dateien: Liste von [lang, part] */
+	/** All files: list of [lang, part] */
 	public function files() {
 		$key = 'alba_sm_files_' . md5($this->ver());
 		$hit = get_transient($key);
@@ -196,7 +196,7 @@ class ALBA_Seo {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Beiträge
+	 * Posts
 	 * ------------------------------------------------------------- */
 
 	private function types() {
@@ -227,7 +227,7 @@ class ALBA_Seo {
 		];
 	}
 
-	/** Wird die Seite von Yoast oder Rank Math auf noindex gestellt? */
+	/** Is the page set to noindex by Yoast or Rank Math? */
 	private function noindex($id) {
 		if (get_post_meta($id, '_yoast_wpseo_meta-robots-noindex', true) === '1') {
 			return true;
@@ -271,7 +271,7 @@ class ALBA_Seo {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Startseite und Begriffe
+	 * Home page and terms
 	 * ------------------------------------------------------------- */
 
 	private function build_terms($lang) {
@@ -326,7 +326,7 @@ class ALBA_Seo {
 		return rtrim($output) . "\n\nSitemap: " . $this->index_url() . "\n";
 	}
 
-	/** Hängt unsere Dateien an den Sitemap-Index von Yoast bzw. Rank Math an */
+	/** Hooks our files into the sitemap index of Yoast or Rank Math */
 	public function append_index($xml) {
 		if (!is_string($xml) || !$this->enabled()) {
 			return $xml;
@@ -339,7 +339,7 @@ class ALBA_Seo {
 	}
 
 	/* ---------------------------------------------------------------
-	 * og:locale und canonical
+	 * og:locale and canonical
 	 * ------------------------------------------------------------- */
 
 	private function locale() {
@@ -373,7 +373,7 @@ class ALBA_Seo {
 		}
 	}
 
-	/** Kanonikal ohne Sprachpräfix in einer Fremdsprache -> Sprach-URL */
+	/** Canonical without language prefix in a foreign language -> language URL */
 	public function fix_canonical($url) {
 		$c = $this->core;
 		if (!is_string($url) || $url === '' || $c->lang === $c->default || !is_singular() || is_admin()) {
@@ -396,7 +396,7 @@ class ALBA_Seo {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Einstellungen
+	 * Settings
 	 * ------------------------------------------------------------- */
 
 	public function register() {

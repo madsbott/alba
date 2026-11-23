@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Glossar und Übersetzungsspeicher.
+ * Glossary and translation memory.
  *
- * Glossar (Option alba_glossary): Begriffe der Standardsprache, die entweder unverändert bleiben (Firmen-/Produktnamen)
- * oder in jeder Sprache einheitlich übersetzt werden. Im Übersetzungseditor werden Treffer angezeigt, "Original übernehmen"
- * wendet das Glossar an, und fehlende Begriffe in der Übersetzung werden markiert.
+ * Glossary (option alba_glossary): terms of the default language that either stay unchanged (company/product names)
+ * or are translated consistently in every language. In the translation editor matches are shown, "Copy original"
+ * applies the glossary, and terms missing in the translation are marked.
  *
- * Übersetzungsspeicher (Option alba_tm, nicht autoloaded): merkt sich jeden gespeicherten Abschnitt (md5 des Originaltexts =>
- * Übersetzung) je Sprache. Taucht derselbe Text in einem anderen Beitrag auf, wird die bekannte Übersetzung vorgeschlagen.
+ * Translation memory (option alba_tm, not autoloaded): remembers every saved section (md5 of the original text =>
+ * translation) per language. If the same text appears in another post, the known translation is suggested.
  */
 class ALBA_Glossary {
 	const OPT = 'alba_glossary';
@@ -50,7 +50,7 @@ class ALBA_Glossary {
 		return '~(?<![\p{L}\p{N}_])' . preg_quote($term, '~') . '(?![\p{L}\p{N}_])~u' . ($cs ? '' : 'i');
 	}
 
-	/** Wirksame Einträge für eine Zielsprache: [term, target, keep, cs], längste Begriffe zuerst */
+	/** Effective entries for a target language: [term, target, keep, cs], longest terms first */
 	private function active($lang) {
 		$out = [];
 		foreach ($this->entries() as $e) {
@@ -83,7 +83,7 @@ class ALBA_Glossary {
 		return $found;
 	}
 
-	/** Ersetzt Glossarbegriffe durch Platzhalter (für maschinelle Übersetzung): [Text, Map] */
+	/** Replaces glossary terms with placeholders (for machine translation): [text, map] */
 	public function protect($html, $lang) {
 		$map = [];
 		$list = $this->active($lang);
@@ -116,7 +116,7 @@ class ALBA_Glossary {
 		}, $text);
 	}
 
-	/** Wendet das Glossar auf (HTML-)Text an; Tags und Attribute bleiben unberührt */
+	/** Applies the glossary to (HTML) text; tags and attributes stay untouched */
 	public function apply($html, $lang) {
 		$list = array_filter($this->active($lang), function ($e) {
 			return !$e['keep'] && $e['target'] !== $e['term'];
@@ -143,7 +143,7 @@ class ALBA_Glossary {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzungsspeicher
+	 * Translation memory
 	 * ------------------------------------------------------------- */
 
 	private function tm() {
@@ -158,7 +158,7 @@ class ALBA_Glossary {
 		return $this->tm;
 	}
 
-	/** Baut den Speicher aus allen vorhandenen Editor-Übersetzungen auf */
+	/** Builds the memory from all existing editor translations */
 	private function scan() {
 		global $wpdb;
 		$tm = [];
@@ -211,11 +211,11 @@ class ALBA_Glossary {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Admin-Seite
+	 * Admin page
 	 * ------------------------------------------------------------- */
 
 	public function menu() {
-		add_submenu_page('alba', __('Languages – Glossary', 'alba'), __('Glossary &amp; Memory', 'alba'), 'manage_options', self::PAGE, [$this, 'page']);
+		add_submenu_page('alba', __('Languages – Glossary', 'alba'), __('Glossary & Memory', 'alba'), 'manage_options', self::PAGE, [$this, 'page']);
 	}
 
 	public function assets() {

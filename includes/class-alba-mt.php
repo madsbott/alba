@@ -4,13 +4,13 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Automatische Übersetzungsvorschläge im Übersetzungseditor (ohne DeepL-Schlüssel).
+ * Automatic translation suggestions in the translation editor (without a DeepL key).
  *
- * Anbieter (Sprachen > Einstellungen > Übersetzungshilfe):
- *  - MyMemory (kostenlos, ohne Schlüssel; mit E-Mail-Adresse höheres Tageslimit)
- *  - LibreTranslate (eigener Server oder öffentlicher Dienst; je nach Dienst mit API-Schlüssel)
- * Vorschläge werden nie automatisch gespeichert: Im Editor muss jeder Text mit "Übernehmen" bestätigt
- * und anschließend gespeichert werden. Glossar-Begriffe werden geschützt und danach eingesetzt.
+ * Providers (Languages > Settings > Translation help):
+ *  - MyMemory (free, no key; higher daily limit with an email address)
+ *  - LibreTranslate (own server or public service; with an API key depending on the service)
+ * Suggestions are never saved automatically: in the editor every text must be confirmed with "Apply"
+ * and then saved. Glossary terms are protected and inserted afterwards.
  */
 class ALBA_MT {
 	const CACHE_DAYS = 30;
@@ -71,7 +71,7 @@ class ALBA_MT {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzen
+	 * Translate
 	 * ------------------------------------------------------------- */
 
 	public function translate($text, $from, $to) {
@@ -102,7 +102,7 @@ class ALBA_MT {
 		return $res;
 	}
 
-	/** Kleinste Einheit je Aufruf: Text zwischen Tags, bei MyMemory max. ~450 Byte */
+	/** Smallest unit per call: text between tags, with MyMemory max. ~450 bytes */
 	private function mymemory($html, $from, $to) {
 		$parts = preg_split('/(<[^>]*>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$calls = 0;

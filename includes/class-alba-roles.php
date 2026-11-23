@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Rolle „Übersetzer“: Zugriff nur auf den Übersetzungseditor, ohne Originale bearbeiten zu dürfen.
+ * Role "Translator": access only to the translation editor, without being allowed to edit originals.
  *
- * - Rolle alba_translator mit den Rechten read und alba_translate (kein edit_posts, kein Medien-Upload).
- * - Wer ein Original bearbeiten darf (edit_post), darf es auch übersetzen. Übersetzer dürfen veröffentlichte, geplante,
- *   ausstehende und Entwurfs-Inhalte übersetzen, aber keine privaten oder passwortgeschützten.
- * - Pro Benutzer lassen sich die Sprachen einschränken (Benutzermeta alba_langs, leer = alle). Administratoren sind ausgenommen.
- * - Freigabe („Im Frontend anzeigen“): nur mit Original-Bearbeitungsrecht oder wenn die Einstellung „Übersetzer dürfen freigeben“ an ist.
- * - Eigene Seite „Übersetzungen“ (Liste der offenen Texte) statt Dashboard.
+ * - Role alba_translator with the capabilities read and alba_translate (no edit_posts, no media upload).
+ * - Whoever may edit an original (edit_post) may also translate it. Translators may translate published, scheduled,
+ *   pending and draft content, but not private or password-protected content.
+ * - Languages can be restricted per user (user meta alba_langs, empty = all). Administrators are exempt.
+ * - Approval ("Show on the frontend"): only with the right to edit the original or if the setting "Translators may publish" is on.
+ * - Own "Translations" page (list of open texts) instead of the dashboard.
  */
 class ALBA_Roles {
 	const ROLE = 'alba_translator';
@@ -51,7 +51,7 @@ class ALBA_Roles {
 	 * Rechte
 	 * ------------------------------------------------------------- */
 
-	/** Darf nur übersetzen (hat die Übersetzer-Fähigkeit, aber keine Beitragsrechte) */
+	/** May only translate (has the translator capability but no post capabilities) */
 	public function is_translator_only() {
 		return current_user_can(self::CAP) && !current_user_can('edit_posts');
 	}
@@ -60,7 +60,7 @@ class ALBA_Roles {
 		return current_user_can(self::CAP) || current_user_can('edit_posts');
 	}
 
-	/** Sprachen (außer der Standardsprache), in die der Benutzer übersetzen darf */
+	/** Languages (except the default language) the user may translate into */
 	public function allowed_langs($uid = 0) {
 		$c = $this->core;
 		$all = array_keys(array_diff_key($c->langs, [$c->default => 1]));
@@ -82,7 +82,7 @@ class ALBA_Roles {
 		return in_array($lang, $this->allowed_langs(), true);
 	}
 
-	/** Darf der aktuelle Benutzer diesen Beitrag (in dieser Sprache) im Übersetzungseditor bearbeiten? */
+	/** May the current user edit this post (in this language) in the translation editor? */
 	public function can_translate($post_id, $lang = '') {
 		$post = get_post((int) $post_id);
 		if (!$post || !$this->core->is_translatable($post->post_type)) {
@@ -100,13 +100,13 @@ class ALBA_Roles {
 		return in_array($post->post_status, self::STATUSES, true) && $post->post_password === '';
 	}
 
-	/** Darf der Benutzer die Übersetzung im Frontend freigeben? */
+	/** May the user approve the translation on the frontend? */
 	public function can_publish($post_id) {
 		return current_user_can('edit_post', (int) $post_id) || get_option('alba_translator_publish', '0') === '1';
 	}
 
 	/* ---------------------------------------------------------------
-	 * Menü, Weiterleitungen
+	 * Menu, redirects
 	 * ------------------------------------------------------------- */
 
 	public function menu() {
@@ -134,7 +134,7 @@ class ALBA_Roles {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Einstellungen
+	 * Settings
 	 * ------------------------------------------------------------- */
 
 	public function register() {
@@ -166,7 +166,7 @@ class ALBA_Roles {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Benutzerprofil: Sprachen einschränken
+	 * User profile: restrict languages
 	 * ------------------------------------------------------------- */
 
 	public function profile_fields($user) {
@@ -223,7 +223,7 @@ class ALBA_Roles {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Seite „Übersetzungen“
+	 * "Translations" page
 	 * ------------------------------------------------------------- */
 
 	public function page() {

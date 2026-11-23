@@ -62,7 +62,7 @@
 		return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	}
 
-	// Glossar: Begriff in der Übersetzung vorhanden? Vorschlag nur bei leerem Feld sichtbar
+	// Glossary: is the term present in the translation? Suggestion only visible when the field is empty
 	function checkTerms(r) {
 		var v = area(r).value;
 		var empty = v.replace(/\s+/g, '') === '';
@@ -159,7 +159,7 @@
 		dirty = true;
 	});
 
-	// Automatische Übersetzungsvorschläge (MyMemory / LibreTranslate): nur Anzeige, Übernehmen bestätigt der Nutzer
+	// Automatic translation suggestions (MyMemory / LibreTranslate): display only, the user confirms applying them
 	var mt = window.albaMT || null;
 
 	function mtBox(r, kind, text) {

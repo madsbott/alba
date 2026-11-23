@@ -4,12 +4,12 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * XLIFF-Export und -Import für externe Übersetzer.
+ * XLIFF export and import for external translators.
  *
- * Export: pro Zielsprache eine .xlf-Datei (XLIFF 1.2 oder 2.0) mit Titel, Slug, SEO-Feldern, Auszug und allen
- * Textabschnitten der Inhalte, die per Links-rechts-Editor übersetzt werden. Inline-Tags (fett, Links, Zeilenumbrüche)
- * stehen als geschützte Platzhalter im Text und kommen beim Import aus dem Original zurück, nie aus der Datei.
- * Import: zuerst Vorschau (neu / geändert / übersprungen), dann Übernahme. Die Freigabe im Frontend bleibt unverändert.
+ * Export: one .xlf file per target language (XLIFF 1.2 or 2.0) with title, slug, SEO fields, excerpt and all
+ * text sections of the content that is translated with the side-by-side editor. Inline tags (bold, links, line breaks)
+ * are protected placeholders in the text and come back from the original on import, never from the file.
+ * Import: first a preview (new / changed / skipped), then adoption. Approval on the frontend stays unchanged.
  */
 class ALBA_Xliff {
 	const PAGE = 'alba-xliff';
@@ -31,7 +31,7 @@ class ALBA_Xliff {
 		add_submenu_page(ALBA_Dashboard::SLUG, __('Languages – XLIFF', 'alba'), 'XLIFF', 'edit_others_posts', self::PAGE, [$this, 'page']);
 	}
 
-	/** Download-Adresse für einen einzelnen Inhalt (Link im Editor) */
+	/** Download address for a single content item (link in the editor) */
 	public function export_url($post_id, $lang) {
 		return wp_nonce_url(add_query_arg(['action' => 'alba_xliff_export', 'post' => (int) $post_id, 'lang' => $lang, 'fmt' => '1.2', 'tr' => 1], admin_url('admin-post.php')), 'alba_xliff_export');
 	}
@@ -40,7 +40,7 @@ class ALBA_Xliff {
 	 * Hilfsfunktionen
 	 * ------------------------------------------------------------- */
 
-	/** Sprachkennung für die Datei, z. B. de-DE */
+	/** Language identifier for the file, e.g. de-DE */
 	private function tag($code) {
 		$l = isset($this->core->langs[$code]) ? $this->core->langs[$code] : [];
 		return !empty($l['locale']) ? str_replace('_', '-', (string) $l['locale']) : (string) $code;
@@ -51,7 +51,7 @@ class ALBA_Xliff {
 		return htmlspecialchars($s, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	}
 
-	/** Sprache aus der Kennung in der Datei (de-DE, en_US, en) bestimmen; '' wenn keine passt */
+	/** Determine the language from the identifier in the file (de-DE, en_US, en); '' if none matches */
 	private function detect($tag) {
 		$t = strtolower(str_replace('_', '-', trim((string) $tag)));
 		if ($t === '') {
@@ -82,7 +82,7 @@ class ALBA_Xliff {
 		return '';
 	}
 
-	/** Zerlegt HTML in Text und Tags; Tags bekommen Nummern und werden zu Paaren (öffnend/schließend) verbunden */
+	/** Splits HTML into text and tags; tags get numbers and are joined into pairs (opening/closing) */
 	private function pieces($html) {
 		$parts = preg_split('/(<[^>]*>)/', (string) $html, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 		$void = ['br', 'hr', 'img', 'input', 'wbr', 'source', 'col', 'embed', 'area', 'base', 'link', 'meta', 'param', 'track'];
@@ -121,7 +121,7 @@ class ALBA_Xliff {
 					$stack[] = ['name' => $name, 'id' => $n, 'idx' => count($out) - 1];
 				}
 			} else {
-				$out[] = ['k' => 'ph', 't' => $p, 'id' => $n];   // Kommentar o. ä.
+				$out[] = ['k' => 'ph', 't' => $p, 'id' => $n];   // Comment or similar
 			}
 		}
 		foreach ($out as $i => $o) {
@@ -133,8 +133,8 @@ class ALBA_Xliff {
 	}
 
 	/**
-	 * Ordnet die Tags einer vorhandenen Übersetzung den Tag-Nummern des Originals zu (gleicher Tag, gleiche Reihenfolge),
-	 * damit beim Import jede Nummer zum richtigen Original-Tag zurückführt. null, wenn das nicht eindeutig geht.
+	 * Maps the tags of an existing translation to the tag numbers of the original (same tag, same order),
+	 * so that on import every number leads back to the right original tag. null if that is not unambiguous.
 	 */
 	private function align(array $tp, array $sp) {
 		$used = [];
@@ -169,7 +169,7 @@ class ALBA_Xliff {
 		return $tp;
 	}
 
-	/** Text eines Abschnitts als XLIFF-Inhalt (mit Inline-Elementen). $ref = Tags des Originals (für vorhandene Übersetzungen) */
+	/** Text of a section as XLIFF content (with inline elements). $ref = tags of the original (for existing translations) */
 	private function inline($s, $html, $fmt, $ref = null) {
 		if (!$html) {
 			return $this->esc(html_entity_decode((string) $s, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
@@ -218,7 +218,7 @@ class ALBA_Xliff {
 		return $x;
 	}
 
-	/** Liest den Inhalt eines <target> zurück in HTML; Tags kommen aus dem Original ($pieces) */
+	/** Reads the content of a <target> back into HTML; tags come from the original ($pieces) */
 	private function decode(DOMNode $node, array $pieces) {
 		$ids = [];
 		$pairs = [];
@@ -251,7 +251,7 @@ class ALBA_Xliff {
 				} elseif ($name === 'sub') {
 					continue;
 				} else {
-					$s .= $this->walk($ch, $ids, $pairs);   // mrk u. ä.: nur Inhalt
+					$s .= $this->walk($ch, $ids, $pairs);   // mrk or similar: content only
 				}
 			}
 		}
@@ -269,7 +269,7 @@ class ALBA_Xliff {
 	 * Export
 	 * ------------------------------------------------------------- */
 
-	/** Einheiten eines Beitrags: id, Beschriftung, Original, vorhandene Übersetzung, HTML?, Hinweise */
+	/** Units of a post: id, label, original, existing translation, HTML?, notes */
 	private function units($post, $lang, $with_tr) {
 		$c = $this->core;
 		$e = $c->editor;
@@ -309,7 +309,7 @@ class ALBA_Xliff {
 		return $u;
 	}
 
-	/** Inhalte, die exportiert werden */
+	/** Content that is exported */
 	private function export_posts($lang, array $types, $only_open, $one, array $pick = []) {
 		$c = $this->core;
 		$posts = [];
@@ -346,7 +346,7 @@ class ALBA_Xliff {
 		foreach ($posts as $p) {
 			$id = (int) $p->ID;
 			if ($c->post_lang($id) !== $c->default || $c->translation($id, $lang, false)) {
-				continue;   // nur Originale ohne eigenen Übersetzungs-Beitrag
+				continue;   // only originals without their own translation post
 			}
 			if ($only_open && !$one) {
 				$oc = $c->editor->open_count($p, $lang);
@@ -385,7 +385,7 @@ class ALBA_Xliff {
 			foreach ($this->units($post, $lang, $with_tr) as $u) {
 				$s = $this->inline($u['src'], $u['html'], $fmt);
 				$t = $u['tgt'] !== '' ? $this->inline($u['tgt'], $u['html'], $fmt, $u['html'] ? $this->pieces($u['src']) : null) : '';
-				$t = (string) $t;   // null = Tags der Übersetzung passen nicht zum Original: ohne Ziel exportieren
+				$t = (string) $t;   // null = tags of the translation do not match the original: export without target
 				if ($fmt === '2.0') {
 					$x .= '<unit id="' . $this->esc($u['id']) . '" name="' . $this->esc($u['label']) . '">';
 					if ($u['notes']) {
@@ -456,10 +456,10 @@ class ALBA_Xliff {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Import: Datei lesen und Plan erstellen
+	 * Import: read the file and create a plan
 	 * ------------------------------------------------------------- */
 
-	/** Direkte Kind-Elemente mit diesem lokalen Namen */
+	/** Direct child elements with this local name */
 	private function kids(DOMNode $n, $name) {
 		$r = [];
 		foreach ($n->childNodes as $ch) {
@@ -470,7 +470,7 @@ class ALBA_Xliff {
 		return $r;
 	}
 
-	/** <target>-Elemente einer Einheit; [gefunden, [Elemente]] */
+	/** <target> elements of a unit; [found, [elements]] */
 	private function targets(DOMElement $unit, $v2) {
 		$out = [];
 		if (!$v2) {
@@ -487,15 +487,15 @@ class ALBA_Xliff {
 			if ($t) {
 				$out[] = $t[0];
 			} elseif ($ch->localName === 'ignorable' && ($s = $this->kids($ch, 'source'))) {
-				$out[] = $s[0];   // Leerraum zwischen Sätzen
+				$out[] = $s[0];   // Whitespace between sentences
 			}
 		}
 		return $out;
 	}
 
 	/**
-	 * Liest die Datei und prüft jeden Eintrag gegen den aktuellen Inhalt. Ergebnis: Plan (Array) oder WP_Error.
-	 * Es wird noch nichts gespeichert.
+	 * Reads the file and checks every entry against the current content. Result: plan (array) or WP_Error.
+	 * Nothing is saved yet.
 	 */
 	public function plan($xml, $choice = '', $name = '') {
 		$c = $this->core;
@@ -636,7 +636,7 @@ class ALBA_Xliff {
 		return $plan;
 	}
 
-	/** Gleiche Bereinigung wie beim Speichern im Editor, damit der Vergleich in der Vorschau stimmt */
+	/** Same cleanup as when saving in the editor, so that the comparison in the preview is correct */
 	private function clean($field, $text) {
 		if ($field === 'excerpt' || $field === 'seo_desc') {
 			return trim(sanitize_textarea_field($text));
@@ -647,7 +647,7 @@ class ALBA_Xliff {
 		return trim(sanitize_text_field($text));
 	}
 
-	/** Übernimmt einen Plan; $overwrite = vorhandene Übersetzungen ersetzen */
+	/** Applies a plan; $overwrite = replace existing translations */
 	public function run_apply(array $plan, $overwrite) {
 		$c = $this->core;
 		$tot = ['new' => 0, 'chg' => 0, 'same' => 0, 'kept' => 0, 'posts' => 0];
@@ -668,7 +668,7 @@ class ALBA_Xliff {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Formulare
+	 * Forms
 	 * ------------------------------------------------------------- */
 
 	private function back(array $args) {
@@ -730,7 +730,7 @@ class ALBA_Xliff {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Seite
+	 * Page
 	 * ------------------------------------------------------------- */
 
 	public function page() {

@@ -6,9 +6,9 @@ if (!defined('ABSPATH')) {
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- Table names come from $wpdb or a fixed helper; every value goes through $wpdb->prepare().
 
 /**
- * Änderungsprotokoll: wer hat wann welchen Text übersetzt.
- * Eigene Tabelle {prefix}alba_log. Protokolliert werden das Speichern im Links-rechts-Editor (mit Vorher/Nachher je Text)
- * und das Anlegen eigener Übersetzungs-Beiträge. Aufbewahrung einstellbar (Standard 365 Tage).
+ * Change log: who translated which text and when.
+ * Own table {prefix}alba_log. Logged are saving in the side-by-side editor (with before/after per text)
+ * and creating own translation posts. Retention is configurable (default 365 days).
  */
 class ALBA_Log {
 	const DB = '1';
@@ -109,7 +109,7 @@ class ALBA_Log {
 		$this->add((int) $src, $lang, 'create', __('Created separate translation post (#', 'alba') . (int) $new . ')', ['new_id' => (int) $new]);
 	}
 
-	/** Letzter Eintrag zu Beitrag und Sprache */
+	/** Latest entry for a post and language */
 	public function last($post_id, $lang) {
 		global $wpdb;
 		$this->ensure_table();
@@ -277,7 +277,7 @@ class ALBA_Log {
 		foreach ($rows as $r) {
 			$cell = function ($s) {
 				$s = (string) $s;
-				return preg_match('/^[=+\-@\t\r]/', $s) ? "'" . $s : $s;   // keine Formeln in Tabellenprogrammen
+				return preg_match('/^[=+\-@\t\r]/', $s) ? "'" . $s : $s;   // no formulas in spreadsheet programs
 			};
 			fputcsv($out, [$r->time, $cell($this->user_name((int) $r->user_id)), $r->post_id, $cell(get_the_title((int) $r->post_id)), $r->lang, $r->action, $cell($r->summary)], ';');
 		}

@@ -1,8 +1,8 @@
 /**
- * Alba – Sprachfilter für die Begriffsauswahl im Editor.
- * Block-Editor: REST-Anfragen für Begriffe bekommen alba_lang, neue Begriffe werden in der gewählten Sprache angelegt.
- * Klassischer Editor: Kategorie-Checkliste wird per JS gefiltert, Tag-Vorschläge und Schnell-Hinzufügen bekommen alba_lang.
- * Die Sprache wird live aus dem Dropdown der Box "Sprache & Übersetzungen" gelesen (#alba_lang).
+ * Alba – language filter for term selection in the editor.
+ * Block editor: REST requests for terms get alba_lang, new terms are created in the selected language.
+ * Classic editor: the category checklist is filtered via JS, tag suggestions and quick add get alba_lang.
+ * The language is read live from the dropdown of the "Language & Translations" box (#alba_lang).
  */
 (function () {
 	'use strict';
@@ -73,7 +73,7 @@
 					return;
 				}
 				var items = root.querySelectorAll('li');
-				// rückwärts: verschachtelte Einträge zuerst, damit Eltern sichtbar bleiben, wenn ein Kind passt
+				// backwards: nested entries first, so that parents stay visible when a child matches
 				for (var i = items.length - 1; i >= 0; i--) {
 					var li = items[i];
 					var input = li.querySelector(':scope > label input[type="checkbox"]');
@@ -117,7 +117,7 @@
 	}
 
 	/* ---------------------------------------------------------------
-	 * Klassischer Editor: Ajax (Tag-Vorschläge, Schnell-Hinzufügen)
+	 * Classic editor: Ajax (tag suggestions, quick add)
 	 * ------------------------------------------------------------- */
 	if (window.jQuery && typeof jQuery.ajaxPrefilter === 'function') {
 		jQuery.ajaxPrefilter(function (o) {
@@ -131,7 +131,7 @@
 	}
 
 	/* ---------------------------------------------------------------
-	 * Sprachwechsel im Dropdown
+	 * Language change in the dropdown
 	 * ------------------------------------------------------------- */
 	document.addEventListener('change', function (e) {
 		if (e.target && e.target.id === 'alba_lang') {

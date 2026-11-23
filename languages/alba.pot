@@ -293,14 +293,6 @@ msgstr ""
 msgid ") remembers the language; after that there is never another redirect, and visitors can switch freely using the switcher. Search engines and other bots are never redirected; neither are requests with"
 msgstr ""
 
-#: class-alba-admin.php:228
-msgid "), all others get one ("
-msgstr ""
-
-#: class-alba-admin.php:228
-msgid "). The locale controls the theme/plugin translation on the frontend (the language pack must be installed)."
-msgstr ""
-
 #: class-alba-admin.php:408
 msgid "). The public service libretranslate.com requires an API key; your own servers often do not."
 msgstr ""
@@ -675,7 +667,7 @@ msgstr ""
 msgid "Cache"
 msgstr ""
 
-#: class-alba-xliff.php:918
+#: class-alba-bulk.php:171 class-alba-xliff.php:918
 msgid "Cancel"
 msgstr ""
 
@@ -887,7 +879,7 @@ msgstr ""
 msgid "Deadline:"
 msgstr ""
 
-#: class-alba-admin.php:230
+#: class-alba-admin.php:230 class-alba-dashboard.php:102
 msgid "Default"
 msgstr ""
 
@@ -1167,16 +1159,12 @@ msgstr ""
 msgid "Glossary"
 msgstr ""
 
-#: class-alba-dashboard.php:84
+#: class-alba-dashboard.php:84 class-alba-glossary.php:218
 msgid "Glossary & Memory"
 msgstr ""
 
 #: class-alba-glossary.php:241
 msgid "Glossary & Translation memory"
-msgstr ""
-
-#: class-alba-glossary.php:218
-msgid "Glossary &amp; Memory"
 msgstr ""
 
 #: class-alba-editor.php:1252
@@ -1595,6 +1583,10 @@ msgstr ""
 msgid "No content found."
 msgstr ""
 
+#: class-alba-updater.php:193
+msgid "No details given."
+msgstr ""
+
 #: class-alba-log.php:209
 msgid "No entries yet."
 msgstr ""
@@ -1716,7 +1708,7 @@ msgid "On the first visit, visitors are redirected to the matching language base
 msgstr ""
 
 #: class-alba-areas.php:146
-msgid "On the frontend, search only ever shows content in the visitor's current language. With the first setting, the English search also finds words from translations in the side-by-side editor (title, excerpt, texts), not the German original text. The search form stays in the language because the address carries the language prefix ("
+msgid "On the frontend, search only ever shows content in the visitor's current language. With the first setting, a search in another language also finds words from translations in the side-by-side editor (title, excerpt, texts), not only the original text. The search form stays in the language because the address carries the language prefix ("
 msgstr ""
 
 #: class-alba-i18n.php:43 class-alba-i18n.php:43
@@ -2179,6 +2171,10 @@ msgstr ""
 msgid "Source and target language are the same."
 msgstr ""
 
+#: class-alba-bulk.php:171
+msgid "Start"
+msgstr ""
+
 #: class-alba-wpml.php:119
 msgid "Start import"
 msgstr ""
@@ -2283,16 +2279,16 @@ msgstr ""
 msgid "Texts that are already translated have been added, removed or repeated (e.g. another paragraph with identical wording). Please check the page and save to confirm. "
 msgstr ""
 
-#: class-alba-admin.php:228
-msgid "The"
-msgstr ""
-
 #: class-alba-wpml.php:107
 msgid "The \"Dry run\" only counts; nothing is written."
 msgstr ""
 
 #: class-alba-roles.php:422
 msgid "The 300 most recently changed items are considered. Use the search to narrow it down further. Assignments (responsibility, status) can be found with the filters regardless of this."
+msgstr ""
+
+#: class-alba-admin.php:228
+msgid "The <strong>default language</strong> has no URL prefix (%1$s), all others get one (%2$s). The locale controls the theme/plugin translation on the frontend (the language pack must be installed)."
 msgstr ""
 
 #: class-alba-xliff.php:504
@@ -2875,10 +2871,6 @@ msgstr ""
 msgid "complete"
 msgstr ""
 
-#: class-alba-admin.php:228
-msgid "default language"
-msgstr ""
-
 #: class-alba-xliff.php:828
 msgid "detect from file"
 msgstr ""
@@ -2909,10 +2901,6 @@ msgstr ""
 
 #: class-alba-xliff.php:566
 msgid "has its own translation post in this language or is itself a translation"
-msgstr ""
-
-#: class-alba-admin.php:228
-msgid "has no URL prefix ("
 msgstr ""
 
 #: class-alba-editor.php:889
@@ -2951,7 +2939,7 @@ msgstr ""
 msgid "marked as outdated"
 msgstr ""
 
-#: class-alba-dashboard.php:412
+#: class-alba-dashboard.php:403 class-alba-dashboard.php:412
 msgid "missing"
 msgstr ""
 

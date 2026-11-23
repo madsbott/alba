@@ -1,5 +1,5 @@
 /**
- * Alba – Medien pro Sprache: Bildauswahl und Übersetzungsvorschlag in der Mediathek.
+ * Alba – media per language: image selection and translation suggestion in the media library.
  */
 (function ($) {
 	'use strict';

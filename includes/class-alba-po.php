@@ -4,11 +4,11 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * .po/.pot-Export und -Import für die Zeichenfolgen (Sprachen > Import / Export).
+ * .po/.pot export and import for the strings (Languages > Import / Export).
  *
- * Export: pro Sprache eine .po-Datei (oder eine .pot-Vorlage ohne Übersetzungen).
- * Jeder Eintrag trägt einen Kommentar "#. alba-id: …", damit der Import auch nach der Bearbeitung
- * in Poedit & Co. exakt zuordnet. Ohne diesen Kommentar wird über Kontext + Originaltext gematcht.
+ * Export: one .po file per language (or a .pot template without translations).
+ * Every entry carries a comment "#. alba-id: …" so that the import matches exactly even after editing
+ * in Poedit & co. Without this comment, matching is done by context + original text.
  */
 class ALBA_Po {
 	const MAX_BYTES = 3145728; // 3 MB
@@ -27,7 +27,7 @@ class ALBA_Po {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Oberfläche
+	 * Interface
 	 * ------------------------------------------------------------- */
 
 	public function menu() {
@@ -264,7 +264,7 @@ class ALBA_Po {
 		]);
 	}
 
-	/** Übernimmt geparste Einträge in die gespeicherten Zeichenfolgen */
+	/** Takes parsed entries into the saved strings */
 	public function apply(array $entries, $lang, $keep) {
 		$all = get_option(ALBA_Strings::OPT, []);
 		if (!is_array($all)) {
@@ -330,7 +330,7 @@ class ALBA_Po {
 				case 'r':
 					return "\r";
 				default:
-					return $m[1]; // \" und \\ und alles andere
+					return $m[1]; // \" and \\ and everything else
 			}
 		}, $s);
 	}
@@ -339,7 +339,7 @@ class ALBA_Po {
 		return ['ctx' => null, 'id' => null, 'str' => null, 'albaid' => '', 'fuzzy' => false, 'plural' => false];
 	}
 
-	/** Liest .po-Text: gibt Liste von Einträgen (ctx, id, str, albaid, fuzzy, plural) zurück */
+	/** Reads .po text: returns a list of entries (ctx, id, str, albaid, fuzzy, plural) */
 	public function parse($text) {
 		$text = preg_replace('/^\xEF\xBB\xBF/', '', (string) $text);
 		$entries = [];
@@ -360,7 +360,7 @@ class ALBA_Po {
 
 			if ($line[0] === '#') {
 				if (strpos($line, '#~') === 0) {
-					continue; // veraltete Einträge
+					continue; // outdated entries
 				}
 				if ($cur !== null && $cur['str'] !== null) {
 					if ($cur['id'] !== null) {

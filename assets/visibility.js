@@ -1,7 +1,7 @@
 /**
- * Alba – Sichtbarkeit pro Sprache für jeden Block (Editor, Block-Widgets, Website-Editor).
- * Fügt allen Blöcken das Attribut "albaLangs" (Liste der Sprachcodes) und in der Seitenleiste den Bereich "Sprachen" hinzu.
- * Leere Liste = in allen Sprachen sichtbar. Das Ausblenden passiert serverseitig im Frontend.
+ * Alba – visibility per language for every block (editor, block widgets, Site Editor).
+ * Adds the attribute "albaLangs" (list of language codes) to all blocks and a "Languages" section to the sidebar.
+ * Empty list = visible in all languages. Hiding happens on the server on the frontend.
  */
 (function (wp) {
 	'use strict';

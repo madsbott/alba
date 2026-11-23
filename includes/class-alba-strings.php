@@ -4,11 +4,11 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * String-Übersetzung:
+ * String translation:
  *  - alba__('Text', 'Domain', 'optionaler-name') / alba_e() / [alba_string]
- *  - Site-Titel, Untertitel und Widget-Titel automatisch
- *  - optional: gettext-Scan für ausgewählte Textdomains (Theme/Plugins)
- * Speicherung: Option "alba_strings" (autoload = no), ID = md5(domain \0 ctx \0 name-oder-text)
+ *  - site title, tagline and widget titles automatically
+ *  - optional: gettext scan for selected text domains (theme/plugins)
+ * Storage: option "alba_strings" (autoload = no), ID = md5(domain \0 ctx \0 name-or-text)
  */
 class ALBA_Strings {
 	const OPT = 'alba_strings';
@@ -16,9 +16,9 @@ class ALBA_Strings {
 	const PER_PAGE = 40;
 
 	private $core;
-	private $map = [];      // id => Übersetzung (aktuelle Sprache)
+	private $map = [];      // id => translation (current language)
 	private $found = [];    // in diesem Request gesehene Strings
-	private $lazy = false;  // Zuordnung im Backend-/AJAX-Kontext nachträglich aufgebaut
+	private $lazy = false;  // Mapping built afterwards in backend/AJAX context
 	const OPT_DOMAIN = 'Theme settings';
 	private $scan = false;
 	private $domains = [];
@@ -60,7 +60,7 @@ class ALBA_Strings {
 		});
 		add_action('shutdown', [$this, 'save_found']);
 
-		// Texte, die in Theme-Einstellungen (Optionen) eingetragen sind
+		// Texts entered in theme settings (options)
 		$ot = get_option('alba_option_texts', []);
 		if (is_array($ot)) {
 			foreach ($ot as $opt => $texts) {
@@ -73,7 +73,7 @@ class ALBA_Strings {
 		}
 	}
 
-	/** Ersetzt in einem Optionswert (auch verschachtelt) genau passende Texte durch ihre Übersetzung */
+	/** Replaces exactly matching texts in an option value (also nested) with their translation */
 	private function replace_texts($v, $texts, $depth) {
 		if (is_string($v)) {
 			return in_array($v, $texts, true) ? $this->translate($v, self::OPT_DOMAIN) : $v;
@@ -125,14 +125,14 @@ class ALBA_Strings {
 		return isset($this->map[$id]) ? $this->map[$id] : $tr;
 	}
 
-	/** Eigene Strings: registriert und übersetzt */
+	/** Own strings: registered and translated */
 	public function translate($text, $domain = 'Strings', $name = '') {
 		$text = (string) $text;
 		if ($text === '') {
 			return $text;
 		}
 		if (is_admin() && !$this->lazy) {
-			// AJAX-Anfragen (z. B. Formular-Absendungen) laufen im Admin-Kontext: Zuordnung hier nachholen
+			// AJAX requests (e.g. form submissions) run in the admin context: catch up the mapping here
 			$this->lazy = true;
 			$this->build_map();
 			add_action('shutdown', [$this, 'save_found']);
@@ -333,17 +333,17 @@ class ALBA_Strings {
 
 			<h2><?php echo esc_html__('Usage in the theme', 'alba'); ?></h2>
 			<pre style="background:#fff;padding:12px;border:1px solid #c3c4c7;max-width:760px">&lt;?php echo alba__('Jetzt anfragen', 'Theme'); ?&gt;
-&lt;?php alba_e('Willkommen', 'Theme', 'hero-title'); ?&gt;   // fester Name als Schlüssel
+&lt;?php alba_e('Willkommen', 'Theme', 'hero-title'); ?&gt;   // fixed name as key
 [alba_string domain="Theme" name="footer-claim"]Wir freuen uns auf Sie[/alba_string]</pre>
 		</div>
 		<?php
 	}
 
 	/* ---------------------------------------------------------------
-	 * Texte von Theme und Plugins finden (gettext-Scan)
+	 * Find texts of theme and plugins (gettext scan)
 	 * ------------------------------------------------------------- */
 
-	/** Mögliche Textdomains: Domain => Beschriftung */
+	/** Possible text domains: domain => label */
 	private function detect_domains() {
 		$out = [];
 		$t = wp_get_theme();
@@ -416,7 +416,7 @@ class ALBA_Strings {
 		<?php
 	}
 
-	/** Seiten, die der Scan besucht (Standardsprache) */
+	/** Pages visited by the scan (default language) */
 	private function scan_urls() {
 		$home = home_url('/');
 		$urls = [$home, add_query_arg('s', 'a', $home), add_query_arg('p', 999999999, $home)];
@@ -444,7 +444,7 @@ class ALBA_Strings {
 	}
 
 	/* ---------------------------------------------------------------
-	 * „Woher kommt dieser Text?“
+	 * "Where does this text come from?"
 	 * ------------------------------------------------------------- */
 
 	private function find_box() {
@@ -516,7 +516,7 @@ class ALBA_Strings {
 			echo '</ul>';
 		}
 
-		// 3. Optionen (Theme-Einstellungen, Widgets, …)
+		// 3. Options (theme settings, widgets, …)
 		$rows = $wpdb->get_results($wpdb->prepare(
 			"SELECT option_name, option_value FROM {$wpdb->options} WHERE option_value LIKE %s AND option_name NOT LIKE %s AND option_name NOT LIKE %s AND option_name NOT LIKE %s AND option_name <> %s LIMIT 12",
 			'%' . $wpdb->esc_like($needle) . '%',
@@ -570,7 +570,7 @@ class ALBA_Strings {
 		}
 	}
 
-	/** Sucht den Text in den PHP-Dateien des aktiven Themes (und Eltern-Themes) */
+	/** Searches for the text in the PHP files of the active theme (and parent theme) */
 	private function scan_theme_files($needle) {
 		$dirs = array_unique([get_stylesheet_directory(), get_template_directory()]);
 		$res = [];

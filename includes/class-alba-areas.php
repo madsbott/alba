@@ -6,16 +6,16 @@ if (!defined('ABSPATH')) {
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- Table names come from $wpdb or a fixed helper; every value goes through $wpdb->prepare().
 
 /**
- * Bereiche pro Sprache: Suche, Kommentare, Widgets/Blöcke und Menüs (z. B. Footer-Menüs).
+ * Areas per language: search, comments, widgets/blocks and menus (e.g. footer menus).
  *
- * - Suche: im Frontend nur Inhalte der aktuellen Sprache; Übersetzungen aus dem Links-rechts-Editor werden mitdurchsucht
- *   (Suchindex in _alba_srch_{lang}, nicht das Original).
- * - Kommentare: jeder Kommentar merkt sich die Sprache (Kommentar-Meta _alba_lang). Im Frontend sieht man nur die Kommentare der
- *   eigenen Sprache, auch die Anzahl stimmt. Kommentare ohne Angabe zählen zur Sprache ihres Beitrags.
- * - Widgets: klassische Widgets bekommen „Sprachen“-Auswahl; für Blöcke (auch Block-Widgets) gibt es in der Seitenleiste
- *   ein Feld „Sprachen“ (Attribut albaLangs).
- * - Menüs: pro Menü (und pro Navigation im Block-Theme) lässt sich je Sprache ein anderes Menü zuordnen. Das gilt für
- *   Theme-Positionen, Navigations-Menü-Widgets und wp_nav_menu() mit festem Menü.
+ * - Search: on the frontend only content of the current language; translations from the side-by-side editor are searched too
+ *   (search index in _alba_srch_{lang}, not the original).
+ * - Comments: every comment remembers its language (comment meta _alba_lang). On the frontend only the comments of the
+ *   own language are shown, and the count matches. Comments without a language belong to the language of their post.
+ * - Widgets: classic widgets get a "Languages" selection; for blocks (including block widgets) there is a
+ *   "Languages" field in the sidebar (attribute albaLangs).
+ * - Menus: per menu (and per navigation in block themes) a different menu can be assigned for each language. This applies to
+ *   theme locations, navigation menu widgets and wp_nav_menu() with a fixed menu.
  */
 class ALBA_Areas {
 	const SRCH = '_alba_srch_';
@@ -28,9 +28,9 @@ class ALBA_Areas {
 		$this->core = $core;
 		$core->areas = $this;
 
-		// Suchindex: immer, wenn eine Übersetzung gespeichert wird
+		// Search index: whenever a translation is saved
 		add_action('alba_translation_saved', [$this, 'index_post'], 10, 2);
-		// Sprache des Kommentars festhalten (Frontend, aber auch Antworten im Backend)
+		// Record the language of the comment (frontend, but also replies in the backend)
 		add_action('comment_post', [$this, 'comment_saved'], 10, 2);
 
 		if (is_admin()) {
@@ -61,7 +61,7 @@ class ALBA_Areas {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Einstellungen
+	 * Settings
 	 * ------------------------------------------------------------- */
 
 	public static function search_on() {
@@ -130,7 +130,7 @@ class ALBA_Areas {
 		return $this->map_cache;
 	}
 
-	/** Karten für den Einstellungs-Tab „Suche, Kommentare & Menüs“ */
+	/** Cards for the settings tab "Search, Comments & Menus" */
 	public function cards() {
 		$c = $this->core;
 		$targets = array_diff_key($c->langs, [$c->default => 1]);
@@ -143,7 +143,7 @@ class ALBA_Areas {
 						<option value="1" <?php selected(self::search_on() ? '1' : '0', '1'); ?>><?php echo esc_html__('Current language only, include translation texts in the search', 'alba'); ?></option>
 						<option value="0" <?php selected(self::search_on() ? '1' : '0', '0'); ?>><?php echo esc_html__('Current language only, search original texts only', 'alba'); ?></option>
 					</select>
-					<p class="alba-hint"><?php echo esc_html__('On the frontend, search only ever shows content in the visitor\'s current language. With the first setting, the English search also finds words from translations in the side-by-side editor (title, excerpt, texts), not the German original text. The search form stays in the language because the address carries the language prefix (', 'alba'); ?><code>/en/?s=…</code>).</p>
+					<p class="alba-hint"><?php echo esc_html__('On the frontend, search only ever shows content in the visitor\'s current language. With the first setting, a search in another language also finds words from translations in the side-by-side editor (title, excerpt, texts), not only the original text. The search form stays in the language because the address carries the language prefix (', 'alba'); ?><code>/en/?s=…</code>).</p>
 				</div></div>
 			</div></div>
 		</section>
@@ -319,7 +319,7 @@ class ALBA_Areas {
 	 * Suche
 	 * ------------------------------------------------------------- */
 
-	/** Durchsuchbarer Text einer Editor-Übersetzung */
+	/** Searchable text of an editor translation */
 	public function index_post($id, $lang = '') {
 		$e = $this->core->editor;
 		$id = (int) $id;
@@ -335,7 +335,7 @@ class ALBA_Areas {
 			return trim((string) $b) !== '';
 		});
 		$txt = trim(html_entity_decode(wp_strip_all_tags(implode("\n", $bits), true), ENT_QUOTES, 'UTF-8'));
-		$txt = trim(preg_replace('/%%[a-z0-9_]+%%/i', '', $txt));   // SEO-Variablen (Yoast) nicht mitindizieren
+		$txt = trim(preg_replace('/%%[a-z0-9_]+%%/i', '', $txt));   // do not index SEO variables (Yoast)
 		if ($txt === '') {
 			delete_post_meta($id, self::SRCH . $lang);
 		} else {
@@ -343,14 +343,14 @@ class ALBA_Areas {
 		}
 	}
 
-	/** Einmalig: Index für bereits gespeicherte Übersetzungen aufbauen */
+	/** Once: build the index for translations that are already saved */
 	public function backfill() {
 		if (!current_user_can('manage_options') || wp_doing_ajax()) {
 			return;
 		}
 		global $wpdb;
 		if (get_option('alba_cmt_v') !== '1') {
-			// Kommentare auf Übersetzungs-Beiträgen gehören zur Sprache des Beitrags
+			// Comments on translation posts belong to the language of the post
 			$rows = $wpdb->get_results($wpdb->prepare(
 				"SELECT c.comment_ID AS id, pm.meta_value AS lang FROM {$wpdb->comments} c
 				 INNER JOIN {$wpdb->postmeta} pm ON pm.post_id = c.comment_post_ID AND pm.meta_key = '_alba_lang' AND pm.meta_value <> ''
@@ -419,7 +419,7 @@ class ALBA_Areas {
 		echo '<input type="hidden" name="alba_lang" value="' . esc_attr($this->core->lang) . '">' . "\n";
 	}
 
-	/** Sprache aus einer Adresse (Referer) lesen: /en/seite/ -> en */
+	/** Read the language from an address (referer): /en/page/ -> en */
 	private function lang_from_url($url) {
 		$c = $this->core;
 		$path = (string) wp_parse_url((string) $url, PHP_URL_PATH);
@@ -462,9 +462,9 @@ class ALBA_Areas {
 	}
 
 	/**
-	 * Kommentar-Abfragen im Frontend auf die aktuelle Sprache einschränken. Das geschieht über eine meta_query, damit die Sprache
-	 * im Cache-Schlüssel von WordPress steht (wichtig bei persistentem Object-Cache wie Redis).
-	 * Kommentare ohne Sprachangabe zählen zur Standardsprache (Kommentare auf Übersetzungs-Beiträgen werden einmalig nachgetragen).
+	 * Restrict comment queries on the frontend to the current language. This uses a meta_query so that the language
+	 * is part of the WordPress cache key (important with a persistent object cache such as Redis).
+	 * Comments without a language belong to the default language (comments on translation posts are filled in once).
 	 */
 	public function comments_query($q) {
 		$c = $this->core;
@@ -532,7 +532,7 @@ class ALBA_Areas {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Widgets und Blöcke
+	 * Widgets and blocks
 	 * ------------------------------------------------------------- */
 
 	public function widget_form($widget, $return, $instance) {
@@ -593,7 +593,7 @@ class ALBA_Areas {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Menüs
+	 * Menus
 	 * ------------------------------------------------------------- */
 
 	private function skip() {

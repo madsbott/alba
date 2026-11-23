@@ -4,15 +4,15 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Updates direkt in WordPress (Dashboard > Aktualisierungen / Plugins), ohne neu zu installieren.
+ * Updates directly in WordPress (Dashboard > Updates / Plugins), without reinstalling.
  *
- * Update-Quelle (Sprachen > Einstellungen > Updates oder Konstante ALBA_UPDATE_URL in der wp-config.php):
+ * Update source (Languages > Settings > Updates or constant ALBA_UPDATE_URL in wp-config.php):
  *  a) GitHub-Repository, z. B. https://github.com/benutzer/alba
- *     -> es wird das neueste Release gelesen; angehängtes .zip-Asset wird bevorzugt
- *  b) URL einer JSON-Datei:
+ *     -> the latest release is read; an attached .zip asset is preferred
+ *  b) URL of a JSON file:
  *     {"version":"0.8.0","download_url":"https://…/alba.zip","changelog":"…","homepage":"https://…",
  *      "requires":"6.0","tested":"6.8","requires_php":"7.4"}
- * Das ZIP muss den Ordner "alba/" enthalten (andere Ordnernamen werden automatisch korrigiert).
+ * The ZIP must contain the folder "alba/" (other folder names are corrected automatically).
  */
 class ALBA_Updater {
 	const SLUG = 'alba';
@@ -68,7 +68,7 @@ class ALBA_Updater {
 		return $info;
 	}
 
-	/** Liest Versionsinfos aus GitHub-Release oder JSON-Datei. Gibt null bei Fehlern zurück. */
+	/** Reads version info from a GitHub release or JSON file. Returns null on errors. */
 	private function load($url) {
 		$args = ['timeout' => 10, 'headers' => ['User-Agent' => 'Alba/' . ALBA_VERSION, 'Accept' => 'application/json']];
 
@@ -78,7 +78,7 @@ class ALBA_Updater {
 		}
 		if (preg_match('~^https?://github\.com/([\w.\-]+)/([\w.\-]+?)(?:\.git)?/?$~i', $url, $m)) {
 			$args['headers']['Accept'] = 'application/vnd.github+json';
-			// /releases/latest ignoriert Vorabversionen (Beta); darum die Liste lesen und die erste veröffentlichte nehmen.
+			// /releases/latest ignores pre-releases (beta); therefore read the list and take the first published one.
 			$r = wp_remote_get('https://api.github.com/repos/' . $m[1] . '/' . $m[2] . '/releases?per_page=10', $args);
 			if (is_wp_error($r) || (int) wp_remote_retrieve_response_code($r) !== 200) {
 				return null;
@@ -190,7 +190,7 @@ class ALBA_Updater {
 		if (!$info) {
 			return $result;
 		}
-		$changelog = trim($info['changelog']) !== '' ? wpautop(esc_html($info['changelog'])) : '<p>Keine Angaben.</p>';
+		$changelog = trim($info['changelog']) !== '' ? wpautop(esc_html($info['changelog'])) : '<p>' . esc_html__('No details given.', 'alba') . '</p>';
 		return (object) [
 			'name'          => 'Alba',
 			'slug'          => self::SLUG,
@@ -208,7 +208,7 @@ class ALBA_Updater {
 		];
 	}
 
-	/** GitHub-Zipball hat einen anderen Ordnernamen: auf "alba" korrigieren */
+	/** The GitHub zipball has a different folder name: correct it to "alba" */
 	public function fix_folder($source, $remote_source, $upgrader, $hook_extra = []) {
 		if (empty($hook_extra['plugin']) || $hook_extra['plugin'] !== plugin_basename(ALBA_FILE)) {
 			return $source;
@@ -243,7 +243,7 @@ class ALBA_Updater {
 		}
 	}
 
-	/** Wird nach einem Update einmalig ausgelöst (Platz für spätere Datenbank-Anpassungen) */
+	/** Triggered once after an update (room for later database adjustments) */
 	public function maybe_upgrade() {
 		$old = get_option('alba_version');
 		if ($old !== ALBA_VERSION) {
@@ -253,7 +253,7 @@ class ALBA_Updater {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Manuell prüfen
+	 * Check manually
 	 * ------------------------------------------------------------- */
 
 	public function row_meta($meta, $file) {

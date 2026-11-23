@@ -88,7 +88,7 @@ class ALBA_Frontend {
 
 	private function defaults($args) {
 		return wp_parse_args($args, [
-			'style'        => 'list',   // list | dropdown (Auswahlfeld) | menu (Dropdown-Menü im Theme-Design)
+			'style'        => 'list',   // list | dropdown (select field) | menu (dropdown menu in the theme design)
 			'display'      => 'name',   // name | code
 			'hide_missing' => 0,
 			'hide_current' => 0,
@@ -114,9 +114,9 @@ class ALBA_Frontend {
 	}
 
 	/**
-	 * Dropdown-Menü: aktuelle Sprache als Menüpunkt, die übrigen als Untermenü.
-	 * Nutzt die Menü-Klassen des Themes bzw. der Block-Navigation, damit das Design des Themes greift.
-	 * $ctx: 'classic' (wp_nav_menu, Shortcode) oder 'block' (Navigations-Block)
+	 * Dropdown menu: current language as a menu item, the others as a submenu.
+	 * Uses the menu classes of the theme or block navigation so that the theme's design applies.
+	 * $ctx: 'classic' (wp_nav_menu, shortcode) or 'block' (navigation block)
 	 */
 	public function dropdown_item($args = [], $ctx = 'classic', $items_html = '') {
 		$a = $this->defaults($args);
@@ -176,8 +176,8 @@ class ALBA_Frontend {
 	}
 
 	/**
-	 * Zeigt das Theme (Salient: „Header Dropdown Arrows“) bei Menüpunkten mit Untermenü einen Pfeil?
-	 * Gibt [bool, Begründung] zurück (die Begründung erscheint in den Einstellungen).
+	 * Does the theme (Salient: "Header Dropdown Arrows") show an arrow on menu items with a submenu?
+	 * Returns [bool, reason] (the reason appears in the settings).
 	 */
 	public function arrow_report($items_html = '') {
 		$items_html = (string) $items_html;
@@ -231,7 +231,7 @@ class ALBA_Frontend {
 		return $r[0];
 	}
 
-	/** Pfeil-Markup für den Dropdown-Menüpunkt (Einstellung: automatisch / immer / nie) */
+	/** Arrow markup for the dropdown menu item (setting: automatic / always / never) */
 	private function arrow($items_html = '') {
 		$mode = get_option('alba_dd_arrow', 'auto');
 		if ($mode === 'off' || ($mode === 'auto' && !$this->theme_shows_arrows($items_html))) {
@@ -274,7 +274,7 @@ class ALBA_Frontend {
 		return $this->render($atts);
 	}
 
-	/** Umschalter automatisch an ein Menü anhängen (Einstellung) */
+	/** Automatically append the switcher to a menu (setting) */
 	public function menu_switcher($items, $args) {
 		$loc = get_option('alba_menu_location', '');
 		if ($loc && isset($args->theme_location) && $args->theme_location === $loc) {
@@ -296,7 +296,7 @@ class ALBA_Frontend {
 	 * hreflang
 	 * ------------------------------------------------------------- */
 
-	/** Alternative Sprachfassungen der aktuellen Seite: Sprache => URL (leer, wenn es keine gibt) */
+	/** Alternative language versions of the current page: language => URL (empty if there are none) */
 	public function alternate_links() {
 		$c = $this->core;
 		$links = [];
@@ -358,7 +358,7 @@ class ALBA_Frontend {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Menüs: Einträge auf Übersetzungen umbiegen
+	 * Menus: redirect entries to translations
 	 * ------------------------------------------------------------- */
 
 	public function translate_menu($items) {
@@ -377,7 +377,7 @@ class ALBA_Frontend {
 				}
 				$tid = $c->translation($oid, $lang);
 				if (!$tid) {
-					unset($items[$k]);   // keine Übersetzung -> Eintrag ausblenden
+					unset($items[$k]);   // no translation -> hide entry
 					continue;
 				}
 				if ($it->title === get_the_title($oid)) {

@@ -4,15 +4,15 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Automatische Spracherkennung: Beim ersten Besuch wird nach der Browsersprache weitergeleitet.
+ * Automatic language detection: on the first visit the visitor is redirected based on the browser language.
  *
- * - Cookie "alba_lang" merkt sich die Sprache; ist es gesetzt, wird nie weitergeleitet
- *   (der Besucher kann also mit dem Umschalter jederzeit die Sprache wechseln).
- * - Suchmaschinen, Social-Media-Vorschauen und andere Bots werden nie weitergeleitet.
- * - Einstellungen (Sprachen > Einstellungen > Spracherkennung):
- *   alba_autodetect:        off | home (nur Startseite) | all (jede Seite, wenn eine Übersetzung existiert)
- *   alba_autodetect_method: server (HTTP-Weiterleitung 302) | js (JavaScript, für Seiten-Cache geeignet)
- * - Mit ?alba_noredirect=1 an der Adresse wird nie weitergeleitet.
+ * - The cookie "alba_lang" remembers the language; once it is set, there is never a redirect
+ *   (so the visitor can switch language at any time with the switcher).
+ * - Search engines, social media previews and other bots are never redirected.
+ * - Settings (Languages > Settings > Language detection):
+ *   alba_autodetect:        off | home (home page only) | all (every page, if a translation exists)
+ *   alba_autodetect_method: server (HTTP redirect 302) | js (JavaScript, suitable for page caches)
+ * - With ?alba_noredirect=1 in the address there is never a redirect.
  */
 class ALBA_Detect {
 	const COOKIE = 'alba_lang';
@@ -50,7 +50,7 @@ class ALBA_Detect {
 		return $ua === '' || (bool) preg_match(self::BOT, $ua);
 	}
 
-	/** Ist an dieser Stelle eine Weiterleitung überhaupt zulässig? */
+	/** Is a redirect allowed here at all? */
 	private function eligible() {
 		if (wp_doing_ajax() || wp_doing_cron() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST)) {
 			return false;
@@ -67,7 +67,7 @@ class ALBA_Detect {
 		return true;
 	}
 
-	/** Beste Sprache laut Accept-Language: gibt den Sprachcode oder '' zurück */
+	/** Best language according to Accept-Language: returns the language code or '' */
 	public function pick($header) {
 		$prefs = [];
 		foreach (explode(',', (string) $header) as $i => $part) {
@@ -96,7 +96,7 @@ class ALBA_Detect {
 		return '';
 	}
 
-	/** Browser-Sprache (z. B. "pt-br") einer eingerichteten Sprache zuordnen */
+	/** Map a browser language (e.g. "pt-br") to a configured language */
 	private function match($tag) {
 		foreach ($this->core->langs as $code => $l) {
 			$loc = isset($l['locale']) ? strtolower(str_replace('_', '-', (string) $l['locale'])) : '';
@@ -119,7 +119,7 @@ class ALBA_Detect {
 		return '';
 	}
 
-	/** Ziel-URLs der aktuellen Ansicht je Sprache (nur vorhandene Übersetzungen) */
+	/** Target URLs of the current view per language (existing translations only) */
 	private function targets() {
 		$out = [];
 		if (!$this->core->frontend) {
@@ -154,7 +154,7 @@ class ALBA_Detect {
 		$c = $this->core;
 		$cur = $c->lang;
 
-		// Cookie vorhanden: nie weiterleiten, nur die zuletzt besuchte Sprache merken
+		// Cookie present: never redirect, only remember the most recently visited language
 		if (isset($_COOKIE[self::COOKIE])) {
 			$saved = sanitize_key(wp_unslash($_COOKIE[self::COOKIE]));
 			if ($saved !== $cur && isset($c->langs[$cur]) && !is_404()) {
@@ -183,7 +183,7 @@ class ALBA_Detect {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Variante 2: JavaScript (funktioniert auch bei gecachten Seiten)
+	 * Variant 2: JavaScript (also works with cached pages)
 	 * ------------------------------------------------------------- */
 
 	public function script() {

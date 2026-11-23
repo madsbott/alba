@@ -3,7 +3,7 @@
  * Plugin Name: Alba
  * Plugin URI: https://www.madsbott.com
  * Description: Lightweight multilingual plugin: language URLs, translation editor, XLIFF, translator role, per-language sitemaps and WPML import.
- * Version: 0.12.0
+ * Version: 0.12.1
  * Author: Mads
  * Author URI: https://www.madsbott.com
  * License: GPL-2.0-or-later
@@ -18,8 +18,8 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-// Umzug von „Mads Multilang“ (Ordner mads-multilang): Die alte Version hält dieselben Daten und darf nicht gleichzeitig laufen (Konstante MML_VERSION).
-// Ist die alte Version noch aktiv, lädt Alba nicht und deaktiviert die alte Version direkt nach der Aktivierung (Daten bleiben erhalten).
+// Migration from "Mads Multilang" (folder mads-multilang): the old version holds the same data and must not run at the same time (constant MML_VERSION).
+// If the old version is still active, Alba does not load and deactivates the old version right after activation (data is kept).
 if (defined('MML_VERSION')) {
 	add_action('activated_plugin', function ($plugin) {
 		if ($plugin === 'alba/alba.php') {
@@ -32,7 +32,7 @@ if (defined('MML_VERSION')) {
 	return;
 }
 
-define('ALBA_VERSION', '0.12.0');
+define('ALBA_VERSION', '0.12.1');
 define('ALBA_FILE', __FILE__);
 define('ALBA_DIR', plugin_dir_path(__FILE__));
 define('ALBA_URL', plugin_dir_url(__FILE__));
@@ -63,7 +63,7 @@ require_once ALBA_DIR . 'includes/class-alba-bulk.php';
 require_once ALBA_DIR . 'includes/class-alba-forms.php';
 require_once ALBA_DIR . 'includes/class-alba-media.php';
 require_once ALBA_DIR . 'includes/class-alba-wpml.php';
-// Eigener Updater (GitHub/JSON). In der Variante für wordpress.org fehlt die Datei; dort aktualisiert wordpress.org.
+// Own updater (GitHub/JSON). The file is missing in the wordpress.org build; wordpress.org handles updates there.
 if (file_exists(ALBA_DIR . 'includes/class-alba-updater.php')) {
 	require_once ALBA_DIR . 'includes/class-alba-updater.php';
 }
@@ -72,7 +72,7 @@ function alba() {
 	return ALBA_Core::instance();
 }
 
-// Template-Funktionen für Themes
+// Template functions for themes
 function alba_current_lang() {
 	return alba()->lang;
 }
@@ -100,7 +100,7 @@ add_action('plugins_loaded', function () {
 	alba()->boot();
 	new ALBA_Roles(alba());
 	new ALBA_Workflow(alba());
-	new ALBA_Forms(alba());   // vor den Zeichenfolgen: setzt bei AJAX/REST-Absendungen die Sprache aus dem Referer
+	new ALBA_Forms(alba());   // before the strings: sets the language from the referer for AJAX/REST submissions
 	new ALBA_Editor(alba());
 	new ALBA_Frontend(alba());
 	new ALBA_Terms(alba());

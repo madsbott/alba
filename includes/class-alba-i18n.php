@@ -4,8 +4,8 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Übersetzungen: lädt die Textdomain „alba“ (Ordner languages/) und stellt den JavaScript-Dateien ihre Texte bereit.
- * Quelltexte sind englisch; die deutsche Übersetzung liegt als alba-de_DE.mo bei.
+ * Translations: loads the text domain "alba" (folder languages/) and provides the JavaScript files with their texts.
+ * Source texts are English; the German translation is included as alba-de_DE.mo.
  */
 class ALBA_I18n {
 	public function __construct() {
@@ -17,7 +17,7 @@ class ALBA_I18n {
 		load_plugin_textdomain('alba', false, dirname(plugin_basename(ALBA_FILE)) . '/languages');
 	}
 
-	/** Skript-Handle „alba-i18n“: setzt window.albaI18n (englischer Text => übersetzter Text) für assets/*.js */
+	/** Script handle "alba-i18n": sets window.albaI18n (English text => translated text) for assets/*.js */
 	public function register() {
 		wp_register_script('alba-i18n', false, [], ALBA_VERSION, false);
 		wp_add_inline_script('alba-i18n', 'window.albaI18n = ' . wp_json_encode($this->js()) . ';', 'after');

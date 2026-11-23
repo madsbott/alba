@@ -6,16 +6,16 @@ if (!defined('ABSPATH')) {
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- Table names come from $wpdb or a fixed helper; every value goes through $wpdb->prepare().
 
 /**
- * WPML-Importer: übernimmt bestehende WPML-Daten aus den Tabellen icl_* (auch bei deaktiviertem oder gelöschtem WPML-Plugin,
- * solange die Tabellen noch in der Datenbank sind).
+ * WPML importer: takes over existing WPML data from the icl_* tables (also when the WPML plugin is deactivated or deleted,
+ * as long as the tables are still in the database).
  *
- *  Einstellungen  Sprachen (Name, Locale), Standardsprache, übersetzbare Inhaltstypen und Taxonomien
- *  Beiträge       Sprache und Übersetzungsgruppe je Beitrag (_alba_lang, _alba_group); „Übersetzung muss aktualisiert werden“ aus WPML bleibt als veraltet erhalten
- *  Begriffe       Sprache und Gruppe je Kategorie/Schlagwort/Taxonomie-Begriff
- *  Menüs          Zuordnung der Menüs je Sprache (Einstellungen > Suche, Kommentare & Menüs)
- *  Medien         Alt-Text, Titel, Beschriftung, Beschreibung und andere Bilddatei der übersetzten Medien (am Original-Medium)
- *  Zeichenfolgen  String-Übersetzungen (Zeichenfolgen; wirksam für Theme/Plugin-Texte, Seitentitel, Slogan und Widget-Titel)
- * Es werden keine Beiträge angelegt oder gelöscht; die Importschritte sind wiederholbar. Ein Probelauf zählt nur.
+ *  Settings   languages (name, locale), default language, translatable content types and taxonomies
+ *  Posts      language and translation group per post (_alba_lang, _alba_group); "translation needs update" from WPML is kept as outdated
+ *  Terms      language and group per category/tag/taxonomy term
+ *  Menus      assignment of menus per language (Settings > Search, Comments & Menus)
+ *  Media      alt text, title, caption, description and different image file of translated media (on the original media item)
+ *  Strings    string translations (strings; effective for theme/plugin texts, page titles, tagline and widget titles)
+ * No posts are created or deleted; the import steps are repeatable. A dry run only counts.
  */
 class ALBA_Wpml {
 	const PAGE = 'alba-wpml';
@@ -64,7 +64,7 @@ class ALBA_Wpml {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Seite
+	 * Page
 	 * ------------------------------------------------------------- */
 
 	public function analyse() {
@@ -181,7 +181,7 @@ class ALBA_Wpml {
 		wp_send_json_success($r);
 	}
 
-	/** Ein Schritt/Paket. Rückgabe: Fehlertext oder ['done'=>bool, 'cursor'=>int, 'n'=>[…], 'notes'=>[…]] */
+	/** One step/batch. Returns: error text or ['done'=>bool, 'cursor'=>int, 'n'=>[…], 'notes'=>[…]] */
 	public function run($step, $cursor, array $o) {
 		$this->dry = !empty($o['dry']);
 		switch ($step) {
@@ -206,7 +206,7 @@ class ALBA_Wpml {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Einstellungen
+	 * Settings
 	 * ------------------------------------------------------------- */
 
 	private function step_settings(array $o) {
@@ -294,7 +294,7 @@ class ALBA_Wpml {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Beiträge
+	 * Posts
 	 * ------------------------------------------------------------- */
 
 	private function needs_update_ids(array $tids) {
@@ -340,7 +340,7 @@ class ALBA_Wpml {
 			}
 		}
 		if (!$this->dry) {
-			// Übersetzungen als „aktuell“ markieren, außer WPML hielt sie für aktualisierungsbedürftig
+			// Mark translations as "up to date", unless WPML considered them in need of an update
 			$c->flush();
 			foreach ($rows as $r) {
 				$id = (int) $r['element_id'];
@@ -399,7 +399,7 @@ class ALBA_Wpml {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Menüs
+	 * Menus
 	 * ------------------------------------------------------------- */
 
 	private function step_menus(array $o) {
@@ -500,7 +500,7 @@ class ALBA_Wpml {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Zeichenfolgen
+	 * Strings
 	 * ------------------------------------------------------------- */
 
 	private function step_strings($cursor, array $o) {

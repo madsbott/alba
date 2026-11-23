@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Links-rechts-Übersetzungseditor (wie bei WPML), ohne zweiten Beitrag.
+ * Side-by-side translation editor (as in WPML), without a second post.
  *
- * Die Übersetzung hängt als Meta am Originalbeitrag:
- *   _alba_tr_{lang}  Array: title, excerpt, seg (md5(Originaltext) => Übersetzung)
- *   _alba_on_{lang}  '1' = im Frontend sichtbar
- * Der Inhalt wird in Textabschnitte zerlegt (Block-Struktur, Shortcodes, Bilder und Attribute bleiben unberührt und erscheinen nicht im Editor).
- * Unter /en/ werden Titel, Auszug und Textabschnitte des Originals zur Laufzeit ersetzt;
- * fehlende Abschnitte erscheinen im Original. Wird der Originaltext geändert, ist nur dieser Abschnitt wieder offen.
+ * The translation is stored as meta on the original post:
+ *   _alba_tr_{lang}  array: title, excerpt, seg (md5(original text) => translation)
+ *   _alba_on_{lang}  '1' = visible on the frontend
+ * The content is split into text sections (block structure, shortcodes, images and attributes stay untouched and do not appear in the editor).
+ * Under /en/ the title, excerpt and text sections of the original are replaced at runtime;
+ * missing sections appear in the original. If the original text changes, only that section is open again.
  */
 class ALBA_Editor {
 	const TR = '_alba_tr_';
@@ -76,11 +76,11 @@ class ALBA_Editor {
 			'seo_desc'  => isset($d['seo_desc']) ? (string) $d['seo_desc'] : '',
 			'seo_h'   => (isset($d['seo_h']) && is_array($d['seo_h'])) ? $d['seo_h'] : [],
 			'time'    => isset($d['time']) ? (int) $d['time'] : 0,
-			'imp'     => isset($d['imp']) ? (int) $d['imp'] : 0,   // Zeitpunkt des XLIFF-Imports, bis zum nächsten Speichern im Editor
+			'imp'     => isset($d['imp']) ? (int) $d['imp'] : 0,   // Time of the XLIFF import, until the next save in the editor
 		];
 	}
 
-	/** Fingerabdruck des übersetzbaren Originals (Titel, Auszug, Textabschnitte) */
+	/** Fingerprint of the translatable original (title, excerpt, text sections) */
 	public function sig($post) {
 		$h = $this->all_hashes($post->post_content);   // inkl. mehrfach vorkommender Texte
 		foreach ($this->meta_texts($post->ID) as $val) {
@@ -91,8 +91,8 @@ class ALBA_Editor {
 	}
 
 	/**
-	 * Eigener Übersetzungs-Beitrag: Wurde das Original (Standardsprache) seit dem letzten Speichern
-	 * der Übersetzung textlich geändert? Fehlt der Vergleichswert, gilt der jetzige Stand als aktuell.
+	 * Own translation post: has the text of the original (default language) changed since the translation
+	 * was last saved? If the comparison value is missing, the current state counts as up to date.
 	 */
 	public function outdated_real($tid) {
 		$c = $this->core;
@@ -111,7 +111,7 @@ class ALBA_Editor {
 		$cur = $this->sig($src);
 		$base = (string) get_post_meta($tid, '_alba_src_sig', true);
 		if ($base === '') {
-			// Ältere Übersetzung ohne Vergleichswert: nach Änderungsdatum entscheiden
+			// Older translation without comparison value: decide by modification date
 			$tr = get_post($tid);
 			if (!$tr) {
 				return false;
@@ -121,7 +121,7 @@ class ALBA_Editor {
 		return $base !== $cur;
 	}
 
-	/** Übersetzungs-Beitrag gilt jetzt als aktuell gegenüber dem Original */
+	/** The translation post now counts as up to date compared to the original */
 	public function mark_synced($tid) {
 		$c = $this->core;
 		$tid = (int) $tid;
@@ -138,7 +138,7 @@ class ALBA_Editor {
 		}
 	}
 
-	/** Wurde das Original seit dem letzten Speichern der Übersetzung geändert? */
+	/** Has the original changed since the translation was last saved? */
 	public function outdated($id, $lang) {
 		if (!metadata_exists('post', (int) $id, self::TR . $lang)) {
 			return false;
@@ -149,7 +149,7 @@ class ALBA_Editor {
 			return false;
 		}
 		if ($d['sig'] === '') {
-			// Ältere Speicherung ohne Vergleichswert: nach Änderungsdatum entscheiden
+			// Older storage without comparison value: decide by modification date
 			return $d['time'] > 0 && $this->ts($post) > $d['time'] + 60;
 		}
 		return $d['sig'] !== $this->sig($post);
@@ -164,7 +164,7 @@ class ALBA_Editor {
 		return (bool) get_post_meta((int) $id, self::ON . $lang, true);
 	}
 
-	/** '' = keine Übersetzung, 'draft' = gespeichert, nicht sichtbar, 'on' = sichtbar */
+	/** '' = no translation, 'draft' = saved, not visible, 'on' = visible */
 	public function state($id, $lang) {
 		if ($this->is_on($id, $lang)) {
 			return 'on';
@@ -173,10 +173,10 @@ class ALBA_Editor {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzte Slugs (/en/about-us/ statt /en/ueber-uns/)
+	 * Translated slugs (/en/about-us/ instead of /en/ueber-uns/)
 	 * ------------------------------------------------------------- */
 
-	/** Übersetzter Slug eines Beitrags (nur wenn die Editor-Übersetzung sichtbar ist), sonst '' */
+	/** Translated slug of a post (only if the editor translation is visible), otherwise '' */
 	public function slug($id, $lang) {
 		if (!$this->is_active($id, $lang)) {
 			return '';
@@ -185,7 +185,7 @@ class ALBA_Editor {
 		return $d['slug'];
 	}
 
-	/** Pfad (bei Seiten inkl. Elternseiten) eines Beitrags in einer Sprache */
+	/** Path (for pages including parent pages) of a post in a language */
 	private function t_path($post, $lang) {
 		$ids = [];
 		if (is_post_type_hierarchical($post->post_type)) {
@@ -208,7 +208,7 @@ class ALBA_Editor {
 		return is_post_type_hierarchical($post->post_type) ? get_page_uri($post) : $post->post_name;
 	}
 
-	/** Filter für post_link / page_link / post_type_link */
+	/** Filter for post_link / page_link / post_type_link */
 	public function f_link($link, $post) {
 		$lang = $this->core->lang;
 		if ($this->plain || $lang === $this->core->default || !is_string($link) || strpos($link, '%') !== false) {
@@ -227,7 +227,7 @@ class ALBA_Editor {
 		return is_string($out) ? $out : $link;
 	}
 
-	/** Anfrage /en/about-us/ dem Originalbeitrag zuordnen */
+	/** Map a request /en/about-us/ to the original post */
 	public function f_request($qv) {
 		$c = $this->core;
 		$lang = $c->lang;
@@ -239,10 +239,10 @@ class ALBA_Editor {
 			$type = 'page';
 		} elseif (!empty($qv['name']) && is_string($qv['name'])) {
 			$path = $qv['name'];
-			// Ohne Typangabe kann bei "/%postname%/" auch eine Seite gemeint sein
+			// Without a type, "/%postname%/" can also mean a page
 			$type = (!empty($qv['post_type']) && is_string($qv['post_type'])) ? $qv['post_type'] : '';
 		} elseif (!empty($qv['attachment']) && is_string($qv['attachment']) && !empty($GLOBALS['wp']->request)) {
-			// "eltern/kind" wird von WordPress zuerst als Anhang gelesen
+			// "parent/child" is read by WordPress as an attachment first
 			$path = (string) $GLOBALS['wp']->request;
 			$type = 'page';
 		} else {
@@ -280,7 +280,7 @@ class ALBA_Editor {
 		return $qv;
 	}
 
-	/** Alte Adresse mit Original-Slug (/en/ueber-uns/) -> 301 auf die übersetzte Adresse */
+	/** Old address with the original slug (/en/ueber-uns/) -> 301 to the translated address */
 	public function canonical() {
 		$c = $this->core;
 		if ($c->lang === $c->default || !is_singular() || is_preview() || (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] !== 'GET')) {
@@ -314,7 +314,7 @@ class ALBA_Editor {
 		return false;
 	}
 
-	/** Slug eindeutig machen (je Sprache, Typ und Elternseite; nicht gleich dem Original-Slug eines anderen Beitrags) */
+	/** Make the slug unique (per language, type and parent page; not equal to another post's original slug) */
 	private function unique_slug($slug, $post, $lang) {
 		global $wpdb;
 		if ($slug === '' || $slug === $post->post_name) {
@@ -340,7 +340,7 @@ class ALBA_Editor {
 		}
 	}
 
-	/** Gilt für diesen Beitrag in dieser Sprache eine Editor-Übersetzung (und gibt es keinen eigenen Übersetzungs-Beitrag)? */
+	/** Does an editor translation apply to this post in this language (and is there no own translation post)? */
 	public function is_active($id, $lang) {
 		$id = (int) $id;
 		$c = $this->core;
@@ -354,7 +354,7 @@ class ALBA_Editor {
 		return empty($t[$lang]);
 	}
 
-	/** Führt $cb ohne Titel-Ersetzung aus (liefert den Original-Titel) */
+	/** Runs $cb without title replacement (returns the original title) */
 	public function raw($cb) {
 		$old = $this->off;
 		$this->off = true;
@@ -390,7 +390,7 @@ class ALBA_Editor {
 				$out[] = $tok;
 				continue;
 			}
-			// Shortcodes (z. B. WPBakery) als eigene Token abtrennen
+			// Split shortcodes (e.g. WPBakery) off as their own tokens
 			foreach (preg_split('~(\[/?[a-zA-Z][\w-]*(?:\s[^\[\]]*)?/?\])~', $tok, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY) as $piece) {
 				$out[] = $piece;
 			}
@@ -434,7 +434,7 @@ class ALBA_Editor {
 		return $m[1] . call_user_func($fn, $m[2]) . $m[3];
 	}
 
-	/** Attribute mit sichtbarem Text, die in Shortcodes (z. B. WPBakery) mit übersetzt werden */
+	/** Attributes with visible text that are translated along in shortcodes (e.g. WPBakery) */
 	private function text_attrs() {
 		return array_values(array_unique((array) apply_filters('alba_shortcode_text_attrs', array_merge(
 			['title', 'text', 'heading', 'subheading', 'subtitle', 'sub_title', 'label', 'caption', 'description', 'button_text', 'btn_title', 'btn_text', 'header', 'link_text', 'tagline', 'quote', 'message', 'alt', 'h2', 'h4'],
@@ -461,7 +461,7 @@ class ALBA_Editor {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Weitere Texte: HTML-Attribute, Block-Attribute, benutzerdefinierte Felder
+	 * More texts: HTML attributes, block attributes, custom fields
 	 * ------------------------------------------------------------- */
 
 	private function opt($name, $default = 1) {
@@ -480,7 +480,7 @@ class ALBA_Editor {
 		return array_values(array_unique($out));
 	}
 
-	/** Eigene Feldnamen (Einstellungen), gelten für Element-/Block-Attribute */
+	/** Own field names (settings), apply to element/block attributes */
 	private function extra_names() {
 		return $this->list_opt('alba_extra_attrs');
 	}
@@ -496,12 +496,12 @@ class ALBA_Editor {
 		))));
 	}
 
-	/** Werte, die kein Fließtext sind (Adressen, E-Mails, Feldschlüssel, Farben) */
+	/** Values that are not running text (addresses, emails, field keys, colors) */
 	private function not_text($v) {
 		return (bool) preg_match('~^(?:https?://|//|/|mailto:|tel:|#[0-9a-f]{3,8}$|field_[0-9a-f]+$|[\w.+-]+@[\w-]+\.[\w.]+$)~i', trim($v));
 	}
 
-	/** Attribute eines Tokens (HTML-Tag, Shortcode oder Block-Kommentar) */
+	/** Attributes of a token (HTML tag, shortcode or block comment) */
 	private function tok_attrs($tok, $fn) {
 		if ($tok === '' || $tok[0] !== '<' && $tok[0] !== '[') {
 			return $tok;
@@ -535,7 +535,7 @@ class ALBA_Editor {
 		return '~(?<![\w-])(((?:' . $n . '))\s*=\s*)(["\'])(.*?)\3~is';
 	}
 
-	/** Textabschnitt mit Tags: Attributwerte (alt, title …) werden eigene Abschnitte, der Fließtext bleibt wie bisher */
+	/** Text section with tags: attribute values (alt, title …) become their own sections, the running text stays as before */
 	private function flush_run($run, $fn) {
 		$names = $this->html_attr_names();
 		if ($run === '' || !$names || strpos($run, '<') === false || strpos($run, '=') === false) {
@@ -562,7 +562,7 @@ class ALBA_Editor {
 		$res = $this->flush($masked, $fn);
 		$i = 0;
 		if ($res === $masked) {
-			// Fließtext unverändert: Originalstück mit übersetzten Attributen
+			// Running text unchanged: original piece with translated attributes
 			return preg_replace_callback('~<[^>]+>~', function ($t) use ($re, &$i, $tr) {
 				return preg_replace_callback($re, function ($m) use (&$i, $tr) {
 					if (preg_match('/\p{L}/u', $m[4]) === 0 || $this->not_text($m[4])) {
@@ -574,7 +574,7 @@ class ALBA_Editor {
 				}, $t[0]);
 			}, $run);
 		}
-		// Fließtext übersetzt: leere Attribut-Platzhalter wieder füllen (nur wenn die Anzahl passt)
+		// Running text translated: fill empty attribute placeholders again (only if the count matches)
 		$slot = '~(?<![\w-])(((?:' . implode('|', array_map(function ($x) {
 			return preg_quote($x, '~');
 		}, $names)) . '))\s*=\s*)(["\'])\3~i';
@@ -598,7 +598,7 @@ class ALBA_Editor {
 		return $in_data && preg_match('/\s/u', trim($v)) === 1;
 	}
 
-	/** Text in den JSON-Attributen eines Block-Kommentars (Core-/ACF-/eigene Blöcke) */
+	/** Text in the JSON attributes of a block comment (core/ACF/custom blocks) */
 	private function block_json($tok, $fn) {
 		if (!$this->opt('alba_t_blocks') || !preg_match('~^(<!--\s+wp:([a-z0-9_-]+(?:/[a-z0-9_-]+)?)\s+)(\{.*\})(\s+/?-->)$~s', $tok, $m)) {
 			return $tok;
@@ -635,7 +635,7 @@ class ALBA_Editor {
 		return $m[1] . $json . $m[4];
 	}
 
-	/** Feldnamen (Meta-Schlüssel) mit übersetzbarem Text: eigene Liste plus ACF-Textfelder des Beitrags */
+	/** Field names (meta keys) with translatable text: own list plus the post's ACF text fields */
 	public function meta_keys($post_id = 0) {
 		$keys = $this->list_opt('alba_meta_keys');
 		$post_id = (int) $post_id;
@@ -669,7 +669,7 @@ class ALBA_Editor {
 		return false;
 	}
 
-	/** key => Text der übersetzbaren Felder dieses Beitrags (im Originalzustand) */
+	/** key => text of this post's translatable fields (in original state) */
 	public function meta_texts($post_id) {
 		$out = [];
 		$post_id = (int) $post_id;
@@ -692,7 +692,7 @@ class ALBA_Editor {
 		return $out;
 	}
 
-	/** Alle übersetzbaren Abschnitte eines Beitrags: Inhalt plus benutzerdefinierte Felder (hash => Text) */
+	/** All translatable sections of a post: content plus custom fields (hash => text) */
 	public function post_segments($post, &$kinds = null) {
 		$segs = $this->segments($post->post_content, $kinds);
 		foreach ($this->meta_texts($post->ID) as $key => $val) {
@@ -707,7 +707,7 @@ class ALBA_Editor {
 		return $segs;
 	}
 
-	/** Frontend: Werte benutzerdefinierter Felder (get_post_meta / ACF) übersetzen */
+	/** Frontend: translate values of custom fields (get_post_meta / ACF) */
 	public function f_meta($value, $id, $key, $single) {
 		static $busy = false;
 		if ($busy || $value !== null || !is_string($key) || $key === '' || $key[0] === '_' || $this->core->lang === $this->core->default) {
@@ -737,10 +737,10 @@ class ALBA_Editor {
 	}
 
 	/* ---------------------------------------------------------------
-	 * SEO-Felder (Yoast SEO, Rank Math): Titel und Beschreibung je Sprache
+	 * SEO fields (Yoast SEO, Rank Math): title and description per language
 	 * ------------------------------------------------------------- */
 
-	/** Aktives SEO-Plugin: 'Rank Math', 'Yoast SEO' oder '' */
+	/** Active SEO plugin: 'Rank Math', 'Yoast SEO' or '' */
 	public function seo_plugin() {
 		if (defined('RANK_MATH_VERSION') || class_exists('RankMath')) {
 			return 'Rank Math';
@@ -751,7 +751,7 @@ class ALBA_Editor {
 		return '';
 	}
 
-	/** Meta-Schlüssel je Plugin: Titel, Beschreibung, Social-Titel, Social-Beschreibung */
+	/** Meta keys per plugin: title, description, social title, social description */
 	private function seo_keys() {
 		if ($this->seo_plugin() === 'Rank Math') {
 			return ['title' => 'rank_math_title', 'desc' => 'rank_math_description', 'og_title' => 'rank_math_facebook_title', 'og_desc' => 'rank_math_facebook_description'];
@@ -759,7 +759,7 @@ class ALBA_Editor {
 		return ['title' => '_yoast_wpseo_title', 'desc' => '_yoast_wpseo_metadesc', 'og_title' => '_yoast_wpseo_opengraph-title', 'og_desc' => '_yoast_wpseo_opengraph-description'];
 	}
 
-	/** Original-SEO-Werte (roh, evtl. mit Variablen wie %%sitename%%) */
+	/** Original SEO values (raw, possibly with variables such as %%sitename%%) */
 	public function seo_source($id) {
 		$k = $this->seo_keys();
 		return [
@@ -813,7 +813,7 @@ class ALBA_Editor {
 		$is_title = ($kind === 'title' || $kind === 'og_title');
 		$t = $is_title ? $d['seo_title'] : $d['seo_desc'];
 		if ($t !== '') {
-			// Social-Titel/-Beschreibung nur ersetzen, wenn dafür nichts Eigenes eingetragen ist
+			// Only replace social title/description if nothing of its own is set
 			if ($kind === 'og_title' || $kind === 'og_desc') {
 				$k = $this->seo_keys();
 				if (trim((string) get_post_meta($id, $k[$kind], true)) !== '') {
@@ -822,7 +822,7 @@ class ALBA_Editor {
 			}
 			return $this->seo_vars($t, $id);
 		}
-		// Ohne eigene SEO-Übersetzung: übersetzten Seitentitel in den automatisch erzeugten Titel einsetzen
+		// Without an own SEO translation: insert the translated page title into the automatically generated title
 		if ($is_title && $d['title'] !== '') {
 			$post = get_post($id);
 			if ($post && $post->post_title !== '' && strpos($value, $post->post_title) !== false) {
@@ -832,7 +832,7 @@ class ALBA_Editor {
 		return $value;
 	}
 
-	/** Änderungen gegenüber dem vorherigen Stand ins Protokoll schreiben */
+	/** Write changes compared to the previous state to the log */
 	private function log_save($post, $lang, $old, $data, $segs, $kinds, $was_on, $is_on, $existed) {
 		$changes = [];
 		$fields = ['title' => __('Title', 'alba'), 'excerpt' => __('Excerpt', 'alba'), 'slug' => __('URL slug', 'alba'), 'seo_title' => __('SEO title', 'alba'), 'seo_desc' => __('SEO description', 'alba')];
@@ -894,7 +894,7 @@ class ALBA_Editor {
 		$this->core->log->add($post->ID, $lang, 'save', implode(' · ', $parts), ['changes' => $changes, 'removed' => $removed, 'on' => $is_on]);
 	}
 
-	/** [offen, gesamt]: Texte dieses Beitrags (Titel, Auszug, SEO, Abschnitte), die in der Sprache noch nicht übersetzt sind */
+	/** [open, total]: texts of this post (title, excerpt, SEO, sections) that are not yet translated in the language */
 	public function open_count($post, $lang) {
 		$d = $this->data($post->ID, $lang);
 		$open = 0;
@@ -922,10 +922,10 @@ class ALBA_Editor {
 	}
 
 	/**
-	 * Übernimmt Texte aus einem XLIFF-Import in die Editor-Übersetzung. Die Freigabe (im Frontend anzeigen) bleibt unverändert,
-	 * der Import wird im Editor bis zum nächsten Speichern vermerkt.
-	 * $fields: key (title|excerpt|seo_title|seo_desc|slug) => ['src' => md5 des Originals, 'text' => Übersetzung]
-	 * $seg: hash => Übersetzung. Rückgabe: Zähler new/chg/same/kept.
+	 * Takes texts from an XLIFF import into the editor translation. The approval (show on the frontend) stays unchanged,
+	 * the import is noted in the editor until the next save.
+	 * $fields: key (title|excerpt|seo_title|seo_desc|slug) => ['src' => md5 of the original, 'text' => translation]
+	 * $seg: hash => translation. Returns: counters new/chg/same/kept.
 	 */
 	public function import_store($post, $lang, array $fields, array $seg, $overwrite, $file = '', $label = '') {
 		if ($label === '') {
@@ -1024,7 +1024,7 @@ class ALBA_Editor {
 			return $res;
 		}
 		if ($res['new'] || $res['chg'] || !$existed) {
-			// Vergleichswerte: neue Übersetzung = aktueller Stand, bestehende nur für die übernommenen Felder fortschreiben
+			// Comparison values: new translation = current state, for existing ones only update the fields that were taken over
 			if (!$existed) {
 				$data['sig'] = $this->sig($post);
 				$data['hs'] = array_map('strval', array_keys($segs));
@@ -1073,14 +1073,14 @@ class ALBA_Editor {
 		return $res;
 	}
 
-	/** Zwischenspeicher nach einer Änderung von außen (Sammelaktion) leeren */
+	/** Clear the cache after a change from outside (bulk action) */
 	public function reset($id) {
 		$this->memo = [];
 		$this->core->flush();
 		clean_post_cache((int) $id);
 	}
 
-	/** Beschriftung einer Zeile im Editor */
+	/** Label of a row in the editor */
 	public function kind_label($kind, $n) {
 		$map = ['attr:alt' => __('Image alt text', 'alba'), 'attr:title' => __('Title attribute', 'alba'), 'attr:aria-label' => __('ARIA label', 'alba'), 'attr:placeholder' => __('Placeholder', 'alba')];
 		if ($kind === '' || $kind === null) {
@@ -1096,7 +1096,7 @@ class ALBA_Editor {
 		return sprintf(/* translators: 1: content type, 2: title, 3: language */ __('%1$s "%2$s" (%3$s)', 'alba'), isset($label[$type]) ? $label[$type] : __('Text', 'alba'), $name, $n);
 	}
 
-	/** Ruft $fn für jeden Textabschnitt auf und setzt den Rückgabewert ein */
+	/** Calls $fn for every text section and inserts the return value */
 	public function transform($html, $fn) {
 		$out = '';
 		$run = '';
@@ -1111,7 +1111,7 @@ class ALBA_Editor {
 		return $out . $this->flush_run($run, $fn);
 	}
 
-	/** Alle Text-Hashes in Reihenfolge, auch mehrfach vorkommende */
+	/** All text hashes in order, including repeated ones */
 	public function all_hashes($html) {
 		$list = [];
 		$this->transform($html, function ($core) use (&$list) {
@@ -1121,7 +1121,7 @@ class ALBA_Editor {
 		return $list;
 	}
 
-	/** hash => Originaltext (jeder Text nur einmal) */
+	/** hash => original text (each text only once) */
 	public function segments($html, &$kinds = null) {
 		$list = [];
 		$kinds = [];
@@ -1143,7 +1143,7 @@ class ALBA_Editor {
 				return $core;
 			}
 			if ($attr === true) {
-				// in Shortcode-Attributen: ohne Tags und ohne das Anführungszeichen
+				// in shortcode attributes: without tags and without the quotation mark
 				return str_replace($q, $q === '"' ? '”' : '’', wp_strip_all_tags($map[$h]));
 			}
 			return $map[$h];
@@ -1188,7 +1188,7 @@ class ALBA_Editor {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Backend: Editor-Seite
+	 * Backend: editor page
 	 * ------------------------------------------------------------- */
 
 	public function menu() {
@@ -1212,7 +1212,7 @@ class ALBA_Editor {
 		}
 	}
 
-	/** Glossar-Treffer, Kopiertext mit angewandtem Glossar und Vorschlag aus dem Übersetzungsspeicher */
+	/** Glossary matches, copy text with glossary applied and suggestion from the translation memory */
 	private function gl_extra($text, $hash, $lang, $tm) {
 		$g = $this->core->glossary;
 		if (!$g) {

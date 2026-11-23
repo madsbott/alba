@@ -4,16 +4,16 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Medien pro Sprache: Alt-Text, Titel, Beschriftung und Beschreibung je Sprache, optional ein anderes Bild je Sprache.
+ * Media per language: alt text, title, caption and description per language, optionally a different image per language.
  *
- * Gespeichert wird am Original-Medium als Meta _alba_media_{sprache}: alt, title, caption, desc, file (ID eines anderen Mediums).
- * Bearbeiten: in der Mediathek (Anhang-Details im Dialog und auf der Bearbeiten-Seite des Mediums).
- * Frontend (nicht in der Standardsprache):
- *  - wp_get_attachment_image (Beitragsbilder, Theme, WPBakery, Salient …): Alt-Text und Bild ersetzt, srcset/sizes passend zum anderen Bild
+ * Stored on the original media item as meta _alba_media_{language}: alt, title, caption, desc, file (ID of another media item).
+ * Editing: in the media library (attachment details in the dialog and on the edit page of the media item).
+ * Frontend (not in the default language):
+ *  - wp_get_attachment_image (featured images, theme, WPBakery, Salient …): alt text and image replaced, srcset/sizes matching the other image
  *  - wp_get_attachment_image_src / _url: andere Bilddatei
- *  - Bilder im Beitragstext (Klasse wp-image-ID): Alt-Text nur ersetzt, wenn er dem Alt-Text des Mediums entspricht oder leer ist
- *    (ein im Editor übersetzter Alt-Text hat Vorrang); andere Bilddatei samt srcset
- *  - Beschriftung (wp_get_attachment_caption) und Titel (the_title des Mediums)
+ *  - Images in post content (class wp-image-ID): alt text only replaced if it equals the alt text of the media item or is empty
+ *    (an alt text translated in the editor takes precedence); different image file including srcset
+ *  - Caption (wp_get_attachment_caption) and title (the_title of the media item)
  */
 class ALBA_Media {
 	const META = '_alba_media_';
@@ -90,7 +90,7 @@ class ALBA_Media {
 		do_action('alba_media_saved', (int) $id, $lang);
 	}
 
-	/** Zusammenfassung für Spalten: Sprachen mit Eintrag */
+	/** Summary for columns: languages with an entry */
 	public function filled($id) {
 		$out = [];
 		foreach ($this->langs() as $code => $l) {
@@ -116,7 +116,7 @@ class ALBA_Media {
 		]);
 	}
 
-	/** Eingabefelder für eine Sprache; $name($feld) liefert den Feldnamen */
+	/** Input fields for one language; $name($field) returns the field name */
 	private function fields_html($post, $lang, callable $name) {
 		$v = $this->get($post->ID, $lang) ?: ['alt' => '', 'title' => '', 'caption' => '', 'desc' => '', 'file' => 0];
 		$orig = [
@@ -339,7 +339,7 @@ class ALBA_Media {
 		return preg_replace('/<img\b/i', '<img ' . $name . '="' . $val . '"', $html, 1);
 	}
 
-	/** Bilder im Beitragstext */
+	/** Images in post content */
 	public function content_img($html, $context = '', $aid = 0) {
 		$aid = (int) $aid;
 		if (!$aid || !is_string($html)) {

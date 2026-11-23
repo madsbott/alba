@@ -21,7 +21,7 @@ class ALBA_Admin {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Einstellungen
+	 * Settings
 	 * ------------------------------------------------------------- */
 
 	public function menu() {
@@ -117,8 +117,8 @@ class ALBA_Admin {
 			if (!is_array($row)) {
 				continue;
 			}
-			// WordPress ruft den Sanitizer beim ersten Speichern einer neuen Option zweimal auf:
-			// beim zweiten Mal ist der Code der Array-Schlüssel (bereits bereinigte Form)
+			// WordPress calls the sanitizer twice when a new option is saved for the first time:
+			// the second time the array key is the code (already sanitized form)
 			$raw = isset($row['code']) ? $row['code'] : (is_string($key) ? $key : '');
 			$code = $this->clean_code($raw);
 			if ($code === '' || isset($out[$code])) {
@@ -134,7 +134,7 @@ class ALBA_Admin {
 		return $out;
 	}
 
-	/** Das Radio-Feld enthält den Zeilen-Index, daraus wird der Code */
+	/** The radio field contains the row index, from which the code is taken */
 	public function sanitize_default($v) {
 		if (isset($_POST['alba_languages']) && is_array($_POST['alba_languages'])) {
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Language rows are cleaned field by field in clean_code() and below.
@@ -142,7 +142,7 @@ class ALBA_Admin {
 			if (isset($rows[$v]['code'])) {
 				return $this->clean_code($rows[$v]['code']);
 			}
-			// bereits ein Code (zweiter Aufruf bei der ersten Speicherung)
+			// already a code (second call on first save)
 			$code = $this->clean_code($v);
 			foreach ($rows as $row) {
 				if (is_array($row) && isset($row['code']) && $this->clean_code($row['code']) === $code && $code !== '') {
@@ -225,7 +225,7 @@ class ALBA_Admin {
 								<section class="alba-card" data-tab="lang">
 				<header class="alba-card-h"><span class="dashicons dashicons-translation"></span><div><h2><?php echo esc_html__('Languages', 'alba'); ?></h2><p><?php echo esc_html__('Choose the languages your website appears in.', 'alba'); ?></p></div></header>
 				<div class="alba-card-b">
-				<p><?php echo esc_html__('The', 'alba'); ?> <strong><?php echo esc_html__('default language', 'alba'); ?></strong> <?php echo esc_html__('has no URL prefix (', 'alba'); ?><code>/seite/</code><?php echo esc_html__('), all others get one (', 'alba'); ?><code>/en/seite/</code><?php echo esc_html__('). The locale controls the theme/plugin translation on the frontend (the language pack must be installed).', 'alba'); ?></p>
+				<p><?php echo wp_kses(sprintf(/* translators: 1: example URL of the default language, 2: example URL of another language */ __('The <strong>default language</strong> has no URL prefix (%1$s), all others get one (%2$s). The locale controls the theme/plugin translation on the frontend (the language pack must be installed).', 'alba'), '<code>/page/</code>', '<code>/en/page/</code>'), ['strong' => [], 'code' => []]); ?></p>
 				<table class="widefat striped alba-langs">
 					<thead><tr><th><?php echo esc_html__('Default', 'alba'); ?></th><th><?php echo esc_html__('Code (URL)', 'alba'); ?></th><th><?php echo esc_html__('Name', 'alba'); ?></th><th><?php echo esc_html__('Locale', 'alba'); ?></th><th></th></tr></thead>
 					<tbody id="alba-rows">
@@ -508,7 +508,7 @@ class ALBA_Admin {
 					'<td><input type="text" size="8" name="alba_languages[' + idx + '][code]"></td>' +
 					'<td><input type="text" name="alba_languages[' + idx + '][name]"></td>' +
 					'<td><input type="text" size="10" name="alba_languages[' + idx + '][locale]"></td>' +
-					'<td><button type="button" class="button-link-delete alba-del">Entfernen</button></td>';
+					'<td><button type="button" class="button-link-delete alba-del">' . esc_html__('Remove', 'alba') . '</button></td>';
 				tr.querySelector('[name$="[code]"]').value = code || '';
 				tr.querySelector('[name$="[name]"]').value = name || '';
 				tr.querySelector('[name$="[locale]"]').value = locale || '';
@@ -589,7 +589,7 @@ class ALBA_Admin {
 		echo '</select>';
 	}
 
-	/** Rückfrage beim Löschen in der Plugin-Liste (bei Einstellung „vorher nachfragen“) */
+	/** Confirmation when deleting in the plugin list (with the setting "ask first") */
 	public function delete_confirm() {
 		if (get_option('alba_uninstall', 'ask') !== 'ask') {
 			return;
@@ -603,7 +603,7 @@ class ALBA_Admin {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Metabox im Editor
+	 * Meta box in the editor
 	 * ------------------------------------------------------------- */
 
 	public function add_box() {
@@ -726,15 +726,15 @@ class ALBA_Admin {
 		}
 		$c->flush();
 		if ($c->editor) {
-			$c->editor->mark_synced($post_id);   // Übersetzung gespeichert = gilt als aktuell
+			$c->editor->mark_synced($post_id);   // Translation saved = counts as up to date
 		}
 		if ($changed) {
-			do_action('alba_post_links_saved', $post_id);   // Sprache/Verknüpfung geändert -> Cache leeren
+			do_action('alba_post_links_saved', $post_id);   // Language/link changed -> clear cache
 		}
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzung anlegen (Kopie als Entwurf)
+	 * Create translation (copy as draft)
 	 * ------------------------------------------------------------- */
 
 	public function create_translation() {

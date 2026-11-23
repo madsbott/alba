@@ -1,11 +1,11 @@
 <?php
 /**
- * Wird von WordPress ausgeführt, wenn das Plugin in der Plugin-Liste gelöscht wird
- * (nicht beim Deaktivieren und nicht beim Ersetzen durch eine hochgeladene neue Version).
+ * Executed by WordPress when the plugin is deleted in the plugin list
+ * (not on deactivation and not when replacing it with an uploaded new version).
  *
- * Einstellung: Sprachen > Einstellungen > Deinstallation (ask | delete | keep).
- * Entfernt Einstellungen, Zeichenfolgen und die Übersetzungsdaten (Meta) an Beiträgen und Begriffen.
- * Eigene Übersetzungs-Beiträge (Kopien) bleiben als normale Inhalte bestehen.
+ * Setting: Languages > Settings > Uninstall (ask | delete | keep).
+ * Removes settings, strings and the translation data (meta) on posts and terms.
+ * Own translation posts (copies) remain as normal content.
  */
 if (!defined('WP_UNINSTALL_PLUGIN')) {
 	exit;
@@ -30,7 +30,7 @@ function alba_uninstall_site() {
 
 	wp_clear_scheduled_hook('alba_wf_daily');
 
-	// Reste älterer Versionen und Zwischenspeicher
+	// Leftovers of older versions and caches
 	$wpdb->query($wpdb->prepare(
 		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s",
 		$wpdb->esc_like('alba_deepl_') . '%',
@@ -38,7 +38,7 @@ function alba_uninstall_site() {
 		$wpdb->esc_like('_transient_timeout_alba_') . '%'
 	));
 
-	// Übersetzungsdaten an Beiträgen (Sprache, Gruppe, Editor-Übersetzungen) und Begriffen
+	// Translation data on posts (language, group, editor translations) and terms
 	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s", $wpdb->esc_like('_alba_') . '%'));
 	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->termmeta} WHERE meta_key LIKE %s", $wpdb->esc_like('_alba_') . '%'));
 

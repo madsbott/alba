@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Block "Sprachumschalter" (alba/switcher): serverseitig gerendert, Vorschau im Editor per JS.
+ * "Language switcher" block (alba/switcher): rendered on the server, preview in the editor via JS.
  * Attribute: variant (list|dropdown|menu), display (name|code), hideMissing, hideCurrent.
  */
 class ALBA_Switcher_Block {
@@ -58,7 +58,7 @@ class ALBA_Switcher_Block {
 			'render_callback' => [$this, 'render'],
 		];
 		register_block_type('alba/switcher', $def);
-		// Alter Blockname (bis 0.10.0): bestehende Blöcke in Inhalten bleiben gültig.
+		// Old block name (until 0.10.0): existing blocks in content stay valid.
 		$def['supports']['inserter'] = false;
 		register_block_type('mads-multilang/switcher', $def);
 	}

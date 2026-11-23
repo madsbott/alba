@@ -4,17 +4,17 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Arbeitsablauf mit Übersetzern: Aufträge, Fristen, Status „Zur Prüfung“, E-Mail-Benachrichtigungen.
+ * Workflow with translators: assignments, deadlines, status "For review", email notifications.
  *
- * Gilt für Übersetzungen im Übersetzungseditor (Editor-Übersetzungen am Original). Je Inhalt und Sprache wird ein Auftrag
- * als Beitrags-Meta _alba_wf_{sprache} gespeichert:
- *   to  = zuständiger Benutzer, by = wer zugewiesen hat, due = Frist (Y-m-d),
- *   st  = '' (kein offener Vorgang), 'open' (in Arbeit) oder 'review' (zur Prüfung eingereicht),
- *   at/rv = Zeitpunkt der Zuweisung / Einreichung, nt = Fingerabdruck des Originals bei der letzten „Original geändert“-Mail,
- *   dn = Datum der letzten Fristmail, note = Hinweis des Prüfenden bei Rückgabe.
- * E-Mails: bei Zuweisung (an den Übersetzer), bei Einreichung (an den Zuweisenden bzw. die eingestellte Adresse),
- * bei Änderung des Originals nach der Übersetzung (an den Zuständigen und die eingestellte Adresse) und täglich
- * zur Frist (am Vortag und wenn überfällig).
+ * Applies to translations in the translation editor (editor translations on the original). For each content item and language an assignment
+ * is stored as post meta _alba_wf_{language}:
+ *   to  = responsible user, by = who assigned, due = deadline (Y-m-d),
+ *   st  = '' (no open task), 'open' (in progress) or 'review' (submitted for review),
+ *   at/rv = time of assignment / submission, nt = fingerprint of the original at the last "original changed" email,
+ *   dn = date of the last deadline email, note = reviewer's note on return.
+ * Emails: on assignment (to the translator), on submission (to the assigner or the configured address),
+ * when the original changes after translation (to the responsible person and the configured address) and daily
+ * at the deadline (the day before and when overdue).
  */
 class ALBA_Workflow {
 	const META = '_alba_wf_';
@@ -59,7 +59,7 @@ class ALBA_Workflow {
 		update_post_meta((int) $id, self::META . $lang, $d);
 	}
 
-	/** Alle Beitrags-IDs mit mindestens einem Auftrag */
+	/** All post IDs with at least one assignment */
 	public function job_post_ids() {
 		global $wpdb;
 		$ids = $wpdb->get_col($wpdb->prepare("SELECT DISTINCT post_id FROM {$wpdb->postmeta} WHERE meta_key LIKE %s", $wpdb->esc_like(self::META) . '%'));
@@ -70,7 +70,7 @@ class ALBA_Workflow {
 		return $st === 'review' ? __('For review', 'alba') : ($st === 'open' ? __('In progress', 'alba') : '');
 	}
 
-	/** Benutzer, denen ein Auftrag zugewiesen werden kann */
+	/** Users an assignment can be assigned to */
 	public function users() {
 		$users = get_users(['capability__in' => [ALBA_Roles::CAP, 'edit_posts'], 'orderby' => 'display_name', 'fields' => ['ID', 'display_name']]);
 		return is_array($users) ? $users : [];
@@ -85,7 +85,7 @@ class ALBA_Workflow {
 		return is_string($d) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $d) && strtotime($d . ' 12:00:00') !== false;
 	}
 
-	/** Auftrag zuweisen ($uid 0 = Zuweisung entfernen). Rückgabe: true oder Fehlertext */
+	/** Assign a task ($uid 0 = remove assignment). Returns: true or error text */
 	public function assign($id, $lang, $uid, $due, $by = 0, $notify = true) {
 		$c = $this->core;
 		$post = get_post((int) $id);
@@ -117,10 +117,10 @@ class ALBA_Workflow {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Speichern im Editor
+	 * Saving in the editor
 	 * ------------------------------------------------------------- */
 
-	/** Nach dem Speichern im Übersetzungseditor: Status fortschreiben */
+	/** After saving in the translation editor: update the status */
 	public function after_save($id, $lang, $submit, $is_on) {
 		$w = $this->get($id, $lang);
 		$old = $w;
@@ -147,7 +147,7 @@ class ALBA_Workflow {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Original geändert -> Hinweis
+	 * Original changed -> notice
 	 * ------------------------------------------------------------- */
 
 	public function original_saved($id, $post) {
@@ -318,7 +318,7 @@ To revise:
 	}
 
 	/* ---------------------------------------------------------------
-	 * Formulare im Editor
+	 * Forms in the editor
 	 * ------------------------------------------------------------- */
 
 	private function back($post, $lang, $msg) {
@@ -356,7 +356,7 @@ To revise:
 		$this->back($id, $lang, __('Returned for revision.', 'alba'));
 	}
 
-	/** Kasten über dem Editor: Zuständig, Frist, Status; Formulare für Redakteure */
+	/** Box above the editor: responsible person, deadline, status; forms for editors */
 	public function box($post, $lang) {
 		$id = (int) $post->ID;
 		$w = $this->get($id, $lang);
@@ -408,7 +408,7 @@ To revise:
 	}
 
 	/* ---------------------------------------------------------------
-	 * Einstellungen
+	 * Settings
 	 * ------------------------------------------------------------- */
 
 	public function register() {

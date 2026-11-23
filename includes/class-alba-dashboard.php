@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Hauptmenü "Sprachen" im Backend: Übersicht mit Status, Abdeckung der Übersetzungen,
- * Schnellzugriff auf alle Bereiche und Kurzhilfe. Unterseiten (Einstellungen, Zeichenfolgen,
- * Import/Export) registrieren sich selbst unter diesem Menü.
+ * Main menu "Languages" in the backend: overview with status, translation coverage,
+ * quick access to all areas and short help. Subpages (settings, strings,
+ * import/export) register themselves under this menu.
  */
 class ALBA_Dashboard {
 	const SLUG = 'alba';
 	const LIMIT = 2000;
-	const OLD_CHECK = 300;   // höchstens so viele Inhalte werden auf "veraltet" geprüft
+	const OLD_CHECK = 300;   // at most this many items are checked for "outdated"
 
 	private $core;
 
@@ -35,7 +35,7 @@ class ALBA_Dashboard {
 		return $links;
 	}
 
-	/** Alte Adressen unter "Einstellungen" leiten auf das neue Menü um */
+	/** Old addresses under "Settings" redirect to the new menu */
 	public function legacy_redirect() {
 		global $pagenow;
 		if ($pagenow !== 'options-general.php' || empty($_GET['page'])) {
@@ -53,7 +53,7 @@ class ALBA_Dashboard {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Seite
+	 * Page
 	 * ------------------------------------------------------------- */
 
 	private function url($page) {
@@ -99,7 +99,7 @@ class ALBA_Dashboard {
 						<td><?php echo esc_html($l['name']); ?></td>
 						<td><?php echo esc_html($l['locale']); ?></td>
 						<td><a href="<?php echo esc_url($c->home_in($code)); ?>" target="_blank" rel="noopener"><?php echo esc_html($c->home_in($code)); ?></a></td>
-						<td><?php echo $code === $c->default ? '<strong>Standard</strong>' : ''; ?></td>
+						<td><?php echo $code === $c->default ? '<strong>' . esc_html__('Default', 'alba') . '</strong>' : ''; ?></td>
 					</tr>
 				<?php endforeach; ?>
 				</tbody>
@@ -131,7 +131,7 @@ class ALBA_Dashboard {
 	 * Offene Texte
 	 * ------------------------------------------------------------- */
 
-	/** Offene Texte je Sprache (nur Originale in der Standardsprache ohne eigenen Übersetzungs-Beitrag) */
+	/** Open texts per language (only originals in the default language without their own translation post) */
 	private function open_texts() {
 		$c = $this->core;
 		$targets = array_diff_key($c->langs, [$c->default => 1]);
@@ -158,7 +158,7 @@ class ALBA_Dashboard {
 				$trs = $c->translations($id);
 				foreach ($targets as $code => $l) {
 					if (!empty($trs[$code]) && (int) $trs[$code] !== $id) {
-						continue;   // eigener Übersetzungs-Beitrag
+						continue;   // own translation post
 					}
 					$d = $c->editor->data($id, $code);
 					$key = $id . '|' . $code;
@@ -236,7 +236,7 @@ class ALBA_Dashboard {
 	 * Abdeckung
 	 * ------------------------------------------------------------- */
 
-	/** @return array{0:array,1:array,2:int,3:bool} Anzahl pro Sprache, fehlend pro Sprache, Gesamt, abgeschnitten */
+	/** @return array{0:array,1:array,2:int,3:bool} count per language, missing per language, total, truncated */
 	private function tally(array $items, array $extra = []) {
 		$c = $this->core;
 		$count = array_fill_keys(array_keys($c->langs), 0);
@@ -313,7 +313,7 @@ class ALBA_Dashboard {
 						}
 					}
 				}
-				// eigene Übersetzungs-Beiträge: Original seit dem Speichern geändert?
+				// own translation posts: original changed since saving?
 				if ($lang !== $c->default && $checked < self::OLD_CHECK) {
 					$checked++;
 					if ($c->editor->outdated_real($id)) {
@@ -400,7 +400,7 @@ class ALBA_Dashboard {
 								<span style="color:#996800" title="<?php echo esc_attr__('Saved in the editor but not yet published on the frontend', 'alba'); ?>"> · <?php echo (int) $r['draft'][$code]; ?> <?php echo esc_html__('not published', 'alba'); ?></span>
 							<?php endif; ?>
 							<?php if ($r['missing'][$code] > 0 && count($c->langs) > 1) : ?>
-								<span style="color:#b32d2e" title="<?php echo esc_attr__('Content for which there is no translation in this language yet', 'alba'); ?>"> · <?php echo (int) $r['missing'][$code]; ?> fehlen</span>
+								<span style="color:#b32d2e" title="<?php echo esc_attr__('Content for which there is no translation in this language yet', 'alba'); ?>"> · <?php echo (int) $r['missing'][$code]; ?> <?php echo esc_html__('missing', 'alba'); ?></span>
 							<?php endif; ?>
 						</td>
 					<?php endforeach; ?>

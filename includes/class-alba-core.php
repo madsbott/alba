@@ -8,7 +8,7 @@ class ALBA_Core {
 
 	public $langs = [];        // code => ['name' =>, 'locale' =>]
 	public $default = '';
-	public $lang = '';         // aktuelle Frontend-Sprache
+	public $lang = '';         // current frontend language
 	public $post_types = ['post', 'page'];
 	public $frontend;
 	public $strings;
@@ -107,7 +107,7 @@ class ALBA_Core {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Sprache aus der URL erkennen (/en/seite/ -> /seite/)
+	 * Detect the language from the URL (/en/page/ -> /page/)
 	 * ------------------------------------------------------------- */
 
 	private function detect_language() {
@@ -134,7 +134,7 @@ class ALBA_Core {
 				$this->lang = $code;
 				$rest = isset($m[2]) ? $m[2] : '/';
 				$_SERVER['REQUEST_URI'] = $home_path . $rest . (($qs !== null && $qs !== '') ? '?' . $qs : '');
-				// Nach dem Routing die Original-URL zurücksetzen, damit redirect_canonical sauber arbeitet
+				// After routing, reset the original URL so that redirect_canonical works cleanly
 				add_action('parse_request', function () {
 					$_SERVER['REQUEST_URI'] = $this->orig_uri;
 				});
@@ -142,7 +142,7 @@ class ALBA_Core {
 			}
 		}
 
-		// Fallback für "einfache" Permalinks: ?lang=en
+		// Fallback for "plain" permalinks: ?lang=en
 		if (isset($_GET['lang'])) {
 			$code = strtolower(sanitize_key(wp_unslash($_GET['lang'])));
 			if (isset($this->langs[$code])) {
@@ -223,7 +223,7 @@ class ALBA_Core {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzungs-Verknüpfung (Meta: _alba_lang, _alba_group)
+	 * Translation link (meta: _alba_lang, _alba_group)
 	 * ------------------------------------------------------------- */
 
 	public function is_translatable($type) {
@@ -244,7 +244,7 @@ class ALBA_Core {
 		return $g;
 	}
 
-	/** Titel im Original (ohne Ersetzung durch eine Editor-Übersetzung) */
+	/** Title of the original (without replacement by an editor translation) */
 	public function raw_title($id) {
 		if (!$this->editor) {
 			return get_the_title($id);
@@ -258,7 +258,7 @@ class ALBA_Core {
 		$this->cache = [];
 	}
 
-	/** Alle Übersetzungen eines Beitrags: lang => post_id (alle Status) */
+	/** All translations of a post: lang => post_id (all statuses) */
 	public function translations($id) {
 		$id = (int) $id;
 		if (isset($this->cache[$id])) {
@@ -299,7 +299,7 @@ class ALBA_Core {
 	public function translation($id, $lang, $published_only = true) {
 		$t = $this->translations($id);
 		if (empty($t[$lang])) {
-			// Links-rechts-Übersetzung am Original (ohne eigenen Beitrag)
+			// Side-by-side translation on the original (without own post)
 			if ($published_only && $this->editor && $this->editor->is_active($id, $lang)) {
 				return (int) $id;
 			}
@@ -313,7 +313,7 @@ class ALBA_Core {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Abfragen nach Sprache filtern
+	 * Filter queries by language
 	 * ------------------------------------------------------------- */
 
 	public function lang_meta_query($lang, $overlay = false) {
@@ -325,7 +325,7 @@ class ALBA_Core {
 			];
 		}
 		if ($overlay) {
-			// auch Originale mit freigegebener Editor-Übersetzung in dieser Sprache
+			// also originals with an approved editor translation in this language
 			return [
 				'relation' => 'OR',
 				['key' => '_alba_lang', 'value' => $lang],
@@ -341,7 +341,7 @@ class ALBA_Core {
 		}
 
 		if (is_admin()) {
-			// Nur die Beitragsliste, wenn per Dropdown gefiltert wird
+			// Only the post list, when filtering via the dropdown
 			global $pagenow;
 			if (!$q->is_main_query() || $pagenow !== 'edit.php') {
 				return;
@@ -378,7 +378,7 @@ class ALBA_Core {
 		$q->set('meta_query', $new);
 	}
 
-	/** Startseite / Beitragsseite in die aktuelle Sprache übersetzen */
+	/** Translate the home page / posts page into the current language */
 	public function filter_front_option($v) {
 		if ($this->busy || is_admin() || !$v) {
 			return $v;
@@ -391,7 +391,7 @@ class ALBA_Core {
 		return $tid ? $tid : $v;
 	}
 
-	/** Gleicher Slug in verschiedenen Sprachen erlaubt (kein "-2") */
+	/** Same slug allowed in different languages (no "-2") */
 	public function filter_unique_slug($slug, $post_id, $status, $type, $parent, $original = '') {
 		if ($slug === $original || !$this->is_translatable($type)) {
 			return $slug;
@@ -428,9 +428,9 @@ class ALBA_Core {
 	}
 
 	/**
-	 * Legt die Übersetzung eines Inhalts als Entwurf an (Kopie).
-	 * $auto = Slug bleibt leer, fehlende Begriffe werden mit angelegt.
-	 * Gibt die ID der Übersetzung oder WP_Error zurück.
+	 * Creates the translation of a content item as a draft (copy).
+	 * $auto = slug stays empty, missing terms are created too.
+	 * Returns the ID of the translation or WP_Error.
 	 */
 	public function duplicate_post($id, $lang, $auto = false) {
 		$src = get_post($id);
@@ -472,7 +472,7 @@ class ALBA_Core {
 		update_post_meta($new, '_alba_lang', $lang);
 		update_post_meta($new, '_alba_group', $group);
 		delete_post_meta($id, '_alba_slug_' . $lang);
-		delete_post_meta($id, '_alba_on_' . $lang);   // eigener Beitrag löst die Editor-Übersetzung ab
+		delete_post_meta($id, '_alba_on_' . $lang);   // own post replaces the editor translation
 		$this->flush();
 		if ($this->editor) {
 			$this->editor->mark_synced($new);

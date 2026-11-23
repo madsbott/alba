@@ -4,7 +4,7 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.12.0
+Stable tag: 0.12.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,13 @@ Alba replaces the earlier "Mads Multilang". Activate Alba (the old version is de
 
 As long as the WPML tables are still in the database, a "WPML import" item appears under "Languages". Do a dry run first, then the import. Make a database backup beforehand.
 
+== Screenshots ==
+
+1. Overview with languages, open texts and translation status.
+2. Side-by-side translation editor with glossary and translation memory.
+3. Strings: find and translate texts of your theme and plugins.
+4. Settings: languages, content types, switcher, language detection, sitemap and cache.
+
 == Frequently Asked Questions ==
 
 = Is the plugin connected to WPML? =
@@ -71,6 +78,11 @@ Contact Form 7, WPForms, Gravity Forms and Fluent Forms. So far only Contact For
 You decide under "Languages > Settings > Uninstall": remove data (with or without confirmation) or keep it. Your translation posts remain as normal content.
 
 == Changelog ==
+
+= 0.12.1 =
+* Fixed a few labels that were not translatable ("Default", "missing", "Remove", "Start", "Cancel")
+* Settings: the URL prefix explanation is one whole translatable sentence
+* Code comments and the proofread English texts
 
 = 0.12.0 =
 * All internal names now use the prefix "alba_" instead of "mml_" (options, meta fields, hooks, functions, classes, CSS classes, translator role, log table)
@@ -123,6 +135,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.12.1 =
+Small text and translation fixes.
 
 = 0.12.0 =
 Internal names changed from mml_ to alba_; data is migrated automatically. Make a backup first. Custom CSS using .mml-... classes must be changed to .alba-...

@@ -4,19 +4,19 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Seiten-Cache leeren, wenn sich Übersetzungen oder Spracheinstellungen ändern.
+ * Clear the page cache when translations or language settings change.
  *
- * Unterstützt: WP Rocket, LiteSpeed Cache (Plugin) und LiteSpeed-Server-Cache per Header
+ * Supported: WP Rocket, LiteSpeed Cache (plugin) and LiteSpeed server cache via header
  * (z. B. Hostinger), W3 Total Cache, WP Super Cache, WP Fastest Cache, Breeze, SG Optimizer, Nginx Helper.
- * Eigene Anbindung: Aktion `alba_purge_all` bzw. `alba_purge_urls` (Array von URLs).
+ * Own integration: action `alba_purge_all` or `alba_purge_urls` (array of URLs).
  *
- * Einstellung (Sprachen > Einstellungen > Cache): smart (Seite, Übersetzungen, Startseiten) | all | off
+ * Setting (Languages > Settings > Cache): smart (page, translations, home pages) | all | off
  */
 class ALBA_Cache {
 	private $core;
 	private $all_done = false;
 
-	/** Einstellungen, nach deren Änderung der Cache komplett geleert wird */
+	/** Settings whose change clears the whole cache */
 	private static $options = [
 		'alba_languages', 'alba_default', 'alba_post_types', 'alba_taxonomies', 'alba_menu_location', 'alba_display',
 		'alba_hide_missing', 'alba_autodetect', 'alba_autodetect_method', 'alba_t_attrs', 'alba_t_blocks', 'alba_t_acf', 'alba_meta_keys', 'alba_extra_attrs', 'alba_menu_style', 'alba_dd_arrow', 'alba_nav_switcher', 'alba_strings', 'alba_search', 'alba_comments', 'alba_menu_map',
@@ -43,7 +43,7 @@ class ALBA_Cache {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Auslöser
+	 * Triggers
 	 * ------------------------------------------------------------- */
 
 	public function on_post($post_id) {
@@ -85,7 +85,7 @@ class ALBA_Cache {
 			|| isset($_SERVER['LSWS_EDITION']) || isset($_SERVER['X_LSCACHE']);
 	}
 
-	/** LiteSpeed-Server-Cache (ohne Plugin, z. B. Hostinger): alles dieser Seite per Antwort-Header leeren */
+	/** LiteSpeed server cache (without plugin, e.g. Hostinger): clear everything of this site via response header */
 	private function ls_header() {
 		if (!headers_sent() && $this->is_litespeed()) {
 			header('X-LiteSpeed-Purge: *', false);
@@ -124,7 +124,7 @@ class ALBA_Cache {
 		}
 		$urls = $this->post_urls($id);
 
-		// Caches mit URL-genauem Leeren
+		// Caches that can clear by exact URL
 		if (function_exists('rocket_clean_files')) {
 			rocket_clean_files($urls);
 		}
@@ -147,7 +147,7 @@ class ALBA_Cache {
 			wpfc_clear_post_cache_by_id($id);
 		}
 
-		// Caches ohne URL-Schnittstelle: komplett leeren
+		// Caches without a URL interface: clear completely
 		do_action('breeze_clear_all_cache'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 		if (function_exists('sg_cachepress_purge_cache')) {
 			sg_cachepress_purge_cache();

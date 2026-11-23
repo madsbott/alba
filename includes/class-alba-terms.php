@@ -4,8 +4,8 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Übersetzung von Taxonomie-Begriffen (Kategorien, Schlagwörter, eigene Taxonomien).
- * Sprache und Gruppe liegen als Term-Meta (_alba_lang, _alba_group).
+ * Translation of taxonomy terms (categories, tags, custom taxonomies).
+ * Language and group are stored as term meta (_alba_lang, _alba_group).
  */
 class ALBA_Terms {
 	private $core;
@@ -84,7 +84,7 @@ class ALBA_Terms {
 		return isset($t[$lang]) ? (int) $t[$lang] : 0;
 	}
 
-	/** Archiv-URL eines Begriffs in der angegebenen Sprache ('' bei Fehler) */
+	/** Archive URL of a term in the given language ('' on error) */
 	public function link($term_id, $lang = null) {
 		$lang = $lang ?: $this->core->lang;
 		return (string) $this->core->with_lang($lang, function () use ($term_id) {
@@ -98,7 +98,7 @@ class ALBA_Terms {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Frontend: Begriffslisten nach Sprache filtern
+	 * Frontend: filter term lists by language
 	 * ------------------------------------------------------------- */
 
 	public function filter_args($args, $taxonomies) {
@@ -121,10 +121,10 @@ class ALBA_Terms {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzung anlegen
+	 * Create translation
 	 * ------------------------------------------------------------- */
 
-	/** Legt die Übersetzung eines Begriffs an. Gibt Term-ID oder WP_Error zurück. */
+	/** Creates the translation of a term. Returns term ID or WP_Error. */
 	public function duplicate($term_id, $lang, $auto = false) {
 		$c = $this->core;
 		$src = get_term($term_id);
@@ -176,7 +176,7 @@ class ALBA_Terms {
 		return $new;
 	}
 
-	/** Begriffe eines Beitrags auf die Übersetzung übertragen (fehlende bei $auto anlegen) */
+	/** Transfer the terms of a post to the translation (create missing ones with $auto) */
 	public function copy_post_terms($src_id, $new_id, $lang, $auto = false) {
 		foreach ($this->core->taxonomies as $tx) {
 			if (!taxonomy_exists($tx) || !is_object_in_taxonomy(get_post_type($src_id), $tx)) {
@@ -208,7 +208,7 @@ class ALBA_Terms {
 	 * ------------------------------------------------------------- */
 
 	/* ---------------------------------------------------------------
-	 * Editor: Sprachfilter für die Begriffsauswahl
+	 * Editor: language filter for term selection
 	 * ------------------------------------------------------------- */
 
 	private function with_lang_query($args, $lang) {
@@ -227,7 +227,7 @@ class ALBA_Terms {
 		}
 	}
 
-	/** Block-Editor: ?alba_lang=xx filtert die Begriffsliste (bereits zugewiesene per include bleiben unberührt) */
+	/** Block editor: ?alba_lang=xx filters the term list (already assigned ones stay untouched via include) */
 	public function rest_query($args, $request) {
 		$lang = sanitize_key((string) $request->get_param('alba_lang'));
 		if ($lang === '' || !isset($this->core->langs[$lang]) || !empty($args['include'])) {
@@ -236,7 +236,7 @@ class ALBA_Terms {
 		return $this->with_lang_query($args, $lang);
 	}
 
-	/** Block-Editor: neu angelegte Begriffe bekommen die Sprache des Beitrags */
+	/** Block editor: newly created terms get the language of the post */
 	public function rest_insert($term, $request, $creating) {
 		if (!$creating) {
 			return;
@@ -248,7 +248,7 @@ class ALBA_Terms {
 		}
 	}
 
-	/** Klassischer Editor: Tag-Vorschläge (Ajax) nach Sprache filtern */
+	/** Classic editor: filter tag suggestions (Ajax) by language */
 	public function admin_args($args, $taxonomies) {
 		if (!wp_doing_ajax() || !isset($_GET['action']) || $_GET['action'] !== 'ajax-tag-search' || empty($_GET['alba_lang']) || !empty($args['alba_skip'])) {
 			return $args;
@@ -261,7 +261,7 @@ class ALBA_Terms {
 		return $this->with_lang_query($args, $lang);
 	}
 
-	/** Begriffe, die beim Speichern eines Beitrags oder per Schnell-Hinzufügen entstehen, übernehmen die Editor-Sprache */
+	/** Terms created when saving a post or via quick add take over the editor language */
 	public function auto_lang($term_id) {
 		if (metadata_exists('term', $term_id, '_alba_lang')) {
 			return;

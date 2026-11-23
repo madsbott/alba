@@ -4,16 +4,16 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Formulare pro Sprache: Contact Form 7, WPForms, Gravity Forms, Fluent Forms.
+ * Forms per language: Contact Form 7, WPForms, Gravity Forms, Fluent Forms.
  *
- * Beschriftungen, Platzhalter, Beschreibungen, Auswahlmöglichkeiten, Schaltflächen, Fehlermeldungen,
- * Bestätigungen und Mail-Texte laufen beim Anzeigen und Absenden durch die Zeichenfolgen-Übersetzung
- * (Domain „Formulare“, Sprachen > Zeichenfolgen). Jeder Text wird einmal angelegt und gilt für alle Formulare.
- * Vorgehen: Die Seite einmal in der Standardsprache aufrufen, dann tauchen alle Texte des Formulars in der Liste auf.
+ * Labels, placeholders, descriptions, choices, buttons, error messages,
+ * confirmations and mail texts go through string translation when displayed and submitted
+ * (domain "Forms", Languages > Strings). Each text is created once and applies to all forms.
+ * How it works: open the page once in the default language, then all texts of the form appear in the list.
  *
- * Absenden per AJAX/REST: Diese Anfragen haben keine Sprach-URL. Die Sprache wird deshalb aus der Herkunftsadresse
- * (Referer) der Seite bestimmt, auf der das Formular stand; Sprache und Locale gelten dann auch für Fehlermeldungen,
- * Bestätigung und E-Mail.
+ * Submission via AJAX/REST: these requests have no language URL. The language is therefore determined from the referer
+ * of the page the form was on; language and locale then also apply to error messages,
+ * confirmation and email.
  */
 class ALBA_Forms {
 	const DOMAIN = 'Forms';
@@ -53,7 +53,7 @@ class ALBA_Forms {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Sprache bei AJAX/REST-Absendungen
+	 * Language for AJAX/REST submissions
 	 * ------------------------------------------------------------- */
 
 	private function adopt_request_lang() {
@@ -74,7 +74,7 @@ class ALBA_Forms {
 		}, 20);
 	}
 
-	/** Sprache der Seite, von der die Anfrage kommt ('' wenn unbekannt) */
+	/** Language of the page the request comes from ('' if unknown) */
 	public function referer_lang() {
 		$c = $this->core;
 		$ref = isset($_SERVER['HTTP_REFERER']) ? esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
@@ -106,7 +106,7 @@ class ALBA_Forms {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzungs-Helfer
+	 * Translation helpers
 	 * ------------------------------------------------------------- */
 
 	private function active() {
@@ -118,7 +118,7 @@ class ALBA_Forms {
 		return (bool) preg_match('/\p{L}{2}/u', $s);
 	}
 
-	/** Einzelner Text (Beschriftung, Platzhalter …): Leerraum am Rand bleibt */
+	/** Single text (label, placeholder …): surrounding whitespace is kept */
 	public function t($s) {
 		if (!is_string($s) || !$this->has_text($s)) {
 			return $s;
@@ -129,7 +129,7 @@ class ALBA_Forms {
 		return $m[1] . $this->core->strings->translate($m[2], self::DOMAIN) . $m[3];
 	}
 
-	/** Text mit HTML und mehreren Zeilen: jede Textzeile zwischen den Tags einzeln */
+	/** Text with HTML and several lines: each text line between the tags separately */
 	public function html($s) {
 		if (!is_string($s) || $s === '' || !$this->has_text($s)) {
 			return $s;
@@ -150,7 +150,7 @@ class ALBA_Forms {
 		return implode('', $parts);
 	}
 
-	/** Bestimmte Schlüssel in einem verschachtelten Array übersetzen */
+	/** Translate certain keys in a nested array */
 	private function walk($v, array $keys, array $html_keys = []) {
 		if (!is_array($v)) {
 			return $v;
@@ -198,7 +198,7 @@ class ALBA_Forms {
 		return $props;
 	}
 
-	/** Formular-Vorlage: Text zwischen den Tags und die Texte in den Tags (Platzhalter, Optionen, Schaltflächen) */
+	/** Form template: text between the tags and the texts inside the tags (placeholders, options, buttons) */
 	private function cf7_template($tpl) {
 		$parts = preg_split('/(\[[^\[\]]*\])/', $tpl, -1, PREG_SPLIT_DELIM_CAPTURE);
 		foreach ($parts as $i => $p) {
@@ -450,7 +450,7 @@ class ALBA_Forms {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Einstellungen
+	 * Settings
 	 * ------------------------------------------------------------- */
 
 	public function register() {

@@ -315,14 +315,6 @@ msgstr ") und in Block-Einstellungen, die zusätzlich zu den Standardnamen (titl
 msgid ") remembers the language; after that there is never another redirect, and visitors can switch freely using the switcher. Search engines and other bots are never redirected; neither are requests with"
 msgstr ") merkt sich die Sprache; danach wird nie mehr weitergeleitet, und der Besucher kann über den Umschalter frei wechseln. Suchmaschinen und andere Bots werden nie weitergeleitet; mit"
 
-#: class-alba-admin.php:228
-msgid "), all others get one ("
-msgstr "), alle anderen bekommen ihn ("
-
-#: class-alba-admin.php:228
-msgid "). The locale controls the theme/plugin translation on the frontend (the language pack must be installed)."
-msgstr "). Die Locale steuert die Theme-/Plugin-Übersetzung im Frontend (Sprachpaket muss installiert sein)."
-
 #: class-alba-admin.php:408
 msgid "). The public service libretranslate.com requires an API key; your own servers often do not."
 msgstr "). Der öffentliche Dienst libretranslate.com benötigt einen API-Schlüssel; eigene Server oft nicht."
@@ -699,7 +691,7 @@ msgstr "Per Import (XLIFF oder maschinelle Vorübersetzung) am %s."
 msgid "Cache"
 msgstr "Cache"
 
-#: class-alba-xliff.php:918
+#: class-alba-bulk.php:171 class-alba-xliff.php:918
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -911,7 +903,7 @@ msgstr "Frist morgen: "
 msgid "Deadline:"
 msgstr "Frist:"
 
-#: class-alba-admin.php:230
+#: class-alba-admin.php:230 class-alba-dashboard.php:102
 msgid "Default"
 msgstr "Standard"
 
@@ -1191,17 +1183,13 @@ msgstr "GitHub-Repository (neuestes Release) oder URL einer JSON-Datei. Liegt do
 msgid "Glossary"
 msgstr "Glossar"
 
-#: class-alba-dashboard.php:84
+#: class-alba-dashboard.php:84 class-alba-glossary.php:218
 msgid "Glossary & Memory"
 msgstr "Glossar & Speicher"
 
 #: class-alba-glossary.php:241
 msgid "Glossary & Translation memory"
 msgstr "Glossar & Übersetzungsspeicher"
-
-#: class-alba-glossary.php:218
-msgid "Glossary &amp; Memory"
-msgstr "Glossar &amp; Speicher"
 
 #: class-alba-editor.php:1252
 msgid "Glossary:"
@@ -1619,6 +1607,10 @@ msgstr "In den Salient-Einstellungen wurde keine aktive Pfeil-Option gefunden. W
 msgid "No content found."
 msgstr "Keine Inhalte gefunden."
 
+#: class-alba-updater.php:193
+msgid "No details given."
+msgstr "Keine Angaben."
+
 #: class-alba-log.php:209
 msgid "No entries yet."
 msgstr "Noch keine Einträge."
@@ -1740,8 +1732,8 @@ msgid "On the first visit, visitors are redirected to the matching language base
 msgstr "Beim ersten Besuch wird anhand der Browsersprache in die passende Sprache weitergeleitet. Gibt es keine passende Sprache, bleibt die Seite unverändert."
 
 #: class-alba-areas.php:146
-msgid "On the frontend, search only ever shows content in the visitor's current language. With the first setting, the English search also finds words from translations in the side-by-side editor (title, excerpt, texts), not the German original text. The search form stays in the language because the address carries the language prefix ("
-msgstr "Die Suche zeigt im Frontend immer nur Inhalte der Sprache, in der der Besucher gerade ist. Mit der ersten Einstellung findet die englische Suche auch Wörter aus Übersetzungen im Links-rechts-Editor (Titel, Auszug, Texte), nicht den deutschen Originaltext. Das Suchformular bleibt in der Sprache, weil die Adresse den Sprachpräfix trägt ("
+msgid "On the frontend, search only ever shows content in the visitor's current language. With the first setting, a search in another language also finds words from translations in the side-by-side editor (title, excerpt, texts), not only the original text. The search form stays in the language because the address carries the language prefix ("
+msgstr "Die Suche zeigt im Frontend immer nur Inhalte der Sprache, in der der Besucher gerade ist. Mit der ersten Einstellung findet eine Suche in einer anderen Sprache auch Wörter aus Übersetzungen im Links-rechts-Editor (Titel, Auszug, Texte), nicht nur den Originaltext. Das Suchformular bleibt in der Sprache, weil die Adresse den Sprachpräfix trägt ("
 
 #: class-alba-i18n.php:43 class-alba-i18n.php:43
 msgid "Only affects the frontend, not this preview."
@@ -2203,6 +2195,10 @@ msgstr "Damit Besucher Änderungen sofort sehen."
 msgid "Source and target language are the same."
 msgstr "Quell- und Zielsprache sind gleich."
 
+#: class-alba-bulk.php:171
+msgid "Start"
+msgstr "Starten"
+
 #: class-alba-wpml.php:119
 msgid "Start import"
 msgstr "Import starten"
@@ -2307,10 +2303,6 @@ msgstr "Texte in den Einstellungen von Blöcken (auch ACF-Blöcke)"
 msgid "Texts that are already translated have been added, removed or repeated (e.g. another paragraph with identical wording). Please check the page and save to confirm. "
 msgstr "Es wurden Texte ergänzt, entfernt oder wiederholt, die bereits übersetzt vorliegen (z. B. ein weiterer Absatz mit gleichem Wortlaut). Bitte Seite prüfen und zum Bestätigen speichern. "
 
-#: class-alba-admin.php:228
-msgid "The"
-msgstr "Die"
-
 #: class-alba-wpml.php:107
 msgid "The \"Dry run\" only counts; nothing is written."
 msgstr "Mit „Probelauf“ wird nur gezählt, nichts geschrieben."
@@ -2318,6 +2310,10 @@ msgstr "Mit „Probelauf“ wird nur gezählt, nichts geschrieben."
 #: class-alba-roles.php:422
 msgid "The 300 most recently changed items are considered. Use the search to narrow it down further. Assignments (responsibility, status) can be found with the filters regardless of this."
 msgstr "Berücksichtigt werden die 300 zuletzt geänderten Inhalte. Mit der Suche grenzt du weiter ein. Aufträge (Zuständigkeit, Status) lassen sich über die Filter unabhängig davon finden."
+
+#: class-alba-admin.php:228
+msgid "The <strong>default language</strong> has no URL prefix (%1$s), all others get one (%2$s). The locale controls the theme/plugin translation on the frontend (the language pack must be installed)."
+msgstr "Die <strong>Standardsprache</strong> hat kein URL-Präfix (%1$s), alle anderen bekommen eines (%2$s). Das Gebietsschema steuert die Übersetzung von Theme und Plugins im Frontend (das Sprachpaket muss installiert sein)."
 
 #: class-alba-xliff.php:504
 msgid "The PHP extension \"DOM\" (libxml) is missing on the server. Please ask your host to enable it."
@@ -2907,10 +2903,6 @@ msgstr "zugeordnet"
 msgid "complete"
 msgstr "vollständig"
 
-#: class-alba-admin.php:228
-msgid "default language"
-msgstr "Standardsprache"
-
 #: class-alba-xliff.php:828
 msgid "detect from file"
 msgstr "aus der Datei erkennen"
@@ -2942,10 +2934,6 @@ msgstr "hat Zugriff auf die Seite „Übersetzungen“ und den Übersetzungsedit
 #: class-alba-xliff.php:566
 msgid "has its own translation post in this language or is itself a translation"
 msgstr "hat in dieser Sprache einen eigenen Übersetzungs-Beitrag oder ist selbst eine Übersetzung"
-
-#: class-alba-admin.php:228
-msgid "has no URL prefix ("
-msgstr "hat keinen URL-Präfix ("
 
 #: class-alba-editor.php:889
 msgid "hidden on the frontend"
@@ -2983,7 +2971,7 @@ msgstr "Inhalten (●) ist die Übersetzung schon im Frontend freigegeben. Neue 
 msgid "marked as outdated"
 msgstr "als veraltet markiert"
 
-#: class-alba-dashboard.php:412
+#: class-alba-dashboard.php:403 class-alba-dashboard.php:412
 msgid "missing"
 msgstr "fehlen"
 

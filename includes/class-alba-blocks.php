@@ -4,15 +4,15 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Block-Themes: Navigation (core/navigation und ihre Links) pro Sprache.
+ * Block themes: navigation (core/navigation and its links) per language.
  *
- * - Links auf Beiträge/Seiten/Begriffe zeigen auf die Übersetzung; ohne Übersetzung wird der Link ausgeblendet
- * - Link-Beschriftung: entspricht sie dem Titel des Ziels, wird der übersetzte Titel genutzt, sonst läuft sie
- *   als Zeichenfolge (Domain "Navigation") durch die String-Übersetzung (manuell, .po)
- * - Link auf die Startseite bekommt den Sprachpräfix
- * - Block "Seitenliste" (core/page-list) zeigt nur Seiten der aktuellen Sprache
- * - Optional: Sprachumschalter wird an die erste bzw. alle Navigationen angehängt
- * Es wird eine einzige Navigation für alle Sprachen verwendet; im Editor/REST bleibt alles unverändert.
+ * - Links to posts/pages/terms point to the translation; without a translation the link is hidden
+ * - Link label: if it matches the title of the target, the translated title is used, otherwise it goes
+ *   through string translation as a string (domain "Navigation") (manual, .po)
+ * - The link to the home page gets the language prefix
+ * - The "Page list" block (core/page-list) shows only pages of the current language
+ * - Optional: the language switcher is appended to the first or to all navigations
+ * A single navigation is used for all languages; in the editor/REST everything stays unchanged.
  */
 class ALBA_Blocks {
 	private $core;
@@ -139,7 +139,7 @@ class ALBA_Blocks {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Sprachumschalter in der Navigation
+	 * Language switcher in the navigation
 	 * ------------------------------------------------------------- */
 
 	public function append_switcher($content, $block = null, $instance = null) {

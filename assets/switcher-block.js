@@ -1,6 +1,6 @@
 /**
- * Alba – Block "Sprachumschalter" (Editor-Teil, ohne Build-Schritt).
- * Gerendert wird im Frontend serverseitig (PHP); hier nur Vorschau und Einstellungen.
+ * Alba – "Language switcher" block (editor part, no build step).
+ * Rendered on the frontend on the server (PHP); only preview and settings here.
  */
 (function (wp) {
 	'use strict';
@@ -135,7 +135,7 @@
 		save: function () { return null; }
 	};
 	registerBlockType('alba/switcher', def);
-	// Alter Blockname (bis 0.10.0): bestehende Blöcke in Inhalten bleiben gültig, im Inserter nicht mehr sichtbar.
+	// Old block name (until 0.10.0): existing blocks in content stay valid, no longer visible in the inserter.
 	var old = Object.assign({}, def, { supports: Object.assign({}, def.supports, { inserter: false }) });
 	registerBlockType('mads-multilang/switcher', old);
 })(window.wp);
