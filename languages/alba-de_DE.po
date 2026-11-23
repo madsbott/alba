@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Alba 0.11.3\n"
+"Project-Id-Version: Alba 0.11.4\n"
 "Report-Msgid-Bugs-To: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1047,7 +1047,7 @@ msgstr "Leere Felder erscheinen im Frontend im Original. Bearbeitest du den Orig
 msgid "Empty fields show the text of the original on the frontend. A different image replaces the file wherever the media item is output via WordPress functions (featured image, image block, theme, WPBakery)."
 msgstr "Leere Felder zeigen im Frontend den Text des Originals. Ein anderes Bild ersetzt die Datei, wo das Medium über WordPress-Funktionen (Beitragsbild, Bildblock, Theme, WPBakery) ausgegeben wird."
 
-#: class-mml-frontend.php:215
+#: class-mml-frontend.php:223
 msgid "Enabled by the filter mml_theme_dropdown_arrow."
 msgstr "Durch den Filter mml_theme_dropdown_arrow aktiviert."
 
@@ -1359,7 +1359,7 @@ msgstr "Beschriftung"
 msgid "Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:"
 msgstr "Beschriftungen, Platzhalter, Auswahlfelder, Schaltflächen, Fehlermeldungen, Bestätigung und Mail-Texte (Betreff und Inhalt). Erkannt:"
 
-#: class-mml-areas.php:513 class-mml-dashboard.php:205 class-mml-frontend.php:244
+#: class-mml-areas.php:513 class-mml-dashboard.php:205 class-mml-frontend.php:252
 msgid "Language"
 msgstr "Sprache"
 
@@ -1615,7 +1615,7 @@ msgstr "Sprachen neu"
 msgid "New translation assignment: "
 msgstr "Neuer Übersetzungsauftrag: "
 
-#: class-mml-frontend.php:211
+#: class-mml-frontend.php:219
 msgid "No active arrow option found in the Salient settings. Choose \"Always show\" if the arrow is wanted anyway. Related options found: %s"
 msgstr "In den Salient-Einstellungen wurde keine aktive Pfeil-Option gefunden. Wähle „Immer anzeigen“, wenn du den Pfeil trotzdem möchtest. Gefundene verwandte Optionen: %s"
 
@@ -2039,7 +2039,7 @@ msgstr "SEO-Titel"
 msgid "SEO title ("
 msgstr "SEO-Titel ("
 
-#: class-mml-frontend.php:198
+#: class-mml-frontend.php:206
 msgid "Salient option \"%s\" is on."
 msgstr "Die Salient-Option „%s“ ist aktiv."
 
@@ -2319,6 +2319,14 @@ msgstr "Berücksichtigt werden die 300 zuletzt geänderten Inhalte. Mit der Such
 msgid "The PHP extension \"DOM\" (libxml) is missing on the server. Please ask your host to enable it."
 msgstr "Auf dem Server fehlt die PHP-Erweiterung „DOM“ (libxml). Bitte beim Hoster aktivieren lassen."
 
+#: class-mml-frontend.php:197
+msgid "The Salient option \"header-dropdown-arrows\" is not switched off (value: %s)."
+msgstr "Die Salient-Option „header-dropdown-arrows“ ist nicht ausgeschaltet (Wert: %s)."
+
+#: class-mml-frontend.php:194
+msgid "The Salient option \"header-dropdown-arrows\" is switched off."
+msgstr "Die Salient-Option „header-dropdown-arrows“ ist ausgeschaltet."
+
 #: class-mml-editor.php:1401
 msgid "The content contains no translatable text."
 msgstr "Der Inhalt enthält keinen übersetzbaren Text."
@@ -2431,7 +2439,7 @@ msgstr "Die Zielsprache"
 msgid "The text is too long for MyMemory. Please translate it section by section."
 msgstr "Der Text ist für MyMemory zu lang. Bitte abschnittsweise übersetzen."
 
-#: class-mml-frontend.php:217
+#: class-mml-frontend.php:225
 msgid "The theme could not be asked about arrows. Choose \"Always show\" if the arrow is wanted."
 msgstr "Das Theme konnte nicht nach Pfeilen gefragt werden. Wähle „Immer anzeigen“, wenn du den Pfeil möchtest."
 

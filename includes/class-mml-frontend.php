@@ -183,11 +183,19 @@ class MML_Frontend {
 		if (strpos($items_html, 'sf-sub-indicator') !== false) {
 			return [true, __('Other menu items with a submenu already show an arrow.', 'alba')];
 		}
-		if ($items_html !== '' && preg_match('/menu-item-has-children/', $items_html)) {
+		if ($items_html !== '' && !$this->is_salient() && preg_match('/menu-item-has-children/', $items_html)) {
 			return [false, __('Other menu items with a submenu show no arrow.', 'alba')];
 		}
 		if ($this->is_salient()) {
 			$o = function_exists('get_nectar_theme_options') ? get_nectar_theme_options() : get_option('salient_redux', []);
+			if (is_array($o) && isset($o['header-dropdown-arrows']) && is_scalar($o['header-dropdown-arrows'])) {
+				$val = strtolower((string) $o['header-dropdown-arrows']);
+				if (in_array($val, ['', '0', 'off', 'hide', 'none', 'false', 'no', 'disabled'], true)) {
+					return [false, __('The Salient option "header-dropdown-arrows" is switched off.', 'alba')];
+				}
+				/* translators: %s: value of a Salient option */
+				return [true, sprintf(__('The Salient option "header-dropdown-arrows" is not switched off (value: %s).', 'alba'), $val)];
+			}
 			if (is_array($o)) {
 				foreach ($o as $k => $v) {
 					if (!is_string($k) || !preg_match('/arrow/i', $k) || preg_match('/slider|carousel|lightbox|back-?to|woo|portfolio|blog|related|next|prev|scroll/i', $k)) {
