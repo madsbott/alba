@@ -4,9 +4,10 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.12.1
+Stable tag: 0.12.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Donate link: https://github.com/sponsors/madsbott
 
 Lightweight multilingual plugin with language URLs, translation editor, XLIFF, translator role, per-language sitemaps and WPML import.
 
@@ -79,6 +80,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 
 == Changelog ==
 
+= 0.12.2 =
+* Optional donation link (GitHub Sponsors) in the plugin list and readme
+
 = 0.12.1 =
 * Fixed a few labels that were not translatable ("Default", "missing", "Remove", "Start", "Cancel")
 * Settings: the URL prefix explanation is one whole translatable sentence
@@ -135,6 +139,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.12.2 =
+Adds an optional donation link.
 
 = 0.12.1 =
 Small text and translation fixes.

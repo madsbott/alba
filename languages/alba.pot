@@ -121,7 +121,7 @@ msgstr ""
 msgid " remains and also contains the default language and separate translation posts; duplicate URLs do no harm."
 msgstr ""
 
-#: class-alba-dashboard.php:430
+#: class-alba-dashboard.php:439
 msgid " strings captured. Without translation: "
 msgstr ""
 
@@ -281,7 +281,7 @@ msgstr ""
 msgid "(overdue)"
 msgstr ""
 
-#: class-alba-dashboard.php:231
+#: class-alba-dashboard.php:240
 msgid "(very many items), it continues on the next visit."
 msgstr ""
 
@@ -301,7 +301,7 @@ msgstr ""
 msgid "+ Create translation"
 msgstr ""
 
-#: class-alba-dashboard.php:119
+#: class-alba-dashboard.php:128
 msgid ", function"
 msgstr ""
 
@@ -309,7 +309,7 @@ msgstr ""
 msgid ", languages:"
 msgstr ""
 
-#: class-alba-dashboard.php:119
+#: class-alba-dashboard.php:128
 msgid ", or automatically appended to the menu or block navigation (Settings)."
 msgstr ""
 
@@ -321,7 +321,7 @@ msgstr ""
 msgid ". Pages with \"noindex\" (Yoast, Rank Math) and password-protected content are not included."
 msgstr ""
 
-#: class-alba-dashboard.php:73
+#: class-alba-dashboard.php:82
 msgid ". Recommended: choose a structure under Settings > Permalinks."
 msgstr ""
 
@@ -353,15 +353,15 @@ msgstr ""
 msgid "90 days"
 msgstr ""
 
-#: class-alba-dashboard.php:412
+#: class-alba-dashboard.php:421
 msgid ": no translation yet. \"Total\" counts originals and separate translation posts, including drafts and private content. At most"
 msgstr ""
 
-#: class-alba-dashboard.php:412
+#: class-alba-dashboard.php:421
 msgid ": saved in the editor, not yet visible on the frontend."
 msgstr ""
 
-#: class-alba-dashboard.php:412
+#: class-alba-dashboard.php:421
 msgid ": the original was changed after the last translation."
 msgstr ""
 
@@ -427,7 +427,7 @@ msgstr ""
 msgid "Add language"
 msgstr ""
 
-#: class-alba-dashboard.php:76
+#: class-alba-dashboard.php:85
 msgid "Add more languages"
 msgstr ""
 
@@ -447,7 +447,7 @@ msgstr ""
 msgid "Additional translatable texts"
 msgstr ""
 
-#: class-alba-dashboard.php:205
+#: class-alba-dashboard.php:214
 msgid "Affected content"
 msgstr ""
 
@@ -635,7 +635,7 @@ msgstr ""
 msgid "Besides the page text, these texts appear as separate rows in the translation editor."
 msgstr ""
 
-#: class-alba-dashboard.php:119
+#: class-alba-dashboard.php:128
 msgid "Block \"Language switcher\" (widgets), shortcode"
 msgstr ""
 
@@ -687,7 +687,7 @@ msgstr ""
 msgid "Case sensitive"
 msgstr ""
 
-#: class-alba-dashboard.php:121
+#: class-alba-dashboard.php:130
 msgid "Categories, tags & co.: language per term, translations in the edit form. In the editor, the selection only shows terms in the post's language."
 msgstr ""
 
@@ -763,7 +763,7 @@ msgstr ""
 msgid "Click \"Save and scan now\". Alba visits your site in the default language and collects the texts."
 msgstr ""
 
-#: class-alba-dashboard.php:94
+#: class-alba-dashboard.php:103
 msgid "Code"
 msgstr ""
 
@@ -783,7 +783,7 @@ msgstr ""
 msgid "Comments separated by language."
 msgstr ""
 
-#: class-alba-bulk.php:182 class-alba-dashboard.php:382 class-alba-log.php:206
+#: class-alba-bulk.php:182 class-alba-dashboard.php:391 class-alba-log.php:206
 msgid "Content"
 msgstr ""
 
@@ -791,7 +791,7 @@ msgstr ""
 msgid "Content ID"
 msgstr ""
 
-#: class-alba-dashboard.php:403
+#: class-alba-dashboard.php:412
 msgid "Content for which there is no translation in this language yet"
 msgstr ""
 
@@ -815,7 +815,7 @@ msgstr ""
 msgid "Copy original"
 msgstr ""
 
-#: class-alba-dashboard.php:231
+#: class-alba-dashboard.php:240
 msgid "Counted are titles, excerpts, SEO texts and all text sections (including alt texts, block and field texts) of published originals that are not yet translated into this language. Content with its own translation post is not counted."
 msgstr ""
 
@@ -879,7 +879,7 @@ msgstr ""
 msgid "Deadline:"
 msgstr ""
 
-#: class-alba-admin.php:230 class-alba-dashboard.php:102
+#: class-alba-admin.php:230 class-alba-dashboard.php:111
 msgid "Default"
 msgstr ""
 
@@ -1103,7 +1103,7 @@ msgstr ""
 msgid "For custom fields and fields from other plugins. On the frontend the text is replaced by the translation when it is read ("
 msgstr ""
 
-#: class-alba-dashboard.php:123
+#: class-alba-dashboard.php:132
 msgid "For developers"
 msgstr ""
 
@@ -1159,7 +1159,7 @@ msgstr ""
 msgid "Glossary"
 msgstr ""
 
-#: class-alba-dashboard.php:84 class-alba-glossary.php:218
+#: class-alba-dashboard.php:93 class-alba-glossary.php:218
 msgid "Glossary & Memory"
 msgstr ""
 
@@ -1191,7 +1191,7 @@ msgstr ""
 msgid "Hide on the frontend"
 msgstr ""
 
-#: class-alba-dashboard.php:94
+#: class-alba-dashboard.php:103
 msgid "Home page"
 msgstr ""
 
@@ -1223,7 +1223,7 @@ msgstr ""
 msgid "Import / Export"
 msgstr ""
 
-#: class-alba-dashboard.php:83 class-alba-po.php:34
+#: class-alba-dashboard.php:92 class-alba-po.php:34
 msgid "Import / Export (.po)"
 msgstr ""
 
@@ -1247,7 +1247,7 @@ msgstr ""
 msgid "In progress"
 msgstr ""
 
-#: class-alba-dashboard.php:120
+#: class-alba-dashboard.php:129
 msgid "In the editor, box \"Language & Translations\": translate in the side-by-side editor (red ⟳ in the language code = original changed), or create a separate post or link one. The lists have the \"Languages\" column and the language filter."
 msgstr ""
 
@@ -1319,7 +1319,7 @@ msgstr ""
 msgid "Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:"
 msgstr ""
 
-#: class-alba-areas.php:515 class-alba-dashboard.php:205 class-alba-frontend.php:253
+#: class-alba-areas.php:515 class-alba-dashboard.php:214 class-alba-frontend.php:253
 msgid "Language"
 msgstr ""
 
@@ -1351,7 +1351,7 @@ msgstr ""
 msgid "Language of this term. You create translations after saving."
 msgstr ""
 
-#: class-alba-admin.php:210 class-alba-admin.php:313 class-alba-dashboard.php:119
+#: class-alba-admin.php:210 class-alba-admin.php:313 class-alba-dashboard.php:128
 msgid "Language switcher"
 msgstr ""
 
@@ -1435,11 +1435,11 @@ msgstr ""
 msgid "List of links"
 msgstr ""
 
-#: class-alba-admin.php:230 class-alba-dashboard.php:94
+#: class-alba-admin.php:230 class-alba-dashboard.php:103
 msgid "Locale"
 msgstr ""
 
-#: class-alba-dashboard.php:85 class-alba-editor.php:1346 class-alba-log.php:124
+#: class-alba-dashboard.php:94 class-alba-editor.php:1346 class-alba-log.php:124
 msgid "Log"
 msgstr ""
 
@@ -1507,7 +1507,7 @@ msgstr ""
 msgid "More field names"
 msgstr ""
 
-#: class-alba-dashboard.php:222
+#: class-alba-dashboard.php:231
 msgid "Most open texts:"
 msgstr ""
 
@@ -1527,7 +1527,7 @@ msgstr ""
 msgid "MyMemory: email"
 msgstr ""
 
-#: class-alba-admin.php:230 class-alba-dashboard.php:94
+#: class-alba-admin.php:230 class-alba-dashboard.php:103
 msgid "Name"
 msgstr ""
 
@@ -1615,7 +1615,7 @@ msgstr ""
 msgid "No string tables found."
 msgstr ""
 
-#: class-alba-dashboard.php:441
+#: class-alba-dashboard.php:450
 msgid "No strings captured yet."
 msgstr ""
 
@@ -1627,7 +1627,7 @@ msgstr ""
 msgid "No texts yet. Choose your theme under \"Find texts of your theme and plugins\" above and click \"Save and scan now\"."
 msgstr ""
 
-#: class-alba-dashboard.php:375
+#: class-alba-dashboard.php:384
 msgid "No translatable content types selected."
 msgstr ""
 
@@ -1723,7 +1723,7 @@ msgstr ""
 msgid "Only lowercase letters, numbers and hyphens."
 msgstr ""
 
-#: class-alba-dashboard.php:76
+#: class-alba-dashboard.php:85
 msgid "Only one language has been added."
 msgstr ""
 
@@ -1739,15 +1739,15 @@ msgstr ""
 msgid "Only:"
 msgstr ""
 
-#: class-alba-dashboard.php:205
+#: class-alba-dashboard.php:214
 msgid "Open"
 msgstr ""
 
-#: class-alba-dashboard.php:439 class-alba-dashboard.php:441
+#: class-alba-dashboard.php:448 class-alba-dashboard.php:450
 msgid "Open strings"
 msgstr ""
 
-#: class-alba-dashboard.php:203
+#: class-alba-dashboard.php:212
 msgid "Open texts"
 msgstr ""
 
@@ -1799,7 +1799,7 @@ msgstr ""
 msgid "Overdue: "
 msgstr ""
 
-#: class-alba-dashboard.php:30 class-alba-dashboard.php:30 class-alba-dashboard.php:34
+#: class-alba-dashboard.php:39 class-alba-dashboard.php:39 class-alba-dashboard.php:43
 msgid "Overview"
 msgstr ""
 
@@ -1811,7 +1811,7 @@ msgstr ""
 msgid "Parent theme: %s"
 msgstr ""
 
-#: class-alba-dashboard.php:231
+#: class-alba-dashboard.php:240
 msgid "Partially calculated"
 msgstr ""
 
@@ -1863,7 +1863,7 @@ msgstr ""
 msgid "Post missing"
 msgstr ""
 
-#: class-alba-dashboard.php:120
+#: class-alba-dashboard.php:129
 msgid "Posts & pages"
 msgstr ""
 
@@ -1875,7 +1875,7 @@ msgstr ""
 msgid "Pre-translate empty fields automatically"
 msgstr ""
 
-#: class-alba-dashboard.php:73
+#: class-alba-dashboard.php:82
 msgid "Pretty permalinks are not active. Language URLs then only work as"
 msgstr ""
 
@@ -1891,7 +1891,7 @@ msgstr ""
 msgid "Process: export as"
 msgstr ""
 
-#: class-alba-dashboard.php:205
+#: class-alba-dashboard.php:214
 msgid "Progress"
 msgstr ""
 
@@ -1907,11 +1907,11 @@ msgstr ""
 msgid "Published (bulk action)"
 msgstr ""
 
-#: class-alba-dashboard.php:79
+#: class-alba-dashboard.php:88
 msgid "Quick access"
 msgstr ""
 
-#: class-alba-dashboard.php:116
+#: class-alba-dashboard.php:125
 msgid "Quick help"
 msgstr ""
 
@@ -2043,7 +2043,7 @@ msgstr ""
 msgid "Save translations"
 msgstr ""
 
-#: class-alba-dashboard.php:400
+#: class-alba-dashboard.php:409
 msgid "Saved in the editor but not yet published on the frontend"
 msgstr ""
 
@@ -2099,7 +2099,7 @@ msgstr ""
 msgid "Set language for social media previews ("
 msgstr ""
 
-#: class-alba-admin.php:28 class-alba-dashboard.php:81 class-alba-wpml.php:123
+#: class-alba-admin.php:28 class-alba-dashboard.php:90 class-alba-wpml.php:123
 msgid "Settings"
 msgstr ""
 
@@ -2135,7 +2135,7 @@ msgstr ""
 msgid "Show translators"
 msgstr ""
 
-#: class-alba-dashboard.php:88
+#: class-alba-dashboard.php:97
 msgid "Site Editor (navigation, switcher block)"
 msgstr ""
 
@@ -2191,7 +2191,7 @@ msgstr ""
 msgid "String translations (strings)"
 msgstr ""
 
-#: class-alba-dashboard.php:82 class-alba-dashboard.php:113 class-alba-forms.php:490
+#: class-alba-dashboard.php:91 class-alba-dashboard.php:122 class-alba-forms.php:490
 msgid "Strings"
 msgstr ""
 
@@ -2215,6 +2215,10 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
+#: class-alba-dashboard.php:32
+msgid "Support Alba"
+msgstr ""
+
 #: class-alba-admin.php:428
 msgid "Supported: WP Rocket, LiteSpeed Cache (including the LiteSpeed server cache, e.g. on Hostinger), W3 Total Cache, WP Super Cache, WP Fastest Cache, Breeze, SG Optimizer and Nginx Helper. The entire cache is also cleared when you change language settings or strings. Caches that cannot clear individual pages (and the LiteSpeed server cache without the plugin) are always cleared completely."
 msgstr ""
@@ -2231,7 +2235,7 @@ msgstr ""
 msgid "Target language"
 msgstr ""
 
-#: class-alba-dashboard.php:121 class-alba-wpml.php:215 class-alba-wpml.php:277
+#: class-alba-dashboard.php:130 class-alba-wpml.php:215 class-alba-wpml.php:277
 msgid "Taxonomies"
 msgstr ""
 
@@ -2357,7 +2361,7 @@ msgstr ""
 msgid "The list of collected texts is full. Use \"Delete untranslated entries\" at the bottom and scan again with fewer sources (for example without \"WordPress core\")."
 msgstr ""
 
-#: class-alba-dashboard.php:412
+#: class-alba-dashboard.php:421
 msgid "The number per language covers content in this language and content translated in the side-by-side editor (published)."
 msgstr ""
 
@@ -2369,7 +2373,7 @@ msgstr ""
 msgid "The original has been changed since the last translation."
 msgstr ""
 
-#: class-alba-dashboard.php:397
+#: class-alba-dashboard.php:406
 msgid "The original was changed after the last translation"
 msgstr ""
 
@@ -2427,7 +2431,7 @@ msgstr ""
 msgid "The user may translate into these languages. Nothing selected: all. Does not apply to administrators."
 msgstr ""
 
-#: class-alba-dashboard.php:122
+#: class-alba-dashboard.php:131
 msgid "Theme texts"
 msgstr ""
 
@@ -2497,7 +2501,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: class-alba-dashboard.php:386 class-alba-xliff.php:886
+#: class-alba-dashboard.php:395 class-alba-xliff.php:886
 msgid "Total"
 msgstr ""
 
@@ -2549,7 +2553,7 @@ msgstr ""
 msgid "Translate: "
 msgstr ""
 
-#: class-alba-dashboard.php:205
+#: class-alba-dashboard.php:214
 msgid "Translated"
 msgstr ""
 
@@ -2585,7 +2589,7 @@ msgstr ""
 msgid "Translation started"
 msgstr ""
 
-#: class-alba-dashboard.php:110
+#: class-alba-dashboard.php:119
 msgid "Translation status"
 msgstr ""
 
@@ -2689,7 +2693,7 @@ msgstr ""
 msgid "Users who may only translate."
 msgstr ""
 
-#: class-alba-dashboard.php:70
+#: class-alba-dashboard.php:79
 msgid "Version"
 msgstr ""
 
@@ -2809,7 +2813,7 @@ msgstr ""
 msgid "WordPress core (many texts, e.g. \"Search\", \"Read more\")"
 msgstr ""
 
-#: class-alba-dashboard.php:86
+#: class-alba-dashboard.php:95
 msgid "XLIFF (Export / Import)"
 msgstr ""
 
@@ -2875,7 +2879,7 @@ msgstr ""
 msgid "detect from file"
 msgstr ""
 
-#: class-alba-dashboard.php:412
+#: class-alba-dashboard.php:421
 msgid "entries per type are counted, and for \"outdated\" at most"
 msgstr ""
 
@@ -2939,7 +2943,7 @@ msgstr ""
 msgid "marked as outdated"
 msgstr ""
 
-#: class-alba-dashboard.php:403 class-alba-dashboard.php:412
+#: class-alba-dashboard.php:412 class-alba-dashboard.php:421
 msgid "missing"
 msgstr ""
 
@@ -2971,7 +2975,7 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: class-alba-dashboard.php:400 class-alba-dashboard.php:412
+#: class-alba-dashboard.php:409 class-alba-dashboard.php:421
 msgid "not published"
 msgstr ""
 
@@ -2979,7 +2983,7 @@ msgstr ""
 msgid "nothing open"
 msgstr ""
 
-#: class-alba-dashboard.php:214 class-alba-wpml.php:111
+#: class-alba-dashboard.php:223 class-alba-wpml.php:111
 msgid "of"
 msgstr ""
 
@@ -2987,11 +2991,11 @@ msgstr ""
 msgid "only with open texts"
 msgstr ""
 
-#: class-alba-dashboard.php:122
+#: class-alba-dashboard.php:131
 msgid "or gettext scan under Strings."
 msgstr ""
 
-#: class-alba-dashboard.php:397 class-alba-dashboard.php:412 class-alba-wpml.php:314
+#: class-alba-dashboard.php:406 class-alba-dashboard.php:421 class-alba-wpml.php:314
 msgid "outdated"
 msgstr ""
 

@@ -23,6 +23,15 @@ class ALBA_Dashboard {
 		add_action('admin_menu', [$this, 'menu'], 9);
 		add_action('admin_init', [$this, 'legacy_redirect']);
 		add_filter('plugin_action_links_' . plugin_basename(ALBA_FILE), [$this, 'action_links']);
+		add_filter('plugin_row_meta', [$this, 'support_link'], 20, 2);
+	}
+
+	/** Discreet donation link in the plugin list (below the description, no notices) */
+	public function support_link($meta, $file) {
+		if ($file === plugin_basename(ALBA_FILE)) {
+			$meta[] = '<a href="https://github.com/sponsors/madsbott" target="_blank" rel="noopener">' . esc_html__('Support Alba', 'alba') . '</a>';
+		}
+		return $meta;
 	}
 
 	public function menu() {

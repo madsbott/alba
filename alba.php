@@ -3,7 +3,7 @@
  * Plugin Name: Alba
  * Plugin URI: https://www.madsbott.com
  * Description: Lightweight multilingual plugin: language URLs, translation editor, XLIFF, translator role, per-language sitemaps and WPML import.
- * Version: 0.12.1
+ * Version: 0.12.2
  * Author: Mads
  * Author URI: https://www.madsbott.com
  * License: GPL-2.0-or-later
@@ -32,7 +32,7 @@ if (defined('MML_VERSION')) {
 	return;
 }
 
-define('ALBA_VERSION', '0.12.1');
+define('ALBA_VERSION', '0.12.2');
 define('ALBA_FILE', __FILE__);
 define('ALBA_DIR', plugin_dir_path(__FILE__));
 define('ALBA_URL', plugin_dir_url(__FILE__));
