@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Alba 0.11.5\n"
+"Project-Id-Version: Alba 0.11.6\n"
 "Report-Msgid-Bugs-To: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2256,7 +2256,7 @@ msgid "Term missing"
 msgstr ""
 
 #: class-mml-glossary.php:271
-msgid "Term, e.g. Madsbott Studio"
+msgid "Term, e.g. Acme Studio"
 msgstr ""
 
 #: class-mml-wpml.php:121

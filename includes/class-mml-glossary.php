@@ -268,7 +268,7 @@ class MML_Glossary {
 						<div id="mml-gl-rows">
 						<?php foreach ($entries as $i => $e) : $keep = !isset($e['keep']) || !empty($e['keep']); ?>
 							<div class="mml-gl-row<?php echo $keep ? ' is-keep' : ''; ?>">
-								<div><input type="text" name="gl[<?php echo (int) $i; ?>][term]" value="<?php echo esc_attr(isset($e['term']) ? $e['term'] : ''); ?>" placeholder="<?php echo esc_attr__('Term, e.g. Madsbott Studio', 'alba'); ?>"></div>
+								<div><input type="text" name="gl[<?php echo (int) $i; ?>][term]" value="<?php echo esc_attr(isset($e['term']) ? $e['term'] : ''); ?>" placeholder="<?php echo esc_attr__('Term, e.g. Acme Studio', 'alba'); ?>"></div>
 								<div>
 									<select name="gl[<?php echo (int) $i; ?>][mode]" class="mml-gl-mode">
 										<option value="keep" <?php selected($keep); ?>><?php echo esc_html__('Keep unchanged', 'alba'); ?></option>
