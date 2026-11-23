@@ -3,6 +3,8 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- Table names come from $wpdb or a fixed helper; every value goes through $wpdb->prepare().
+
 /**
  * WPML-Importer: übernimmt bestehende WPML-Daten aus den Tabellen icl_* (auch bei deaktiviertem oder gelöschtem WPML-Plugin,
  * solange die Tabellen noch in der Datenbank sind).
@@ -94,7 +96,7 @@ class MML_Wpml {
 
 	public function page() {
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$a = $this->analyse();
 		$s = $this->settings();

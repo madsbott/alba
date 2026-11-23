@@ -328,7 +328,7 @@ class MML_Glossary {
 	public function handle_save() {
 		check_admin_referer('mml_glossary');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each term is sanitised in the loop below.
 		$in = isset($_POST['gl']) && is_array($_POST['gl']) ? wp_unslash($_POST['gl']) : [];
@@ -365,7 +365,7 @@ class MML_Glossary {
 	public function handle_tm() {
 		check_admin_referer('mml_tm');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$do = isset($_GET['do']) ? sanitize_key($_GET['do']) : '';
 		if ($do === 'clear') {

@@ -3,6 +3,8 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- Table names come from $wpdb or a fixed helper; every value goes through $wpdb->prepare().
+
 /**
  * Bereiche pro Sprache: Suche, Kommentare, Widgets/Blöcke und Menüs (z. B. Footer-Menüs).
  *
@@ -252,14 +254,14 @@ class MML_Areas {
 	public function copy_menu() {
 		check_admin_referer('mml_menu_copy');
 		if (!current_user_can('edit_theme_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$c = $this->core;
 		$kind = isset($_GET['kind']) && $_GET['kind'] === 'nav' ? 'nav' : 'menu';
 		$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 		$lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
 		if (!isset($c->langs[$lang]) || $lang === $c->default || !$this->menu_exists($kind, $id)) {
-			wp_die(__('Invalid input.', 'alba'));
+			wp_die(esc_html__('Invalid input.', 'alba'));
 		}
 		$suffix = ' (' . strtoupper($lang) . ')';
 		if ($kind === 'menu') {

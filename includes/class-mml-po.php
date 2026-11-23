@@ -129,12 +129,12 @@ class MML_Po {
 	public function export() {
 		check_admin_referer('mml_po_export');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
 		$dom = isset($_GET['domain']) ? sanitize_text_field(wp_unslash($_GET['domain'])) : '';
 		if ($lang !== '' && !isset($this->core->langs[$lang])) {
-			wp_die(__('Unknown language.', 'alba'));
+			wp_die(esc_html__('Unknown language.', 'alba'));
 		}
 
 		$po = $this->build($lang, $dom);
@@ -230,7 +230,7 @@ class MML_Po {
 	public function import() {
 		check_admin_referer('mml_po_import');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$c = $this->core;
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';

@@ -558,15 +558,17 @@ class MML_Admin {
 			$label = strtoupper($code);
 			if (isset($tr[$code])) {
 				$old = ($c->editor && $code !== $c->default && $c->editor->outdated_real($tr[$code]));
-				echo '<a class="mml-pill mml-has' . ($old ? ' mml-old' : '') . '" href="' . esc_url(get_edit_post_link($tr[$code])) . '" title="' . esc_attr($l['name'] . ': ' . get_the_title($tr[$code]) . ($old ? __(' – original changed, update translation', 'alba') : '')) . '">' . esc_html($label) . ($old ? ' <span class="dashicons dashicons-update"></span>' : '') . '</a>';
+								echo '<a class="mml-pill mml-has' . ($old ? ' mml-old' : '') . '" href="' . esc_url(get_edit_post_link($tr[$code])) . '" title="' . esc_attr($l['name'] . ': ' . get_the_title($tr[$code]) . ($old ? __(' – original changed, update translation', 'alba') : '')) . '">' . esc_html($label) . ($old ? ' <span class="dashicons dashicons-update"></span>' : '') . '</a>';
 			} else {
 				$st = $c->editor ? $c->editor->state($post_id, $code) : '';
 				$old = ($st !== '' && $c->editor->outdated($post_id, $code));
 				$upd = $old ? ' <span class="dashicons dashicons-update"></span>' : '';
 				$note = $old ? __(' – original changed, update translation', 'alba') : '';
 				if ($st === 'on') {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $upd is fixed markup, everything else is escaped.
 					echo '<a class="mml-pill mml-has' . ($old ? ' mml-old' : '') . '" href="' . esc_url($c->editor->url($post_id, $code)) . '" title="' . esc_attr($l['name'] . __(': translated (editor)', 'alba') . $note) . '">' . esc_html($label) . $upd . '</a>';
 				} elseif ($st === 'draft') {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $upd is fixed markup, everything else is escaped.
 					echo '<a class="mml-pill mml-draft' . ($old ? ' mml-old' : '') . '" href="' . esc_url($c->editor->url($post_id, $code)) . '" title="' . esc_attr($l['name'] . __(': translation not published yet', 'alba') . $note) . '">' . esc_html($label) . $upd . '</a>';
 				} else {
 					echo '<a class="mml-pill mml-add" href="' . esc_url($c->editor ? $c->editor->url($post_id, $code) : $this->new_url($post_id, $code)) . '" title="' . esc_attr(__('Translate: ', 'alba') . $l['name']) . '">+ ' . esc_html($label) . '</a>';
@@ -743,7 +745,7 @@ class MML_Admin {
 
 		$src = $id ? get_post($id) : null;
 		if (!$src || !isset($c->langs[$lang]) || !$c->is_translatable($src->post_type) || !current_user_can('edit_post', $id)) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 
 		$existing = $c->translation($id, $lang, false);

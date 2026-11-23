@@ -331,7 +331,7 @@ To revise:
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
 		check_admin_referer('mml_wf_' . $id . '_' . $lang);
 		if (!current_user_can('edit_others_posts') || !$this->core->roles->can_translate($id, $lang)) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$uid = isset($_POST['to']) ? (int) $_POST['to'] : 0;
 		$due = isset($_POST['due']) ? sanitize_text_field(wp_unslash($_POST['due'])) : '';
@@ -344,7 +344,7 @@ To revise:
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
 		check_admin_referer('mml_wf_' . $id . '_' . $lang);
 		if (!$this->core->roles->can_translate($id, $lang) || !$this->core->roles->can_publish($id)) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$w = $this->get($id, $lang);
 		$w['st'] = 'open';
@@ -372,7 +372,7 @@ To revise:
 		}
 		?>
 		<div class="mml-wf" style="background:#fff;border:1px solid #dcdcde;border-left:4px solid <?php echo $w['st'] === 'review' ? '#dba617' : '#2271b1'; ?>;padding:10px 14px;margin:12px 0;max-width:1100px">
-			<strong><?php echo esc_html__('Assignment', 'alba'); ?></strong> <?php echo esc_html__('· Assigned to:', 'alba'); ?> <strong><?php echo esc_html($u ? $u->display_name : __('nobody', 'alba')); ?></strong> <?php echo esc_html__('· Deadline:', 'alba'); ?> <strong<?php echo $overdue ? ' style="color:#b32d2e"' : ''; ?>><?php echo $w['due'] !== '' ? esc_html(wp_date('d.m.Y', strtotime($w['due'] . ' 12:00:00'))) . ($overdue ? __(' (overdue)', 'alba') : '') : __('none', 'alba'); ?></strong>
+			<strong><?php echo esc_html__('Assignment', 'alba'); ?></strong> <?php echo esc_html__('· Assigned to:', 'alba'); ?> <strong><?php echo esc_html($u ? $u->display_name : esc_html__('nobody', 'alba')); ?></strong> <?php echo esc_html__('· Deadline:', 'alba'); ?> <strong<?php echo $overdue ? ' style="color:#b32d2e"' : ''; ?>><?php echo $w['due'] !== '' ? esc_html(wp_date('d.m.Y', strtotime($w['due'] . ' 12:00:00'))) . ($overdue ? esc_html__(' (overdue)', 'alba') : '') : esc_html__('none', 'alba'); ?></strong>
 			<?php if ($w['st'] !== '') : ?> <?php echo esc_html__('· Status:', 'alba'); ?> <strong><?php echo esc_html($this->status_label($w['st'])); ?></strong><?php endif; ?>
 			<?php if ($w['st'] === 'review') : ?>
 				<?php echo $can_pub ? '<br><span class="description">' . esc_html__('Review, correct if necessary, then tick "Show on the frontend" and save. This completes the assignment.', 'alba') . '</span>' : '<br><span class="description">' . esc_html__('Submitted. An editor will review the translation.', 'alba') . '</span>'; ?>

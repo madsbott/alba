@@ -390,7 +390,8 @@ class MML_Terms {
 
 	public function field_add($taxonomy) {
 		wp_nonce_field('mml_term_new', 'mml_term_nonce');
-		echo '<div class="form-field"><label for="mml_term_lang">' . esc_html__('Language', 'alba') . '</label>' . $this->lang_select($this->core->default) . '<p>' . esc_html__('Language of this term. You create translations after saving.', 'alba') . '</p></div>';
+		echo '<div class="form-field"><label for="mml_term_lang">' . esc_html__('Language', 'alba') . '</label>' . $this->lang_select($this->core->default) . '<p>'  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- lang_select() returns escaped markup.
+ . esc_html__('Language of this term. You create translations after saving.', 'alba') . '</p></div>';
 	}
 
 	public function field_edit($term, $taxonomy) {
@@ -399,7 +400,7 @@ class MML_Terms {
 		$cur = $this->lang($term->term_id);
 		$tr = $this->translations($term->term_id);
 
-		echo '<tr class="form-field"><th scope="row"><label for="mml_term_lang">' . esc_html__('Language', 'alba') . '</label></th><td>' . $this->lang_select($cur) . '</td></tr>';
+		echo '<tr class="form-field"><th scope="row"><label for="mml_term_lang">' . esc_html__('Language', 'alba') . '</label></th><td>' . $this->lang_select($cur) . '</td></tr>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- lang_select() returns escaped markup.
 		echo '<tr class="form-field"><th scope="row">' . esc_html__('Translations', 'alba') . '</th><td>';
 		foreach ($c->langs as $code => $l) {
 			if ($code === $cur) {
@@ -410,7 +411,7 @@ class MML_Terms {
 				$t = get_term($tr[$code]);
 				echo '<a href="' . esc_url(get_edit_term_link($tr[$code], $taxonomy)) . '">' . esc_html($t && !is_wp_error($t) ? $t->name : '#' . $tr[$code]) . '</a>';
 			} else {
-				echo '<a class="button button-small" href="' . esc_url($this->new_url($term->term_id, $code, false)) . __('">+ Create translation</a>', 'alba');
+				echo '<a class="button button-small" href="' . esc_url($this->new_url($term->term_id, $code, false)) . '">' . esc_html__('+ Create translation', 'alba') . '</a>';
 			}
 			echo '</p>';
 		}
@@ -450,11 +451,11 @@ class MML_Terms {
 
 		$t = $id ? get_term($id) : null;
 		if (!$t || is_wp_error($t) || !in_array($t->taxonomy, $this->core->taxonomies, true) || !isset($this->core->langs[$lang])) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$tax = get_taxonomy($t->taxonomy);
 		if (!$tax || !current_user_can($tax->cap->edit_terms)) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		@set_time_limit(120);
 		$r = $this->duplicate($id, $lang, $auto);

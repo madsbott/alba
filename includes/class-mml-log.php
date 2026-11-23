@@ -3,6 +3,8 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared -- Table names come from $wpdb or a fixed helper; every value goes through $wpdb->prepare().
+
 /**
  * Änderungsprotokoll: wer hat wann welchen Text übersetzt.
  * Eigene Tabelle {prefix}mml_log. Protokolliert werden das Speichern im Links-rechts-Editor (mit Vorher/Nachher je Text)
@@ -176,7 +178,7 @@ class MML_Log {
 		<div class="wrap">
 			<h1><?php echo esc_html__('Change log', 'alba'); ?></h1>
 			<?php if (!empty($_GET['cleared'])) : ?><div class="notice notice-success is-dismissible"><p><?php echo esc_html__('Log cleared.', 'alba'); ?></p></div><?php endif; ?>
-			<p class="description"><?php echo esc_html__('Who saved which translation, and when. Retention:', 'alba'); ?> <?php echo self::days() ? (int) self::days() . __(' days', 'alba') : 'unbegrenzt'; ?> <?php echo esc_html__('(Languages > Settings > Updates & System).', 'alba'); ?></p>
+			<p class="description"><?php echo esc_html__('Who saved which translation, and when. Retention:', 'alba'); ?> <?php echo self::days() ? (int) self::days() . esc_html__(' days', 'alba') : 'unbegrenzt'; ?> <?php echo esc_html__('(Languages > Settings > Updates & System).', 'alba'); ?></p>
 
 			<form method="get" style="margin:14px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
 				<input type="hidden" name="page" value="<?php echo esc_attr(self::PAGE); ?>">
@@ -215,7 +217,7 @@ class MML_Log {
 					$ln = isset($c->langs[$r->lang]) ? $c->langs[$r->lang]['name'] : $r->lang;
 					?>
 					<tr>
-						<td><?php echo $this->when($r->time); // bereits bereinigt ?></td>
+						<td><?php echo $this->when($r->time); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside when(). ?></td>
 						<td><?php echo esc_html($this->user_name((int) $r->user_id)); ?></td>
 						<td><?php echo $link ? '<a href="' . esc_url($link) . '">' . esc_html($title) . '</a>' : esc_html($title); ?>
 							<div style="font-size:12px"><a href="<?php echo esc_url(add_query_arg(array_merge($qs, ['post' => (int) $r->post_id]), $base)); ?>"><?php echo esc_html__('Only this content', 'alba'); ?></a></div></td>
@@ -260,7 +262,7 @@ class MML_Log {
 	public function csv() {
 		check_admin_referer('mml_log');
 		if (!current_user_can('edit_others_posts')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		global $wpdb;
 		$f = $this->filters();
@@ -287,7 +289,7 @@ class MML_Log {
 	public function clear() {
 		check_admin_referer('mml_log');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		global $wpdb;
 		$wpdb->query('TRUNCATE TABLE ' . self::table());

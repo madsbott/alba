@@ -426,11 +426,11 @@ class MML_Xliff {
 			$pick = array_slice(array_values($pick), 0, 500);
 		}
 		if (!$one && !current_user_can('edit_others_posts')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
 		if (!isset($c->langs[$lang]) || $lang === $c->default) {
-			wp_die(__('Please choose a target language (not the default language).', 'alba'));
+			wp_die(esc_html__('Please choose a target language (not the default language).', 'alba'));
 		}
 		$fmt = (isset($_GET['fmt']) && $_GET['fmt'] === '2.0') ? '2.0' : '1.2';
 		$types = [];
@@ -683,7 +683,7 @@ class MML_Xliff {
 	public function upload() {
 		check_admin_referer('mml_xliff_upload');
 		if (!current_user_can('edit_others_posts')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Upload array; name, size and type are validated below.
 		$f = isset($_FILES['xlf']) ? $_FILES['xlf'] : null;
@@ -716,7 +716,7 @@ class MML_Xliff {
 	public function apply() {
 		check_admin_referer('mml_xliff_apply');
 		if (!current_user_can('edit_others_posts')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$token = isset($_POST['token']) ? sanitize_text_field(wp_unslash($_POST['token'])) : '';
 		$plan = get_transient($this->tkey($token));
@@ -753,7 +753,7 @@ class MML_Xliff {
 			if (!empty($_GET['n_kept'])) {
 				$txt .= ', ' . (int) $_GET['n_kept'] . __(' existing translations kept', 'alba');
 			}
-			echo '<div class="notice notice-success"><p>' . esc_html($txt) . __('. The texts are in the side-by-side editor', 'alba') . ($l && isset($c->langs[$l]) ? ' (' . esc_html($c->langs[$l]['name']) . ')' : '') . __(' ready for review. The import did not change whether a translation is visible on the frontend.</p></div>', 'alba');
+			echo '<div class="notice notice-success"><p>' . esc_html($txt) . esc_html__('. The texts are in the side-by-side editor', 'alba') . ($l && isset($c->langs[$l]) ? ' (' . esc_html($c->langs[$l]['name']) . ')' : '') . ' ' . esc_html__('ready for review. The import did not change whether a translation is visible on the frontend.', 'alba') . '</p></div>';
 		}
 
 		$token = isset($_GET['mml_xl']) ? sanitize_text_field(wp_unslash($_GET['mml_xl'])) : '';

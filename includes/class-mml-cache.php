@@ -68,7 +68,7 @@ class MML_Cache {
 	public function handle_purge() {
 		check_admin_referer('mml_purge_cache');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$this->all_done = false;
 		$this->purge_all();

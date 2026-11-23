@@ -228,7 +228,7 @@ class MML_Roles {
 
 	public function page() {
 		if (!$this->can_use()) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$c = $this->core;
 		$e = $c->editor;
@@ -355,7 +355,7 @@ class MML_Roles {
 		</form>
 
 		<?php if (!$slice) : ?>
-			<p><em><?php echo $only ? __('Nothing to translate. Everything is done or nothing matches the filter.', 'alba') : __('No content found.', 'alba'); ?></em></p>
+			<p><em><?php echo $only ? esc_html__('Nothing to translate. Everything is done or nothing matches the filter.', 'alba') : esc_html__('No content found.', 'alba'); ?></em></p>
 		<?php else : ?>
 			<form method="get" action="<?php echo esc_url(admin_url('admin.php')); ?>">
 				<input type="hidden" name="page" value="<?php echo esc_attr(MML_Bulk::PAGE); ?>">
@@ -390,9 +390,9 @@ class MML_Roles {
 									$late = ($w['st'] === 'open' && $w['due'] !== '' && $w['due'] < $today);
 									?>
 									<a class="button button-small" href="<?php echo esc_url($e->url($p->ID, $l)); ?>"><?php echo esc_html__('Translate', 'alba'); ?></a><br>
-									<span class="description"><?php echo $cell['open'] ? sprintf(/* translators: 1: open texts, 2: total texts */ __('%1$d of %2$d open', 'alba'), (int) $cell['open'], (int) $cell['total']) : __('complete', 'alba'); ?> · <?php echo esc_html($st); ?></span>
+									<span class="description"><?php echo $cell['open'] ? sprintf(/* translators: 1: open texts, 2: total texts */ esc_html__('%1$d of %2$d open', 'alba'), (int) $cell['open'], (int) $cell['total']) : esc_html__('complete', 'alba'); ?> · <?php echo esc_html($st); ?></span>
 									<?php if ($w['to'] || $w['st'] !== '') : ?><br>
-										<span class="description"><?php echo $w['to'] ? esc_html($uname($w['to'])) : ''; ?><?php echo $w['due'] !== '' ? __(' · Deadline ', 'alba') . ($late ? '<strong style="color:#b32d2e">' : '') . esc_html(wp_date('d.m.Y', strtotime($w['due'] . ' 12:00:00'))) . ($late ? __(' (overdue)</strong>', 'alba') : '') : ''; ?><?php echo $w['st'] !== '' ? __(' · <strong>', 'alba') . esc_html($wf->status_label($w['st'])) . '</strong>' : ''; ?></span>
+										<span class="description"><?php echo $w['to'] ? esc_html($uname($w['to'])) : ''; ?><?php echo $w['due'] !== '' ? ' · ' . esc_html__('Deadline', 'alba') . ' ' . ($late ? '<strong style="color:#b32d2e">' : '') . esc_html(wp_date('d.m.Y', strtotime($w['due'] . ' 12:00:00'))) . ($late ? ' ' . esc_html__('(overdue)', 'alba') . '</strong>' : '') : ''; ?><?php echo $w['st'] !== '' ? ' · <strong>' . esc_html($wf->status_label($w['st'])) . '</strong>' : ''; ?></span>
 									<?php endif; ?>
 								<?php endif; ?>
 							</td>

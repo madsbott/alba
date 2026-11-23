@@ -206,7 +206,7 @@ class MML_Media {
 		foreach ($this->langs() as $code => $l) {
 			echo '<h4 style="margin:' . ($first ? '0' : '14px') . ' 0 6px">' . esc_html($l['name']) . '</h4>';
 			echo $this->fields_html($post, $code, function ($k) use ($code) { // phpcs:ignore WordPress.Security.EscapeOutput
-				return 'mml_media[' . $code . '][' . $k . ']';
+				return 'mml_media[' . sanitize_key($code) . '][' . sanitize_key($k) . ']';
 			});
 			$first = false;
 		}

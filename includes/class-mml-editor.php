@@ -1234,7 +1234,7 @@ class MML_Editor {
 		?>
 		<div class="mml-row<?php echo $changed ? ' mml-changed' : ''; ?>" data-field="<?php echo esc_attr($field); ?>"<?php echo $hash !== '' ? ' data-hash="' . esc_attr($hash) . '"' : ''; ?>>
 			<div class="mml-label"><?php echo esc_html($label); ?><?php echo !empty($x['max']) ? ' <span class="mml-cnt" data-max="' . (int) $x['max'] . '"></span>' : ''; ?><?php echo $changed ? ' <span class="mml-badge">' . esc_html__('Original changed', 'alba') . '</span>' : ''; ?></div>
-			<div class="mml-src"><?php echo $src_html; // bereits bereinigt ?></div>
+			<div class="mml-src"><?php echo $src_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts. ?></div>
 			<div class="mml-tgt">
 				<textarea rows="<?php echo (int) $rows; ?>" data-src="<?php echo esc_attr($copy); ?>" data-raw="<?php echo esc_attr($src_raw); ?>"><?php echo esc_textarea($val); ?></textarea>
 				<?php if ($is_slug) : ?>
@@ -1266,11 +1266,11 @@ class MML_Editor {
 		$lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
 		$post = $id ? get_post($id) : null;
 		if (!$post || !isset($c->langs[$lang]) || !$c->is_translatable($post->post_type) || !$c->roles->can_translate($id, $lang)) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$from = $c->post_lang($id);
 		if ($from === $lang) {
-			wp_die(__('Source and target language are the same.', 'alba'));
+			wp_die(esc_html__('Source and target language are the same.', 'alba'));
 		}
 
 		echo '<div class="wrap mml-tr"><h1>' . esc_html__('Translate:', 'alba') . ' ' . esc_html($post->post_title !== '' ? $post->post_title : __('(no title)', 'alba')) . '</h1>';
@@ -1350,7 +1350,7 @@ class MML_Editor {
 			<?php endif; ?>
 		</p>
 		<?php if ($is_old) : ?>
-			<div class="notice notice-warning inline"><p><strong><?php echo esc_html__('The original has been changed since the last translation.', 'alba'); ?></strong> <?php echo $known ? '' : __('This translation was saved with an older version; all sections that are still empty are marked. ', 'alba'); ?><?php echo ($known && !$seg_new && !$t_chg && !$e_chg) ? __('Texts that are already translated have been added, removed or repeated (e.g. another paragraph with identical wording). Please check the page and save to confirm. ', 'alba') : ''; ?><?php echo esc_html__('Affected fields are marked red', 'alba'); ?><?php echo $seg_new ? ' (' . (int) $seg_new . __(' new or changed sections)', 'alba') : ''; ?><?php echo esc_html__('. After saving, the translation counts as up to date again.', 'alba'); ?></p></div>
+			<div class="notice notice-warning inline"><p><strong><?php echo esc_html__('The original has been changed since the last translation.', 'alba'); ?></strong> <?php echo $known ? '' : esc_html__('This translation was saved with an older version; all sections that are still empty are marked. ', 'alba'); ?><?php echo ($known && !$seg_new && !$t_chg && !$e_chg) ? esc_html__('Texts that are already translated have been added, removed or repeated (e.g. another paragraph with identical wording). Please check the page and save to confirm. ', 'alba') : ''; ?><?php echo esc_html__('Affected fields are marked red', 'alba'); ?><?php echo $seg_new ? ' (' . (int) $seg_new . esc_html__(' new or changed sections)', 'alba') : ''; ?><?php echo esc_html__('. After saving, the translation counts as up to date again.', 'alba'); ?></p></div>
 		<?php endif; ?>
 		<p class="description"><?php echo esc_html__('Empty fields appear in the original on the frontend. If you edit the original text, only the changed section is open again. Images, layout and links of the block structure remain unchanged.', 'alba'); ?></p>
 
@@ -1415,16 +1415,16 @@ class MML_Editor {
 
 		$post = $id ? get_post($id) : null;
 		if (!$post || !isset($c->langs[$lang]) || !$c->is_translatable($post->post_type) || !$c->roles->can_translate($id, $lang)) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		if ($c->post_lang($id) === $lang || $c->translation($id, $lang, false)) {
-			wp_die(__('There is already a separate post for this language.', 'alba'));
+			wp_die(esc_html__('There is already a separate post for this language.', 'alba'));
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON payload; every field is sanitised when it is saved.
 		$in = json_decode(wp_unslash(isset($_POST['mml_data']) ? (string) $_POST['mml_data'] : ''), true);
 		if (!is_array($in)) {
-			wp_die(__('Invalid data.', 'alba'));
+			wp_die(esc_html__('Invalid data.', 'alba'));
 		}
 
 		$kinds = [];

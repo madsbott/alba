@@ -73,17 +73,17 @@ class MML_Dashboard {
 				<div class="notice notice-warning inline"><p><?php echo esc_html__('Pretty permalinks are not active. Language URLs then only work as', 'alba'); ?> <code>?lang=xx</code><?php echo esc_html__('. Recommended: choose a structure under Settings > Permalinks.', 'alba'); ?></p></div>
 			<?php endif; ?>
 			<?php if (count($c->langs) < 2) : ?>
-				<div class="notice notice-info inline"><p><?php echo esc_html__('Only one language has been added.', 'alba'); ?> <a href="<?php echo $this->url('alba-settings'); ?>"><?php echo esc_html__('Add more languages', 'alba'); ?></a></p></div>
+				<div class="notice notice-info inline"><p><?php echo esc_html__('Only one language has been added.', 'alba'); ?> <a href="<?php echo esc_url($this->url('alba-settings')); ?>"><?php echo esc_html__('Add more languages', 'alba'); ?></a></p></div>
 			<?php endif; ?>
 
 			<h2><?php echo esc_html__('Quick access', 'alba'); ?></h2>
 			<p>
-				<a class="button" href="<?php echo $this->url('alba-settings'); ?>"><?php echo esc_html__('Settings', 'alba'); ?></a>
-				<a class="button" href="<?php echo $this->url('alba-strings'); ?>"><?php echo esc_html__('Strings', 'alba'); ?></a>
-				<a class="button" href="<?php echo $this->url('alba-po'); ?>"><?php echo esc_html__('Import / Export (.po)', 'alba'); ?></a>
-				<a class="button" href="<?php echo $this->url('alba-glossary'); ?>"><?php echo esc_html__('Glossary & Memory', 'alba'); ?></a>
-				<a class="button" href="<?php echo $this->url('alba-log'); ?>"><?php echo esc_html__('Log', 'alba'); ?></a>
-				<a class="button" href="<?php echo $this->url('alba-xliff'); ?>"><?php echo esc_html__('XLIFF (Export / Import)', 'alba'); ?></a>
+				<a class="button" href="<?php echo esc_url($this->url('alba-settings')); ?>"><?php echo esc_html__('Settings', 'alba'); ?></a>
+				<a class="button" href="<?php echo esc_url($this->url('alba-strings')); ?>"><?php echo esc_html__('Strings', 'alba'); ?></a>
+				<a class="button" href="<?php echo esc_url($this->url('alba-po')); ?>"><?php echo esc_html__('Import / Export (.po)', 'alba'); ?></a>
+				<a class="button" href="<?php echo esc_url($this->url('alba-glossary')); ?>"><?php echo esc_html__('Glossary & Memory', 'alba'); ?></a>
+				<a class="button" href="<?php echo esc_url($this->url('alba-log')); ?>"><?php echo esc_html__('Log', 'alba'); ?></a>
+				<a class="button" href="<?php echo esc_url($this->url('alba-xliff')); ?>"><?php echo esc_html__('XLIFF (Export / Import)', 'alba'); ?></a>
 				<?php if (function_exists('wp_is_block_theme') && wp_is_block_theme()) : ?>
 					<a class="button" href="<?php echo esc_url(admin_url('site-editor.php')); ?>"><?php echo esc_html__('Site Editor (navigation, switcher block)', 'alba'); ?></a>
 				<?php endif; ?>
@@ -225,10 +225,10 @@ class MML_Dashboard {
 			foreach ($o['top'] as $t) {
 				$bits[] = '<a href="' . esc_url($c->editor->url($t[1], $t[2])) . '">' . esc_html(($t[3] !== '' ? $t[3] : __('(no title)', 'alba')) . ' (' . strtoupper($t[2]) . ')') . '</a> <span style="color:#b32d2e">' . (int) $t[0] . '</span>';
 			}
-			echo implode(' · ', $bits); // bereits bereinigt
+			echo implode(' · ', $bits); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each part is escaped above.
 			?></p>
 		<?php endif; ?>
-		<p class="description"><?php echo esc_html__('Counted are titles, excerpts, SEO texts and all text sections (including alt texts, block and field texts) of published originals that are not yet translated into this language. Content with its own translation post is not counted.', 'alba'); ?><?php echo $o['partial'] ? __(' <strong>Partially calculated</strong> (very many items), it continues on the next visit.', 'alba') : ''; ?></p>
+		<p class="description"><?php echo esc_html__('Counted are titles, excerpts, SEO texts and all text sections (including alt texts, block and field texts) of published originals that are not yet translated into this language. Content with its own translation post is not counted.', 'alba'); ?><?php echo $o['partial'] ? ' <strong>' . esc_html__('Partially calculated', 'alba') . '</strong> ' . esc_html__('(very many items), it continues on the next visit.', 'alba') : ''; ?></p>
 		<?php
 	}
 
@@ -436,9 +436,9 @@ class MML_Dashboard {
 				$bits[] = $l['name'] . ' ' . $open[$code];
 			}
 			echo esc_html($bits ? implode(', ', $bits) : '–');
-			echo '. <a href="' . $this->url('alba-strings') . __('">Open strings</a>', 'alba');
+			echo '. <a href="' . esc_url($this->url('alba-strings')) . '">' . esc_html__('Open strings', 'alba') . '</a>';
 		} else {
-			echo '' . esc_html__('No strings captured yet.', 'alba') . ' <a href="' . $this->url('alba-strings') . __('">Open strings</a>', 'alba');
+			echo '' . esc_html__('No strings captured yet.', 'alba') . ' <a href="' . esc_url($this->url('alba-strings')) . '">' . esc_html__('Open strings', 'alba') . '</a>';
 		}
 		echo '</p>';
 	}

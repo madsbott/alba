@@ -121,7 +121,7 @@ class MML_Bulk {
 	public function page() {
 		$c = $this->core;
 		if (!current_user_can('read')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		check_admin_referer('mml_bulk_run');
 		$op = isset($_GET['op']) ? sanitize_key(wp_unslash($_GET['op'])) : '';
@@ -129,7 +129,7 @@ class MML_Bulk {
 		$ops = $this->ops();
 		$ids = $this->ids_from(isset($_GET['ids']) ? sanitize_text_field(wp_unslash($_GET['ids'])) : '');
 		if (!isset($ops[$op]) || !isset($c->langs[$lang]) || $lang === $c->default || !$c->roles->lang_allowed($lang) || !$ids) {
-			wp_die(__('Invalid bulk action. Please select the content and language again.', 'alba'));
+			wp_die(esc_html__('Invalid bulk action. Please select the content and language again.', 'alba'));
 		}
 		$back = admin_url('admin.php?page=' . ($c->roles->is_translator_only() ? MML_Roles::PAGE : MML_Roles::PAGE));
 		$rows = [];
@@ -147,7 +147,7 @@ class MML_Bulk {
 
 		if ($op === 'xliff') {
 			$u = wp_nonce_url(add_query_arg(['action' => 'mml_xliff_export', 'lang' => $lang, 'fmt' => '1.2', 'tr' => 1, 'ids' => implode(',', array_keys($rows))], admin_url('admin-post.php')), 'mml_xliff_export');
-			echo '<p>' . count($rows) . __(' items are exported in one file. Items that already have their own translation post are skipped.</p>', 'alba');
+			echo '<p>' . esc_html(sprintf(/* translators: %d: number of items */ __('%d items are exported in one file. Items that already have their own translation post are skipped.', 'alba'), count($rows))) . '</p>';
 			echo '<p><a class="button button-primary" href="' . esc_url($u) . '">' . esc_html__('Download XLIFF file', 'alba') . '</a> <a class="button" href="' . esc_url($back) . '">' . esc_html__('Back', 'alba') . '</a></p></div>';
 			return;
 		}

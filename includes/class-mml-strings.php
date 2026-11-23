@@ -310,6 +310,7 @@ class MML_Strings {
 			</form>
 			<div class="tablenav"><div class="tablenav-pages">
 				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- paginate_links() returns safe markup.
 				echo paginate_links([
 					'base'    => str_replace('999999999', '%#%', add_query_arg('paged', 999999999)),
 					'format'  => '',
@@ -620,7 +621,7 @@ class MML_Strings {
 	public function text_add() {
 		check_admin_referer('mml_text_add');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$domain = isset($_POST['domain']) ? sanitize_text_field(wp_unslash($_POST['domain'])) : '';
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- The text is a message id and must stay exactly as found in the code.
@@ -646,7 +647,7 @@ class MML_Strings {
 	public function opt_add() {
 		check_admin_referer('mml_opt_add');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$opt = isset($_POST['option']) ? sanitize_text_field(wp_unslash($_POST['option'])) : '';
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- The text is a stored option value and must stay exactly as found.
@@ -680,7 +681,7 @@ class MML_Strings {
 	public function scan_action() {
 		check_admin_referer('mml_scan');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$dom = isset($_POST['mml_dom']) ? array_map('sanitize_text_field', (array) wp_unslash($_POST['mml_dom'])) : [];
 		$extra = isset($_POST['mml_dom_extra']) ? explode(',', sanitize_text_field(wp_unslash($_POST['mml_dom_extra']))) : [];
@@ -753,7 +754,7 @@ class MML_Strings {
 	public function save() {
 		check_admin_referer('mml_str_save');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$all = get_option(self::OPT, []);
 		if (!is_array($all)) {
@@ -788,7 +789,7 @@ class MML_Strings {
 	public function clear() {
 		check_admin_referer('mml_str_clear');
 		if (!current_user_can('manage_options')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$all = get_option(self::OPT, []);
 		if (is_array($all)) {

@@ -266,7 +266,7 @@ class MML_Updater {
 	public function handle_check() {
 		check_admin_referer('mml_check_update');
 		if (!current_user_can('update_plugins')) {
-			wp_die(__('Not allowed.', 'alba'));
+			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		delete_site_transient(self::CACHE);
 		delete_site_transient('update_plugins');

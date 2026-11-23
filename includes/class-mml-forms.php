@@ -486,7 +486,7 @@ class MML_Forms {
 				<div class="mml-fields">
 					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Translation', 'alba'); ?></div><div class="mml-ctl">
 						<label><input type="checkbox" name="mml_forms" value="1" <?php checked($this->enabled()); ?>> <?php echo esc_html__('Translate form texts per language', 'alba'); ?></label>
-						<p class="mml-hint"><?php echo esc_html__('Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:', 'alba'); ?> <strong><?php echo $det ? esc_html(implode(', ', $det)) : __('no supported form plugin', 'alba'); ?></strong>.</p>
+						<p class="mml-hint"><?php echo esc_html__('Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:', 'alba'); ?> <strong><?php echo $det ? esc_html(implode(', ', $det)) : esc_html__('no supported form plugin', 'alba'); ?></strong>.</p>
 						<p class="mml-hint"><?php echo esc_html__('How it works: open the page with the form once in the default language, then all texts appear in', 'alba'); ?> <a href="<?php echo esc_url(admin_url('admin.php?page=alba-strings')); ?>"><?php echo esc_html__('Strings', 'alba'); ?></a> <?php echo esc_html__('under the domain "', 'alba'); ?><?php echo esc_html(self::DOMAIN); ?><?php echo esc_html__('". Enter the translations there. Emails to you stay in the language in which the form was filled in.', 'alba'); ?></p>
 					</div></div>
 				</div>
