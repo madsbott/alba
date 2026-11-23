@@ -19,6 +19,7 @@ class MML_Strings {
 	private $map = [];      // id => Übersetzung (aktuelle Sprache)
 	private $found = [];    // in diesem Request gesehene Strings
 	private $lazy = false;  // Zuordnung im Backend-/AJAX-Kontext nachträglich aufgebaut
+	const OPT_DOMAIN = 'Theme settings';
 	private $scan = false;
 	private $domains = [];
 
@@ -34,6 +35,7 @@ class MML_Strings {
 			add_action('admin_post_mml_save_strings', [$this, 'save']);
 			add_action('admin_post_mml_clear_strings', [$this, 'clear']);
 			add_action('admin_post_mml_scan', [$this, 'scan_action']);
+			add_action('admin_post_mml_opt_add', [$this, 'opt_add']);
 			return;
 		}
 
@@ -55,6 +57,33 @@ class MML_Strings {
 			return (is_string($v) && $v !== '') ? $this->translate($v, 'Widgets') : $v;
 		});
 		add_action('shutdown', [$this, 'save_found']);
+
+		// Texte, die in Theme-Einstellungen (Optionen) eingetragen sind
+		$ot = get_option('mml_option_texts', []);
+		if (is_array($ot)) {
+			foreach ($ot as $opt => $texts) {
+				if (is_string($opt) && is_array($texts) && $texts) {
+					add_filter('option_' . $opt, function ($v) use ($texts) {
+						return $this->replace_texts($v, $texts, 0);
+					}, 20);
+				}
+			}
+		}
+	}
+
+	/** Ersetzt in einem Optionswert (auch verschachtelt) genau passende Texte durch ihre Übersetzung */
+	private function replace_texts($v, $texts, $depth) {
+		if (is_string($v)) {
+			return in_array($v, $texts, true) ? $this->translate($v, self::OPT_DOMAIN) : $v;
+		}
+		if (is_array($v) && $depth < 6) {
+			foreach ($v as $k => $x) {
+				if (is_string($x) || is_array($x)) {
+					$v[$k] = $this->replace_texts($x, $texts, $depth + 1);
+				}
+			}
+		}
+		return $v;
 	}
 
 	/* ---------------------------------------------------------------
@@ -377,8 +406,9 @@ class MML_Strings {
 					<button type="submit" class="button" name="mml_do" value="save"><?php echo esc_html__('Only save the selection', 'alba'); ?></button>
 				</p>
 				<p class="description"><?php echo esc_html__('Texts are collected whenever a page is built, so also while visitors browse. Pages delivered from a cache (e.g. LiteSpeed) collect nothing; "Scan now" asks for your pages without the cache.', 'alba'); ?></p>
-				<p class="description"><?php echo esc_html__('Not found what you are looking for? Texts typed into theme options (for example a search placeholder in the theme settings) or into page builder elements are not theme texts. Translate them where they are entered, or write them as a shortcode: [mml_string domain="Theme" name="search"]Your text[/mml_string].', 'alba'); ?></p>
+				<p class="description"><?php echo esc_html__('Cannot find a text? Use "Look for a specific text" below: Alba tells you where the text comes from and how to translate it.', 'alba'); ?></p>
 			</form>
+			<?php $this->find_box(); ?>
 		</div>
 		<?php
 	}
@@ -408,6 +438,204 @@ class MML_Strings {
 		return array_map(function ($u) use ($stamp) {
 			return add_query_arg('mml_scan', $stamp, $u);
 		}, array_values(array_unique($urls)));
+	}
+
+	/* ---------------------------------------------------------------
+	 * „Woher kommt dieser Text?“
+	 * ------------------------------------------------------------- */
+
+	private function find_box() {
+		$needle = isset($_GET['mml_find']) ? trim(sanitize_text_field(wp_unslash($_GET['mml_find']))) : '';
+		?>
+		<hr>
+		<h3><?php echo esc_html__('Look for a specific text', 'alba'); ?></h3>
+		<form method="get" action="<?php echo esc_url(admin_url('admin.php')); ?>">
+			<input type="hidden" name="page" value="alba-strings">
+			<input type="text" class="regular-text" name="mml_find" value="<?php echo esc_attr($needle); ?>" placeholder="<?php echo esc_attr__('Text exactly as it appears on the site', 'alba'); ?>">
+			<button type="submit" class="button"><?php echo esc_html__('Where does this text come from?', 'alba'); ?></button>
+		</form>
+		<?php
+		if (mb_strlen($needle) >= 3) {
+			$this->find_report($needle);
+		}
+	}
+
+	private function find_report($needle) {
+		global $wpdb;
+		$sel = array_values(array_filter(array_map('trim', explode(',', (string) get_option('mml_scan_domains', '')))));
+		$any = false;
+
+		// 1. bereits gesammelt
+		$all = get_option(self::OPT, []);
+		$hits = [];
+		if (is_array($all)) {
+			foreach ($all as $s) {
+				if (isset($s['text']) && stripos($s['text'], $needle) !== false) {
+					$hits[] = $s['domain'] . ': ' . $s['text'];
+				}
+			}
+		}
+		echo '<div style="margin-top:8px">';
+		if ($hits) {
+			$any = true;
+			echo '<p><strong>' . esc_html__('Already in the table below:', 'alba') . '</strong></p><ul style="list-style:disc;margin-left:20px">';
+			foreach (array_slice($hits, 0, 8) as $h) {
+				echo '<li>' . esc_html($h) . '</li>';
+			}
+			echo '</ul>';
+		}
+
+		// 2. Theme-Dateien
+		$files = $this->scan_theme_files($needle);
+		if ($files) {
+			$any = true;
+			echo '<p><strong>' . esc_html__('Found in theme files:', 'alba') . '</strong></p><ul style="list-style:disc;margin-left:20px">';
+			foreach ($files as $h) {
+				echo '<li><code>' . esc_html($h['file'] . ':' . $h['line']) . '</code> – ';
+				if ($h['domain'] !== '') {
+					/* translators: %s: text domain */
+					echo esc_html(sprintf(__('translatable text of the text domain "%s"', 'alba'), $h['domain']));
+					if (!in_array($h['domain'], $sel, true)) {
+						echo ' <strong>' . esc_html__('– select this source above and scan again.', 'alba') . '</strong>';
+					}
+				} else {
+					echo esc_html__('written directly in the code (not translatable by text domain)', 'alba');
+				}
+				echo '</li>';
+			}
+			echo '</ul>';
+		}
+
+		// 3. Optionen (Theme-Einstellungen, Widgets, …)
+		$rows = $wpdb->get_results($wpdb->prepare(
+			"SELECT option_name, option_value FROM {$wpdb->options} WHERE option_value LIKE %s AND option_name NOT LIKE %s AND option_name NOT LIKE %s AND option_name NOT LIKE %s AND option_name <> %s LIMIT 12",
+			'%' . $wpdb->esc_like($needle) . '%',
+			$wpdb->esc_like('_transient') . '%',
+			$wpdb->esc_like('_site_transient') . '%',
+			$wpdb->esc_like('mml_') . '%',
+			self::OPT
+		));
+		$opt_hits = [];
+		foreach ((array) $rows as $row) {
+			$val = maybe_unserialize($row->option_value);
+			$this->walk_option($val, $needle, [], $row->option_name, $opt_hits);
+		}
+		if ($opt_hits) {
+			$any = true;
+			echo '<p><strong>' . esc_html__('Found in site or theme settings:', 'alba') . '</strong></p>';
+			echo '<p class="description">' . esc_html__('These texts are typed into a settings screen and are not translatable theme texts. Alba can translate such a text for you: click "Translate this text", then translate it in the table below.', 'alba') . '</p>';
+			echo '<table class="widefat striped" style="max-width:900px"><tbody>';
+			foreach (array_slice($opt_hits, 0, 10) as $h) {
+				echo '<tr><td><code>' . esc_html($h['option'] . ($h['path'] ? ' → ' . $h['path'] : '')) . '</code></td><td>' . esc_html(mb_substr($h['value'], 0, 120)) . '</td><td>';
+				if (is_string($h['option']) && $h['whole']) {
+					echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" style="margin:0">';
+					echo '<input type="hidden" name="action" value="mml_opt_add">';
+					wp_nonce_field('mml_opt_add');
+					echo '<input type="hidden" name="option" value="' . esc_attr($h['option']) . '"><input type="hidden" name="text" value="' . esc_attr($h['value']) . '">';
+					echo '<button type="submit" class="button button-small">' . esc_html__('Translate this text', 'alba') . '</button></form>';
+				}
+				echo '</td></tr>';
+			}
+			echo '</tbody></table>';
+		}
+
+		if (!$any) {
+			echo '<p>' . esc_html__('Not found in the collected texts, the theme files or the settings. The text may come from a plugin, from page content (translate that page in the translation editor) or from an element of your page builder.', 'alba') . '</p>';
+		}
+		echo '</div>';
+	}
+
+	private function walk_option($v, $needle, $path, $option, &$out) {
+		if (count($out) >= 12) {
+			return;
+		}
+		if (is_string($v)) {
+			if (stripos($v, $needle) !== false) {
+				$out[] = ['option' => $option, 'path' => implode(' → ', $path), 'value' => $v, 'whole' => mb_strlen($v) <= 400];
+			}
+		} elseif (is_array($v) && count($path) < 6) {
+			foreach ($v as $k => $x) {
+				$this->walk_option($x, $needle, array_merge($path, [(string) $k]), $option, $out);
+			}
+		}
+	}
+
+	/** Sucht den Text in den PHP-Dateien des aktiven Themes (und Eltern-Themes) */
+	private function scan_theme_files($needle) {
+		$dirs = array_unique([get_stylesheet_directory(), get_template_directory()]);
+		$res = [];
+		$n = 0;
+		foreach ($dirs as $dir) {
+			if (!is_dir($dir)) {
+				continue;
+			}
+			$it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS));
+			foreach ($it as $file) {
+				if (++$n > 4000 || count($res) >= 12) {
+					break 2;
+				}
+				$p = $file->getPathname();
+				if (substr($p, -4) !== '.php' || $file->getSize() > 1500000 || preg_match('#/(node_modules|vendor|\.git)/#', $p)) {
+					continue;
+				}
+				$lines = @file($p, FILE_IGNORE_NEW_LINES);
+				if (!$lines) {
+					continue;
+				}
+				foreach ($lines as $i => $line) {
+					if (stripos($line, $needle) === false) {
+						continue;
+					}
+					$domain = '';
+					if (preg_match_all('/\b(?:__|_e|_x|_ex|esc_html__|esc_attr__|esc_html_e|esc_attr_e)\(\s*([\'"])(.*?)\1\s*(?:,\s*([\'"])(.*?)\3)?/', $line, $m, PREG_SET_ORDER)) {
+						foreach ($m as $g) {
+							if (stripos($g[2], $needle) !== false && isset($g[4])) {
+								$domain = $g[4];
+								break;
+							}
+						}
+					}
+					$res[] = ['file' => ltrim(str_replace(wp_normalize_path(WP_CONTENT_DIR), '', wp_normalize_path($p)), '/'), 'line' => $i + 1, 'domain' => $domain];
+					if (count($res) >= 12) {
+						break 3;
+					}
+				}
+			}
+		}
+		return $res;
+	}
+
+	public function opt_add() {
+		check_admin_referer('mml_opt_add');
+		if (!current_user_can('manage_options')) {
+			wp_die(__('Not allowed.', 'alba'));
+		}
+		$opt = isset($_POST['option']) ? sanitize_text_field(wp_unslash($_POST['option'])) : '';
+		$text = isset($_POST['text']) ? (string) wp_unslash($_POST['text']) : '';
+		$back = admin_url('admin.php?page=alba-strings');
+		if ($opt === '' || $text === '' || get_option($opt, null) === null) {
+			wp_safe_redirect(add_query_arg('mml_saved', 0, $back));
+			exit;
+		}
+		$ot = get_option('mml_option_texts', []);
+		if (!is_array($ot)) {
+			$ot = [];
+		}
+		if (!isset($ot[$opt]) || !in_array($text, $ot[$opt], true)) {
+			$ot[$opt][] = $text;
+		}
+		update_option('mml_option_texts', $ot, true);
+		$all = get_option(self::OPT, []);
+		if (!is_array($all)) {
+			$all = [];
+		}
+		$id = $this->id(self::OPT_DOMAIN, '', $text);
+		if (!isset($all[$id])) {
+			$all[$id] = ['domain' => self::OPT_DOMAIN, 'ctx' => '', 'name' => '', 'text' => $text, 'tr' => []];
+			update_option(self::OPT, $all, false);
+		}
+		wp_safe_redirect(add_query_arg(['mml_scanmsg' => 'opt', 'mml_s' => mb_substr($text, 0, 60)], $back));
+		exit;
 	}
 
 	public function scan_action() {
@@ -457,7 +685,9 @@ class MML_Strings {
 
 	private function scan_notice() {
 		$m = isset($_GET['mml_scanmsg']) ? sanitize_key(wp_unslash($_GET['mml_scanmsg'])) : '';
-		if ($m === 'none') {
+		if ($m === 'opt') {
+			echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Done. The text now appears in the table below with the domain "Theme settings". Translate it there.', 'alba') . '</p></div>';
+		} elseif ($m === 'none') {
 			echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html__('Please select at least one source first.', 'alba') . '</p></div>';
 		} elseif ($m === 'done') {
 			$new = (int) $_GET['mml_new'];

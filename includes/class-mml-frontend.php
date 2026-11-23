@@ -199,7 +199,17 @@ class MML_Frontend {
 					}
 				}
 			}
-			return [false, __('No active arrow option found in the Salient settings. Choose "Always show" if the arrow is wanted anyway.', 'alba')];
+			$seen = [];
+			if (is_array($o)) {
+				foreach ($o as $k => $v) {
+					if (is_string($k) && preg_match('/arrow|dropdown|indicator/i', $k) && is_scalar($v) && count($seen) < 8) {
+						$seen[] = $k . '=' . substr((string) $v, 0, 20);
+					}
+				}
+			}
+			/* translators: %s: list of Salient option names and values */
+			$msg = __('No active arrow option found in the Salient settings. Choose "Always show" if the arrow is wanted anyway. Related options found: %s', 'alba');
+			return [false, sprintf($msg, $seen ? implode(', ', $seen) : '–')];
 		}
 		if (apply_filters('mml_theme_dropdown_arrow', false)) {
 			return [true, __('Enabled by the filter mml_theme_dropdown_arrow.', 'alba')];
