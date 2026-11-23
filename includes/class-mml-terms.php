@@ -276,7 +276,7 @@ class MML_Terms {
 		if ($lang === '' && wp_doing_ajax()) {
 			$ref = wp_get_referer();
 			if ($ref) {
-				parse_str((string) parse_url($ref, PHP_URL_QUERY), $q);
+				parse_str((string) wp_parse_url($ref, PHP_URL_QUERY), $q);
 				$pid = isset($q['post']) ? (int) $q['post'] : 0;
 				if ($pid) {
 					$lang = $this->core->post_lang($pid);
@@ -421,7 +421,7 @@ class MML_Terms {
 		if (!isset($_POST['mml_term_nonce'])) {
 			return;
 		}
-		$n = wp_unslash($_POST['mml_term_nonce']);
+		$n = sanitize_text_field(wp_unslash($_POST['mml_term_nonce']));
 		if (!wp_verify_nonce($n, 'mml_term_new') && !wp_verify_nonce($n, 'mml_term_' . $term_id)) {
 			return;
 		}

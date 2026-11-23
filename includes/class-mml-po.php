@@ -237,6 +237,7 @@ class MML_Po {
 		if (!isset($c->langs[$lang])) {
 			$this->back(['mml_po_err' => __('Unknown target language.', 'alba')]);
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Upload array; name, size and type are validated below.
 		$f = isset($_FILES['po_file']) ? $_FILES['po_file'] : null;
 		if (!$f || (int) $f['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) {
 			$this->back(['mml_po_err' => __('Upload failed.', 'alba')]);
@@ -248,6 +249,7 @@ class MML_Po {
 		if ((int) $f['size'] > self::MAX_BYTES) {
 			$this->back(['mml_po_err' => __('The file is larger than 3 MB.', 'alba')]);
 		}
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads the local uploaded temp file, not a URL.
 		$text = (string) file_get_contents($f['tmp_name']);
 		if (function_exists('mb_check_encoding') && !mb_check_encoding($text, 'UTF-8')) {
 			$this->back(['mml_po_err' => __('The file is not UTF-8 encoded.', 'alba')]);

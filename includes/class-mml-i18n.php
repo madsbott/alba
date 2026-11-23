@@ -49,8 +49,8 @@ class MML_I18n {
 			__('Discard', 'alba') => __('Discard', 'alba'),
 			__('Unknown error.', 'alba') => __('Unknown error.', 'alba'),
 			__('The service is not reachable.', 'alba') => __('The service is not reachable.', 'alba'),
-			__('%1$s of %2$s translated', 'alba') => __('%1$s of %2$s translated', 'alba'),
-			__('Automatic suggestion (%s) – please check:', 'alba') => __('Automatic suggestion (%s) – please check:', 'alba'),
+			/* translators: 1: translated count, 2: total count */ __('%1$s of %2$s translated', 'alba') => /* translators: 1: translated count, 2: total count */ __('%1$s of %2$s translated', 'alba'),
+			/* translators: %s: name of the translation service */ __('Automatic suggestion (%s) – please check:', 'alba') => /* translators: %s: name of the translation service */ __('Automatic suggestion (%s) – please check:', 'alba'),
 			__('Languages', 'alba') => __('Languages', 'alba'),
 			__('Show block only in these languages. Nothing selected: in all languages.', 'alba') => __('Show block only in these languages. Nothing selected: in all languages.', 'alba'),
 		];

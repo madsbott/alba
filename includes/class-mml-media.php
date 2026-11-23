@@ -217,6 +217,7 @@ class MML_Media {
 		if (empty($_POST['mml_media_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mml_media_nonce'])), 'mml_media_' . $id) || !current_user_can('edit_post', $id)) {
 			return;
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each field is sanitised when it is saved.
 		$in = isset($_POST['mml_media']) && is_array($_POST['mml_media']) ? wp_unslash($_POST['mml_media']) : [];
 		foreach ($this->langs() as $code => $l) {
 			if (isset($in[$code]) && is_array($in[$code])) {

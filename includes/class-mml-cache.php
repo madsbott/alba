@@ -81,7 +81,7 @@ class MML_Cache {
 	 * ------------------------------------------------------------- */
 
 	private function is_litespeed() {
-		return (isset($_SERVER['SERVER_SOFTWARE']) && stripos((string) $_SERVER['SERVER_SOFTWARE'], 'litespeed') !== false)
+		return (isset($_SERVER['SERVER_SOFTWARE']) && stripos(sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])), 'litespeed') !== false)
 			|| isset($_SERVER['LSWS_EDITION']) || isset($_SERVER['X_LSCACHE']);
 	}
 

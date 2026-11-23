@@ -137,6 +137,7 @@ class MML_Admin {
 	/** Das Radio-Feld enthält den Zeilen-Index, daraus wird der Code */
 	public function sanitize_default($v) {
 		if (isset($_POST['mml_languages']) && is_array($_POST['mml_languages'])) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Language rows are cleaned field by field in clean_code() and below.
 			$rows = wp_unslash($_POST['mml_languages']);
 			if (isset($rows[$v]['code'])) {
 				return $this->clean_code($rows[$v]['code']);
@@ -693,7 +694,7 @@ class MML_Admin {
 		if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || wp_is_post_revision($post_id)) {
 			return;
 		}
-		if (!isset($_POST['mml_nonce']) || !wp_verify_nonce(wp_unslash($_POST['mml_nonce']), 'mml_save_' . $post_id)) {
+		if (!isset($_POST['mml_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mml_nonce'])), 'mml_save_' . $post_id)) {
 			return;
 		}
 		if (!current_user_can('edit_post', $post_id)) {
@@ -709,6 +710,7 @@ class MML_Admin {
 		$group = $c->group($post_id, true);
 
 		if (!empty($_POST['mml_link']) && is_array($_POST['mml_link'])) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Keys and ids are cleaned inside the loop.
 			foreach (wp_unslash($_POST['mml_link']) as $l => $tid) {
 				$l = sanitize_key($l);
 				$tid = (int) $tid;

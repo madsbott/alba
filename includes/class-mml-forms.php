@@ -58,9 +58,10 @@ class MML_Forms {
 
 	private function adopt_request_lang() {
 		$c = $this->core;
-		$uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- raw request path, only parsed, never output.
+		$uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
 		$rest = strpos($uri, '/wp-json/') !== false || isset($_GET['rest_route']);
-		if ((!wp_doing_ajax() && !$rest) || (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] !== 'POST') || $c->lang !== $c->default) {
+		if ((!wp_doing_ajax() && !$rest) || (isset($_SERVER['REQUEST_METHOD']) && sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD'])) !== 'POST') || $c->lang !== $c->default) {
 			return;
 		}
 		$lang = $this->referer_lang();
@@ -76,7 +77,7 @@ class MML_Forms {
 	/** Sprache der Seite, von der die Anfrage kommt ('' wenn unbekannt) */
 	public function referer_lang() {
 		$c = $this->core;
-		$ref = isset($_SERVER['HTTP_REFERER']) ? (string) wp_unslash($_SERVER['HTTP_REFERER']) : '';
+		$ref = isset($_SERVER['HTTP_REFERER']) ? esc_url_raw(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 		if ($ref === '') {
 			return '';
 		}

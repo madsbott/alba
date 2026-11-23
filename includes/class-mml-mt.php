@@ -51,6 +51,7 @@ class MML_MT {
 		if (!isset($c->langs[$from]) || !isset($c->langs[$to]) || $from === $to) {
 			wp_send_json_error(__('Invalid languages.', 'alba'));
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON list of texts; plain text is sent to the translation service, never output unescaped.
 		$texts = json_decode(wp_unslash(isset($_POST['texts']) ? (string) $_POST['texts'] : ''), true);
 		if (!is_array($texts) || !$texts || count($texts) > 10) {
 			wp_send_json_error(__('Invalid request.', 'alba'));

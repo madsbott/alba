@@ -330,6 +330,7 @@ class MML_Glossary {
 		if (!current_user_can('manage_options')) {
 			wp_die(__('Not allowed.', 'alba'));
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each term is sanitised in the loop below.
 		$in = isset($_POST['gl']) && is_array($_POST['gl']) ? wp_unslash($_POST['gl']) : [];
 		$out = [];
 		$seen = [];

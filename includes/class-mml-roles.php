@@ -390,7 +390,7 @@ class MML_Roles {
 									$late = ($w['st'] === 'open' && $w['due'] !== '' && $w['due'] < $today);
 									?>
 									<a class="button button-small" href="<?php echo esc_url($e->url($p->ID, $l)); ?>"><?php echo esc_html__('Translate', 'alba'); ?></a><br>
-									<span class="description"><?php echo $cell['open'] ? sprintf(__('%1$d of %2$d open', 'alba'), (int) $cell['open'], (int) $cell['total']) : __('complete', 'alba'); ?> · <?php echo esc_html($st); ?></span>
+									<span class="description"><?php echo $cell['open'] ? sprintf(/* translators: 1: open texts, 2: total texts */ __('%1$d of %2$d open', 'alba'), (int) $cell['open'], (int) $cell['total']) : __('complete', 'alba'); ?> · <?php echo esc_html($st); ?></span>
 									<?php if ($w['to'] || $w['st'] !== '') : ?><br>
 										<span class="description"><?php echo $w['to'] ? esc_html($uname($w['to'])) : ''; ?><?php echo $w['due'] !== '' ? __(' · Deadline ', 'alba') . ($late ? '<strong style="color:#b32d2e">' : '') . esc_html(wp_date('d.m.Y', strtotime($w['due'] . ' 12:00:00'))) . ($late ? __(' (overdue)</strong>', 'alba') : '') : ''; ?><?php echo $w['st'] !== '' ? __(' · <strong>', 'alba') . esc_html($wf->status_label($w['st'])) . '</strong>' : ''; ?></span>
 									<?php endif; ?>

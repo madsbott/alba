@@ -53,8 +53,8 @@ function mml_uninstall_site() {
 }
 
 if (is_multisite()) {
-	foreach (get_sites(['fields' => 'ids', 'number' => 0]) as $blog_id) {
-		switch_to_blog((int) $blog_id);
+	foreach (get_sites(['fields' => 'ids', 'number' => 0]) as $mml_site_id) {
+		switch_to_blog((int) $mml_site_id);
 		mml_uninstall_site();
 		restore_current_blog();
 	}

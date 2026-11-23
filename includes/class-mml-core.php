@@ -111,12 +111,13 @@ class MML_Core {
 	 * ------------------------------------------------------------- */
 
 	private function detect_language() {
-		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- raw request path, only parsed, never output.
+		$uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '';
 		$this->orig_uri = $uri;
 
-		$path = (string) parse_url($uri, PHP_URL_PATH);
-		$qs = parse_url($uri, PHP_URL_QUERY);
-		$home_path = rtrim((string) parse_url(get_option('home'), PHP_URL_PATH), '/');
+		$path = (string) wp_parse_url($uri, PHP_URL_PATH);
+		$qs = wp_parse_url($uri, PHP_URL_QUERY);
+		$home_path = rtrim((string) wp_parse_url(get_option('home'), PHP_URL_PATH), '/');
 
 		if ($home_path !== '') {
 			if (strpos($path, $home_path) !== 0) {

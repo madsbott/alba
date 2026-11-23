@@ -146,8 +146,8 @@ class MML_Detect {
 	}
 
 	public function run() {
-		$method = isset($_SERVER['REQUEST_METHOD']) ? strtoupper((string) $_SERVER['REQUEST_METHOD']) : 'GET';
-		$ua = isset($_SERVER['HTTP_USER_AGENT']) ? (string) wp_unslash($_SERVER['HTTP_USER_AGENT']) : '';
+		$method = isset($_SERVER['REQUEST_METHOD']) ? strtoupper(sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD']))) : 'GET';
+		$ua = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '';
 		if (!in_array($method, ['GET', 'HEAD'], true) || self::is_bot($ua)) {
 			return;
 		}
@@ -163,7 +163,7 @@ class MML_Detect {
 			return;
 		}
 
-		$header = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? (string) wp_unslash($_SERVER['HTTP_ACCEPT_LANGUAGE']) : '';
+		$header = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_ACCEPT_LANGUAGE'])) : '';
 		$go = $this->eligible();
 		$want = ($go && $header !== '') ? $this->pick($header) : '';
 
@@ -173,7 +173,7 @@ class MML_Detect {
 				$this->set_cookie($want);
 				nocache_headers();
 				header('Vary: Accept-Language', false);
-				wp_redirect($t[$want], 302, 'Alba');
+				wp_safe_redirect($t[$want], 302, 'Alba');
 				exit;
 			}
 		}

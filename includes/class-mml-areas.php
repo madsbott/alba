@@ -420,8 +420,8 @@ class MML_Areas {
 	/** Sprache aus einer Adresse (Referer) lesen: /en/seite/ -> en */
 	private function lang_from_url($url) {
 		$c = $this->core;
-		$path = (string) parse_url((string) $url, PHP_URL_PATH);
-		$home = rtrim((string) parse_url(get_option('home'), PHP_URL_PATH), '/');
+		$path = (string) wp_parse_url((string) $url, PHP_URL_PATH);
+		$home = rtrim((string) wp_parse_url(get_option('home'), PHP_URL_PATH), '/');
 		if ($home !== '' && strpos($path, $home) === 0) {
 			$path = substr($path, strlen($home));
 		}

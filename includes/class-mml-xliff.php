@@ -418,7 +418,7 @@ class MML_Xliff {
 		$one = isset($_GET['post']) ? (int) $_GET['post'] : 0;
 		$pick = [];
 		if (!$one && !empty($_GET['ids'])) {
-			foreach (explode(',', (string) wp_unslash($_GET['ids'])) as $i) {
+			foreach (explode(',', sanitize_text_field(wp_unslash($_GET['ids']))) as $i) {
 				if ((int) $i > 0) {
 					$pick[(int) $i] = (int) $i;
 				}
@@ -685,6 +685,7 @@ class MML_Xliff {
 		if (!current_user_can('edit_others_posts')) {
 			wp_die(__('Not allowed.', 'alba'));
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Upload array; name, size and type are validated below.
 		$f = isset($_FILES['xlf']) ? $_FILES['xlf'] : null;
 		if (!$f || (int) $f['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) {
 			$this->back(['mml_xl_err' => __('Upload failed.', 'alba')]);
@@ -696,6 +697,7 @@ class MML_Xliff {
 		if ((int) $f['size'] > self::MAX_BYTES) {
 			$this->back(['mml_xl_err' => __('The file is larger than 5 MB.', 'alba')]);
 		}
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads the local uploaded temp file, not a URL.
 		$xml = (string) file_get_contents($f['tmp_name']);
 		if (function_exists('mb_check_encoding') && !mb_check_encoding($xml, 'UTF-8')) {
 			$this->back(['mml_xl_err' => __('The file is not UTF-8 encoded.', 'alba')]);
@@ -716,7 +718,7 @@ class MML_Xliff {
 		if (!current_user_can('edit_others_posts')) {
 			wp_die(__('Not allowed.', 'alba'));
 		}
-		$token = isset($_POST['token']) ? (string) wp_unslash($_POST['token']) : '';
+		$token = isset($_POST['token']) ? sanitize_text_field(wp_unslash($_POST['token'])) : '';
 		$plan = get_transient($this->tkey($token));
 		if (!is_array($plan) || empty($plan['posts'])) {
 			$this->back(['mml_xl_err' => __('The preview has expired. Please upload the file again.', 'alba')]);
@@ -744,7 +746,7 @@ class MML_Xliff {
 		}
 		if (!empty($_GET['mml_xl_done'])) {
 			$l = isset($_GET['l']) ? sanitize_key(wp_unslash($_GET['l'])) : '';
-			$txt = sprintf(__('%1$d new and %2$d changed texts in %3$d items imported', 'alba'), (int) $_GET['n_new'], (int) $_GET['n_chg'], (int) $_GET['n_posts']);
+			$txt = sprintf(/* translators: 1: new texts, 2: changed texts, 3: items */ __('%1$d new and %2$d changed texts in %3$d items imported', 'alba'), isset($_GET['n_new']) ? absint($_GET['n_new']) : 0, isset($_GET['n_chg']) ? absint($_GET['n_chg']) : 0, isset($_GET['n_posts']) ? absint($_GET['n_posts']) : 0);
 			if (!empty($_GET['n_same'])) {
 				$txt .= ', ' . (int) $_GET['n_same'] . __(' unchanged', 'alba');
 			}
@@ -754,7 +756,7 @@ class MML_Xliff {
 			echo '<div class="notice notice-success"><p>' . esc_html($txt) . __('. The texts are in the side-by-side editor', 'alba') . ($l && isset($c->langs[$l]) ? ' (' . esc_html($c->langs[$l]['name']) . ')' : '') . __(' ready for review. The import did not change whether a translation is visible on the frontend.</p></div>', 'alba');
 		}
 
-		$token = isset($_GET['mml_xl']) ? (string) wp_unslash($_GET['mml_xl']) : '';
+		$token = isset($_GET['mml_xl']) ? sanitize_text_field(wp_unslash($_GET['mml_xl'])) : '';
 		$plan = $token !== '' ? get_transient($this->tkey($token)) : false;
 		if (is_array($plan)) {
 			$this->preview($plan, $token);

@@ -106,6 +106,7 @@ class MML_Seo {
 		if (!isset($_SERVER['REQUEST_URI']) || (isset($_SERVER['REQUEST_METHOD']) && !in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD'], true))) {
 			return '';
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- raw request path, only parsed, never output.
 		$path = (string) wp_parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_PATH);
 		$base = rtrim((string) wp_parse_url(get_option('home'), PHP_URL_PATH), '/');
 		if ($base !== '' && strpos($path, $base . '/') === 0) {
@@ -429,11 +430,11 @@ class MML_Seo {
 					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Sitemap', 'alba'); ?></div><div class="mml-ctl">
 						<label><input type="checkbox" name="mml_sitemap" value="1" <?php checked($on); ?>> <?php echo esc_html__('Provide a sitemap for all languages', 'alba'); ?></label>
 						<?php if ($on) : ?><p class="mml-hint"><a href="<?php echo esc_url($this->index_url()); ?>" target="_blank" rel="noopener"><?php echo esc_html($this->index_url()); ?></a> · <?php echo count($this->files()); ?> <?php echo esc_html__('files. Each entry lists all language versions (hreflang, x-default).', 'alba'); ?></p><?php endif; ?>
-						<p class="mml-hint"><?php echo esc_html__('The entry in', 'alba'); ?> <code>robots.txt</code> <?php echo esc_html__('is made automatically', 'alba'); ?><?php echo $seo ? esc_html(sprintf(__(' and the files are added to the sitemap index of %s', 'alba'), $seo)) : ''; ?><?php echo esc_html__('. Pages with "noindex" (Yoast, Rank Math) and password-protected content are not included.', 'alba'); ?><?php echo $seo ? __(' The sitemap of ', 'alba') . esc_html($seo) . __(' remains and also contains the default language and separate translation posts; duplicate URLs do no harm.', 'alba') : ''; ?></p>
+						<p class="mml-hint"><?php echo esc_html__('The entry in', 'alba'); ?> <code>robots.txt</code> <?php echo esc_html__('is made automatically', 'alba'); ?><?php echo $seo ? esc_html(sprintf(/* translators: %s: name of the SEO plugin */ __(' and the files are added to the sitemap index of %s', 'alba'), $seo)) : ''; ?><?php echo esc_html__('. Pages with "noindex" (Yoast, Rank Math) and password-protected content are not included.', 'alba'); ?><?php echo $seo ? __(' The sitemap of ', 'alba') . esc_html($seo) . __(' remains and also contains the default language and separate translation posts; duplicate URLs do no harm.', 'alba') : ''; ?></p>
 					</div></div>
 					<div class="mml-field"><div class="mml-label">og:locale</div><div class="mml-ctl">
 						<label><input type="checkbox" name="mml_ogloc" value="1" <?php checked(get_option(self::OPT_OG, '1'), '1'); ?>> <?php echo esc_html__('Set language for social media previews (', 'alba'); ?><code>og:locale</code>)</label>
-						<p class="mml-hint"><?php echo $seo ? esc_html(sprintf(__('Passed to %s.', 'alba'), $seo)) : __('Without an SEO plugin, Alba outputs the meta tag itself.', 'alba'); ?> <?php echo esc_html__('Canonical URLs without a language prefix are corrected automatically in other languages.', 'alba'); ?></p>
+						<p class="mml-hint"><?php echo $seo ? esc_html(sprintf(/* translators: %s: name of the SEO plugin */ __('Passed to %s.', 'alba'), $seo)) : __('Without an SEO plugin, Alba outputs the meta tag itself.', 'alba'); ?> <?php echo esc_html__('Canonical URLs without a language prefix are corrected automatically in other languages.', 'alba'); ?></p>
 					</div></div>
 					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Check', 'alba'); ?></div><div class="mml-ctl">
 						<ul class="mml-hint" style="list-style:disc;margin-left:18px">

@@ -1093,7 +1093,7 @@ class MML_Editor {
 		$name = $p === false ? $kind : substr($kind, $p + 1);
 		$type = $p === false ? '' : substr($kind, 0, $p);
 		$label = ['sc' => __('Element text', 'alba'), 'json' => __('Block field', 'alba'), 'meta' => __('Custom field', 'alba'), 'attr' => __('Attribute', 'alba')];
-		return sprintf(__('%1$s "%2$s" (%3$s)', 'alba'), isset($label[$type]) ? $label[$type] : __('Text', 'alba'), $name, $n);
+		return sprintf(/* translators: 1: content type, 2: title, 3: language */ __('%1$s "%2$s" (%3$s)', 'alba'), isset($label[$type]) ? $label[$type] : __('Text', 'alba'), $name, $n);
 	}
 
 	/** Ruft $fn für jeden Textabschnitt auf und setzt den Rückgabewert ein */
@@ -1277,7 +1277,7 @@ class MML_Editor {
 
 		$real = $c->translation($id, $lang, false);
 		if ($real) {
-			echo '<div class="notice notice-info inline"><p>' . esc_html(sprintf(__('There is already a separate post for %s.', 'alba'), $c->langs[$lang]['name'])) . (current_user_can('edit_post', $real) ? ' <a href="' . esc_url(get_edit_post_link($real)) . __('">Edit post</a>', 'alba') : '') . '</p></div></div>';
+			echo '<div class="notice notice-info inline"><p>' . esc_html(sprintf(/* translators: %s: language name */ __('There is already a separate post for %s.', 'alba'), $c->langs[$lang]['name'])) . (current_user_can('edit_post', $real) ? ' <a href="' . esc_url(get_edit_post_link($real)) . '">' . esc_html__('Edit post', 'alba') . '</a>' : '') . '</p></div></div>';
 			return;
 		}
 
@@ -1287,7 +1287,7 @@ class MML_Editor {
 
 		$d = $this->data($id, $lang);
 		if ($d['imp']) {
-			echo '<div class="notice notice-info inline"><p><strong>' . esc_html(sprintf(__('By import (XLIFF or machine pre-translation) on %s.', 'alba'), wp_date('d.m.Y H:i', $d['imp']))) . '</strong> ' . esc_html__('Please check the texts and save to confirm. The import did not change publication on the frontend.', 'alba') . '</p></div>';
+			echo '<div class="notice notice-info inline"><p><strong>' . esc_html(sprintf(/* translators: %s: date and time */ __('By import (XLIFF or machine pre-translation) on %s.', 'alba'), wp_date('d.m.Y H:i', $d['imp']))) . '</strong> ' . esc_html__('Please check the texts and save to confirm. The import did not change publication on the frontend.', 'alba') . '</p></div>';
 		}
 		$kinds = [];
 		$segs = $this->post_segments($post, $kinds);
@@ -1421,6 +1421,7 @@ class MML_Editor {
 			wp_die(__('There is already a separate post for this language.', 'alba'));
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON payload; every field is sanitised when it is saved.
 		$in = json_decode(wp_unslash(isset($_POST['mml_data']) ? (string) $_POST['mml_data'] : ''), true);
 		if (!is_array($in)) {
 			wp_die(__('Invalid data.', 'alba'));

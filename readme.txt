@@ -4,7 +4,7 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.11.6
+Stable tag: 0.11.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 
 == Changelog ==
 
+= 0.11.7 =
+* Security hardening: request data is sanitised and unslashed consistently, safe redirect for the language redirect, wp_parse_url
+* Translator comments for all texts with placeholders
+
 = 0.11.6 =
 * Glossary: neutral example term in the input placeholder
 
@@ -109,6 +113,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.11.7 =
+Hardening release, no feature changes.
 
 = 0.11.6 =
 Minor text change.

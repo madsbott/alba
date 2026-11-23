@@ -623,6 +623,7 @@ class MML_Strings {
 			wp_die(__('Not allowed.', 'alba'));
 		}
 		$domain = isset($_POST['domain']) ? sanitize_text_field(wp_unslash($_POST['domain'])) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- The text is a message id and must stay exactly as found in the code.
 		$text = isset($_POST['text']) ? (string) wp_unslash($_POST['text']) : '';
 		$back = admin_url('admin.php?page=alba-strings');
 		if ($domain === '' || $text === '') {
@@ -648,6 +649,7 @@ class MML_Strings {
 			wp_die(__('Not allowed.', 'alba'));
 		}
 		$opt = isset($_POST['option']) ? sanitize_text_field(wp_unslash($_POST['option'])) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- The text is a stored option value and must stay exactly as found.
 		$text = isset($_POST['text']) ? (string) wp_unslash($_POST['text']) : '';
 		$back = admin_url('admin.php?page=alba-strings');
 		if ($opt === '' || $text === '' || get_option($opt, null) === null) {
@@ -729,9 +731,9 @@ class MML_Strings {
 		} elseif ($m === 'none') {
 			echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html__('Please select at least one source first.', 'alba') . '</p></div>';
 		} elseif ($m === 'done') {
-			$new = (int) $_GET['mml_new'];
-			$pages = (int) $_GET['mml_pages'];
-			$fail = (int) $_GET['mml_fail'];
+			$new = isset($_GET['mml_new']) ? absint($_GET['mml_new']) : 0;
+			$pages = isset($_GET['mml_pages']) ? absint($_GET['mml_pages']) : 0;
+			$fail = isset($_GET['mml_fail']) ? absint($_GET['mml_fail']) : 0;
 			/* translators: 1: number of new texts, 2: number of visited pages */
 			$txt = sprintf(__('Scan finished: %1$d new texts found on %2$d pages.', 'alba'), $new, $pages);
 			echo '<div class="notice notice-' . ($fail >= $pages ? 'error' : 'success') . ' is-dismissible"><p>' . esc_html($txt);
@@ -758,6 +760,7 @@ class MML_Strings {
 			$all = [];
 		}
 		$ids = isset($_POST['ids']) ? array_map('sanitize_key', (array) wp_unslash($_POST['ids'])) : [];
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Translations may contain HTML; they are filtered with wp_kses below unless the user may post unfiltered HTML.
 		$tr = isset($_POST['tr']) && is_array($_POST['tr']) ? wp_unslash($_POST['tr']) : [];
 		$raw_ok = current_user_can('unfiltered_html');
 

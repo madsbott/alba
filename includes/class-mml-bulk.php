@@ -127,7 +127,7 @@ class MML_Bulk {
 		$op = isset($_GET['op']) ? sanitize_key(wp_unslash($_GET['op'])) : '';
 		$lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
 		$ops = $this->ops();
-		$ids = $this->ids_from(isset($_GET['ids']) ? wp_unslash($_GET['ids']) : '');
+		$ids = $this->ids_from(isset($_GET['ids']) ? sanitize_text_field(wp_unslash($_GET['ids'])) : '');
 		if (!isset($ops[$op]) || !isset($c->langs[$lang]) || $lang === $c->default || !$c->roles->lang_allowed($lang) || !$ids) {
 			wp_die(__('Invalid bulk action. Please select the content and language again.', 'alba'));
 		}
@@ -160,13 +160,13 @@ class MML_Bulk {
 				echo '<input type="hidden" name="' . esc_attr($k) . '" value="' . esc_attr($v) . '">';
 			}
 			if ($op === 'assign') {
-				echo '<p>' . esc_html(sprintf(__('Assign %d items to:', 'alba'), count($rows))) . ' <select name="to"><option value="0">' . esc_html__('– remove assignment –', 'alba') . '</option>';
+				echo '<p>' . esc_html(sprintf(/* translators: %d: number of items */ __('Assign %d items to:', 'alba'), count($rows))) . ' <select name="to"><option value="0">' . esc_html__('– remove assignment –', 'alba') . '</option>';
 				foreach ($c->workflow->users() as $u) {
 					echo '<option value="' . (int) $u->ID . '">' . esc_html($u->display_name) . '</option>';
 				}
 				echo '</select> ' . esc_html__('Deadline:', 'alba') . ' <input type="date" name="due"></p>';
 			} else {
-				echo '<p>' . esc_html(sprintf(__('Show %d translations on the frontend.', 'alba'), count($rows))) . '</p><p><label><input type="checkbox" name="force" value="1"> ' . esc_html__('also publish translations with open texts', 'alba') . '</label></p>';
+				echo '<p>' . esc_html(sprintf(/* translators: %d: number of translations */ __('Show %d translations on the frontend.', 'alba'), count($rows))) . '</p><p><label><input type="checkbox" name="force" value="1"> ' . esc_html__('also publish translations with open texts', 'alba') . '</label></p>';
 			}
 			echo '<p><button class="button button-primary">Starten</button> <a class="button" href="' . esc_url($back) . '">Abbrechen</a></p></form></div>';
 			return;
@@ -274,7 +274,7 @@ class MML_Bulk {
 				}
 				$oc = $e->open_count($post, $lang);
 				if ($oc[0] && empty($in['force'])) {
-					return sprintf(__('Skipped: %1$d of %2$d texts are still open.', 'alba'), (int) $oc[0], (int) $oc[1]);
+					return sprintf(/* translators: 1: open texts, 2: total texts */ __('Skipped: %1$d of %2$d texts are still open.', 'alba'), (int) $oc[0], (int) $oc[1]);
 				}
 				update_post_meta($post->ID, MML_Editor::ON . $lang, '1');
 				$this->after($post->ID, $lang, __('Published (bulk action)', 'alba'), true);

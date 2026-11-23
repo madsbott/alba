@@ -267,8 +267,9 @@ class MML_Log {
 		$rows = $wpdb->get_results('SELECT * FROM ' . self::table() . ' WHERE ' . $this->where($f) . ' ORDER BY id DESC LIMIT 5000');
 		nocache_headers();
 		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename="mml-protokoll-' . gmdate('Y-m-d') . '.csv"');
+		header('Content-Disposition: attachment; filename="alba-log-' . gmdate('Y-m-d') . '.csv"');
 		$out = fopen('php://output', 'w');
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- streams the CSV download to php://output.
 		fwrite($out, "\xEF\xBB\xBF");
 		fputcsv($out, [__('Time (UTC)', 'alba'), __('User', 'alba'), __('Content ID', 'alba'), __('Content', 'alba'), __('Language', 'alba'), __('Action', 'alba'), __('Summary', 'alba')], ';');
 		foreach ($rows as $r) {
@@ -278,6 +279,7 @@ class MML_Log {
 			};
 			fputcsv($out, [$r->time, $cell($this->user_name((int) $r->user_id)), $r->post_id, $cell(get_the_title((int) $r->post_id)), $r->lang, $r->action, $cell($r->summary)], ';');
 		}
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- closes the php://output stream.
 		fclose($out);
 		exit;
 	}
