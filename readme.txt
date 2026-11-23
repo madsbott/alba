@@ -4,7 +4,7 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.12.2
+Stable tag: 0.12.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/madsbott
@@ -80,6 +80,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 
 == Changelog ==
 
+= 0.12.3 =
+* With a static front page, hreflang and the sitemap list the home page only in languages in which that page is translated
+
 = 0.12.2 =
 * Optional donation link (GitHub Sponsors) in the plugin list and readme
 
@@ -139,6 +142,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.12.3 =
+Fixes hreflang and sitemap entries of the home page for languages without a translated front page.
 
 = 0.12.2 =
 Adds an optional donation link.

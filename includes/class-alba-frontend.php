@@ -335,8 +335,11 @@ class ALBA_Frontend {
 				return [];
 			}
 		} elseif (is_front_page() || is_home()) {
-			foreach ($c->langs as $code => $l) {
+			foreach ($c->home_languages() as $code) {
 				$links[$code] = $c->home_in($code);
+			}
+			if (count($links) < 2) {
+				return [];
 			}
 		} else {
 			return [];

@@ -296,6 +296,23 @@ class ALBA_Core {
 		return $out;
 	}
 
+	/**
+	 * Language codes that have their own version of the home page.
+	 * With a static front page only languages in which that page is translated; otherwise all languages.
+	 */
+	public function home_languages() {
+		$codes = array_keys($this->langs);
+		if (get_option('show_on_front') === 'page') {
+			$front = (int) get_option('page_on_front');
+			if ($front && $this->is_translatable('page')) {
+				$codes = array_values(array_filter($codes, function ($code) use ($front) {
+					return $code === $this->default || $this->translation($front, $code) > 0;
+				}));
+			}
+		}
+		return $codes;
+	}
+
 	public function translation($id, $lang, $published_only = true) {
 		$t = $this->translations($id);
 		if (empty($t[$lang])) {

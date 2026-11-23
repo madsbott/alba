@@ -277,10 +277,10 @@ class ALBA_Seo {
 	private function build_terms($lang) {
 		$c = $this->core;
 		$alt = [];
-		foreach ($c->langs as $code => $l) {
+		foreach ($c->home_languages() as $code) {
 			$alt[$code] = $c->home_in($code);
 		}
-		$entries = [['loc' => $alt[$lang], 'mod' => '', 'alt' => $alt]];
+		$entries = isset($alt[$lang]) ? [['loc' => $alt[$lang], 'mod' => '', 'alt' => $alt]] : [];
 
 		if ($c->terms) {
 			$left = 2000;
