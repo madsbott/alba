@@ -4,7 +4,7 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.11.4
+Stable tag: 0.11.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 
 == Changelog ==
 
+= 0.11.5 =
+* Strings: texts found in theme files can be added to the table with one click, even if the scan did not collect them
+* Strings: higher limit for collected texts and a notice when it is reached
+
 = 0.11.4 =
 * Dropdown arrow: "Automatic" now follows the Salient option "header-dropdown-arrows" (value "inherit" counts as on)
 
@@ -102,6 +106,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.11.5 =
+Makes theme texts such as the Salient search placeholder translatable.
 
 = 0.11.4 =
 Fixes the dropdown arrow with Salient.
