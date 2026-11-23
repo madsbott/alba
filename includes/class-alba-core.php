@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class MML_Core {
+class ALBA_Core {
 	private static $inst;
 
 	public $langs = [];        // code => ['name' =>, 'locale' =>]
@@ -84,7 +84,7 @@ class MML_Core {
 	}
 
 	private function load_settings() {
-		$langs = get_option('mml_languages');
+		$langs = get_option('alba_languages');
 		if (!is_array($langs) || !$langs) {
 			$loc = get_option('WPLANG') ?: 'en_US';
 			$code = strtolower(substr($loc, 0, 2));
@@ -94,13 +94,13 @@ class MML_Core {
 		}
 		$this->langs = $langs;
 
-		$def = get_option('mml_default');
+		$def = get_option('alba_default');
 		$this->default = isset($langs[$def]) ? $def : (string) key($langs);
 
-		$pt = get_option('mml_post_types');
+		$pt = get_option('alba_post_types');
 		$this->post_types = (is_array($pt) && $pt) ? array_values($pt) : ['post', 'page'];
 
-		$tx = get_option('mml_taxonomies');
+		$tx = get_option('alba_taxonomies');
 		if (is_array($tx)) {
 			$this->taxonomies = array_values($tx);
 		}
@@ -223,7 +223,7 @@ class MML_Core {
 	}
 
 	/* ---------------------------------------------------------------
-	 * Übersetzungs-Verknüpfung (Meta: _mml_lang, _mml_group)
+	 * Übersetzungs-Verknüpfung (Meta: _alba_lang, _alba_group)
 	 * ------------------------------------------------------------- */
 
 	public function is_translatable($type) {
@@ -231,15 +231,15 @@ class MML_Core {
 	}
 
 	public function post_lang($id) {
-		$l = get_post_meta($id, '_mml_lang', true);
+		$l = get_post_meta($id, '_alba_lang', true);
 		return ($l && isset($this->langs[$l])) ? $l : $this->default;
 	}
 
 	public function group($id, $create = false) {
-		$g = get_post_meta($id, '_mml_group', true);
+		$g = get_post_meta($id, '_alba_group', true);
 		if (!$g && $create) {
 			$g = wp_generate_uuid4();
-			update_post_meta($id, '_mml_group', $g);
+			update_post_meta($id, '_alba_group', $g);
 		}
 		return $g;
 	}
@@ -265,14 +265,14 @@ class MML_Core {
 			return $this->cache[$id];
 		}
 		$out = [$this->post_lang($id) => $id];
-		$g = get_post_meta($id, '_mml_group', true);
+		$g = get_post_meta($id, '_alba_group', true);
 		if ($g) {
 			$this->busy = true;
 			try {
 				$ids = get_posts([
 					'post_type'        => get_post_type($id) ?: 'any',
 					'post_status'      => ['publish', 'draft', 'pending', 'private', 'future'],
-					'meta_key'         => '_mml_group',
+					'meta_key'         => '_alba_group',
 					'meta_value'       => $g,
 					'posts_per_page'   => -1,
 					'fields'           => 'ids',
@@ -280,7 +280,7 @@ class MML_Core {
 					'order'            => 'ASC',
 					'no_found_rows'    => true,
 					'suppress_filters' => true,
-					'mml_skip'         => 1,
+					'alba_skip'         => 1,
 				]);
 			} finally {
 				$this->busy = false;
@@ -320,23 +320,23 @@ class MML_Core {
 		if ($lang === $this->default) {
 			return [
 				'relation' => 'OR',
-				['key' => '_mml_lang', 'value' => $lang],
-				['key' => '_mml_lang', 'compare' => 'NOT EXISTS'],
+				['key' => '_alba_lang', 'value' => $lang],
+				['key' => '_alba_lang', 'compare' => 'NOT EXISTS'],
 			];
 		}
 		if ($overlay) {
 			// auch Originale mit freigegebener Editor-Übersetzung in dieser Sprache
 			return [
 				'relation' => 'OR',
-				['key' => '_mml_lang', 'value' => $lang],
-				['key' => '_mml_on_' . $lang, 'value' => '1'],
+				['key' => '_alba_lang', 'value' => $lang],
+				['key' => '_alba_on_' . $lang, 'value' => '1'],
 			];
 		}
-		return [['key' => '_mml_lang', 'value' => $lang]];
+		return [['key' => '_alba_lang', 'value' => $lang]];
 	}
 
 	public function pre_get_posts($q) {
-		if ($q->get('mml_skip')) {
+		if ($q->get('alba_skip')) {
 			return;
 		}
 
@@ -346,7 +346,7 @@ class MML_Core {
 			if (!$q->is_main_query() || $pagenow !== 'edit.php') {
 				return;
 			}
-			$lang = isset($_GET['mml_lang']) ? sanitize_key(wp_unslash($_GET['mml_lang'])) : '';
+			$lang = isset($_GET['alba_lang']) ? sanitize_key(wp_unslash($_GET['alba_lang'])) : '';
 			if (!$lang || !isset($this->langs[$lang])) {
 				return;
 			}
@@ -399,11 +399,11 @@ class MML_Core {
 		if (!preg_match('/^' . preg_quote($original, '/') . '-\d+$/', $slug)) {
 			return $slug;
 		}
-		if (apply_filters('wp_unique_post_slug_is_bad_flat_slug', false, $original, $type)) {
+		if (apply_filters('wp_unique_post_slug_is_bad_flat_slug', false, $original, $type)) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 			return $slug;
 		}
 
-		$lang = isset($_POST['mml_lang']) ? sanitize_key(wp_unslash($_POST['mml_lang'])) : '';
+		$lang = isset($_POST['alba_lang']) ? sanitize_key(wp_unslash($_POST['alba_lang'])) : '';
 		if (!isset($this->langs[$lang])) {
 			$lang = $this->post_lang($post_id);
 		}
@@ -417,7 +417,7 @@ class MML_Core {
 			'fields'           => 'ids',
 			'no_found_rows'    => true,
 			'suppress_filters' => true,
-			'mml_skip'         => 1,
+			'alba_skip'         => 1,
 			'meta_query'       => [$this->lang_meta_query($lang)],
 		];
 		if (is_post_type_hierarchical($type)) {
@@ -435,7 +435,7 @@ class MML_Core {
 	public function duplicate_post($id, $lang, $auto = false) {
 		$src = get_post($id);
 		if (!$src || !isset($this->langs[$lang]) || !$this->is_translatable($src->post_type)) {
-			return new WP_Error('mml', __('This content cannot be translated.', 'alba'));
+			return new WP_Error('alba', __('This content cannot be translated.', 'alba'));
 		}
 		$existing = $this->translation($id, $lang, false);
 		if ($existing) {
@@ -443,8 +443,8 @@ class MML_Core {
 		}
 
 		$group = $this->group($id, true);
-		if (!metadata_exists('post', $id, '_mml_lang')) {
-			update_post_meta($id, '_mml_lang', $this->post_lang($id));
+		if (!metadata_exists('post', $id, '_alba_lang')) {
+			update_post_meta($id, '_alba_lang', $this->post_lang($id));
 		}
 
 		$parent = 0;
@@ -469,10 +469,10 @@ class MML_Core {
 			return $new;
 		}
 
-		update_post_meta($new, '_mml_lang', $lang);
-		update_post_meta($new, '_mml_group', $group);
-		delete_post_meta($id, '_mml_slug_' . $lang);
-		delete_post_meta($id, '_mml_on_' . $lang);   // eigener Beitrag löst die Editor-Übersetzung ab
+		update_post_meta($new, '_alba_lang', $lang);
+		update_post_meta($new, '_alba_group', $group);
+		delete_post_meta($id, '_alba_slug_' . $lang);
+		delete_post_meta($id, '_alba_on_' . $lang);   // eigener Beitrag löst die Editor-Übersetzung ab
 		$this->flush();
 		if ($this->editor) {
 			$this->editor->mark_synced($new);
@@ -480,7 +480,7 @@ class MML_Core {
 
 		$skip = ['_edit_lock', '_edit_last', '_wp_old_slug', '_wp_trash_meta_status', '_wp_trash_meta_time', '_encloseme', '_pingme'];
 		foreach (get_post_meta($id) as $k => $vals) {
-			if (strpos($k, '_mml_') === 0 || in_array($k, $skip, true)) {
+			if (strpos($k, '_alba_') === 0 || in_array($k, $skip, true)) {
 				continue;
 			}
 			foreach ($vals as $v) {
@@ -492,7 +492,7 @@ class MML_Core {
 		if ($this->terms) {
 			$this->terms->copy_post_terms($id, $new, $lang, $auto);
 		}
-		do_action('mml_translation_created', (int) $new, (int) $id, $lang, (bool) $auto);
+		do_action('alba_translation_created', (int) $new, (int) $id, $lang, (bool) $auto);
 		return (int) $new;
 	}
 }

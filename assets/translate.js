@@ -1,12 +1,12 @@
 (function () {
-	function mmlT(s) { return (window.mmlI18n && window.mmlI18n[s]) || s; }
-	function mmlF(s) { var a = Array.prototype.slice.call(arguments, 1), i = 0; return mmlT(s).replace(/%(\d+\$)?s/g, function (m, p) { var k = p ? parseInt(p, 10) - 1 : i++; return a[k]; }); }
-	var form = document.getElementById('mml-tr-form');
+	function albaT(s) { return (window.albaI18n && window.albaI18n[s]) || s; }
+	function albaF(s) { var a = Array.prototype.slice.call(arguments, 1), i = 0; return albaT(s).replace(/%(\d+\$)?s/g, function (m, p) { var k = p ? parseInt(p, 10) - 1 : i++; return a[k]; }); }
+	var form = document.getElementById('alba-tr-form');
 	if (!form) {
 		return;
 	}
-	var rows = [].slice.call(form.querySelectorAll('.mml-row'));
-	var counter = document.getElementById('mml-count');
+	var rows = [].slice.call(form.querySelectorAll('.alba-row'));
+	var counter = document.getElementById('alba-count');
 	var slugRow = rows.filter(function (r) { return r.getAttribute('data-field') === 'slug'; })[0] || null;
 	var titleRow = rows.filter(function (r) { return r.getAttribute('data-field') === 'title'; })[0] || null;
 	var counted = rows.filter(function (r) { return r !== slugRow; });
@@ -31,7 +31,7 @@
 
 	function counters() {
 		rows.forEach(function (r) {
-			var c = r.querySelector('.mml-cnt');
+			var c = r.querySelector('.alba-cnt');
 			if (!c) {
 				return;
 			}
@@ -52,9 +52,9 @@
 			if (done) {
 				n++;
 			}
-			r.classList.toggle('mml-done', done);
+			r.classList.toggle('alba-done', done);
 		});
-		counter.textContent = mmlF('%1$s of %2$s translated', counted.filter(function (r) { return r.classList.contains('mml-done'); }).length, counted.length);
+		counter.textContent = albaF('%1$s of %2$s translated', counted.filter(function (r) { return r.classList.contains('alba-done'); }).length, counted.length);
 		rows.forEach(checkTerms);
 	}
 
@@ -66,15 +66,15 @@
 	function checkTerms(r) {
 		var v = area(r).value;
 		var empty = v.replace(/\s+/g, '') === '';
-		var tm = r.querySelector('.mml-tm');
+		var tm = r.querySelector('.alba-tm');
 		if (tm) {
-			tm.classList.toggle('mml-hide', !empty);
+			tm.classList.toggle('alba-hide', !empty);
 		}
-		[].slice.call(r.querySelectorAll('.mml-term')).forEach(function (t) {
+		[].slice.call(r.querySelectorAll('.alba-term')).forEach(function (t) {
 			var target = t.getAttribute('data-target') || '';
 			var re = new RegExp('(^|[^\\p{L}\\p{N}_])' + esc(target) + '(?![\\p{L}\\p{N}_])', t.getAttribute('data-cs') === '1' ? 'u' : 'iu');
-			t.classList.toggle('mml-ok', !empty && re.test(v));
-			t.classList.toggle('mml-miss', !empty && !re.test(v));
+			t.classList.toggle('alba-ok', !empty && re.test(v));
+			t.classList.toggle('alba-miss', !empty && !re.test(v));
 		});
 	}
 
@@ -91,7 +91,7 @@
 			update();
 			dirty = true;
 		});
-		var cp = r.querySelector('.mml-copy');
+		var cp = r.querySelector('.alba-copy');
 		if (cp) {
 			cp.addEventListener('click', function () {
 				t.value = t.getAttribute('data-src') || '';
@@ -100,7 +100,7 @@
 				dirty = true;
 			});
 		}
-		var gen = r.querySelector('.mml-slug-gen');
+		var gen = r.querySelector('.alba-slug-gen');
 		if (gen) {
 			gen.addEventListener('click', function () {
 				var src = titleRow ? area(titleRow).value : '';
@@ -114,11 +114,11 @@
 	});
 
 	rows.forEach(function (r) {
-		var b = r.querySelector('.mml-tm-use');
+		var b = r.querySelector('.alba-tm-use');
 		if (b) {
 			b.addEventListener('click', function () {
 				var t = area(r);
-				t.value = r.querySelector('.mml-tm').getAttribute('data-tm') || '';
+				t.value = r.querySelector('.alba-tm').getAttribute('data-tm') || '';
 				grow(t);
 				update();
 				dirty = true;
@@ -126,11 +126,11 @@
 		}
 	});
 
-	var tmAll = document.getElementById('mml-tm-all');
+	var tmAll = document.getElementById('alba-tm-all');
 	if (tmAll) {
 		tmAll.addEventListener('click', function () {
 			rows.forEach(function (r) {
-				var tm = r.querySelector('.mml-tm');
+				var tm = r.querySelector('.alba-tm');
 				var t = area(r);
 				if (tm && t.value.replace(/\s+/g, '') === '') {
 					t.value = tm.getAttribute('data-tm') || '';
@@ -143,7 +143,7 @@
 		});
 	}
 
-	document.getElementById('mml-fill').addEventListener('click', function () {
+	document.getElementById('alba-fill').addEventListener('click', function () {
 		rows.forEach(function (r) {
 			var t = area(r);
 			if (r !== slugRow && t.value.replace(/\s+/g, '') === '') {
@@ -155,40 +155,40 @@
 		dirty = true;
 	});
 
-	document.getElementById('mml-on').addEventListener('change', function () {
+	document.getElementById('alba-on').addEventListener('change', function () {
 		dirty = true;
 	});
 
 	// Automatische Übersetzungsvorschläge (MyMemory / LibreTranslate): nur Anzeige, Übernehmen bestätigt der Nutzer
-	var mt = window.mmlMT || null;
+	var mt = window.albaMT || null;
 
 	function mtBox(r, kind, text) {
-		var tgt = r.querySelector('.mml-tgt');
-		var box = tgt.querySelector('.mml-mt');
+		var tgt = r.querySelector('.alba-tgt');
+		var box = tgt.querySelector('.alba-mt');
 		if (!box) {
 			box = document.createElement('div');
 			tgt.appendChild(box);
 		}
-		box.className = 'mml-mt' + (kind === 'err' ? ' mml-err' : '');
+		box.className = 'alba-mt' + (kind === 'err' ? ' alba-err' : '');
 		box.textContent = '';
 		var l = document.createElement('span');
-		l.className = 'mml-tm-l';
+		l.className = 'alba-tm-l';
 		var t = document.createElement('span');
-		t.className = 'mml-mt-t';
+		t.className = 'alba-mt-t';
 		box.appendChild(l);
 		box.appendChild(t);
 		if (kind === 'load') {
-			l.textContent = mmlT('Fetching suggestion …');
+			l.textContent = albaT('Fetching suggestion …');
 		} else if (kind === 'err') {
-			l.textContent = mmlT('No suggestion:');
+			l.textContent = albaT('No suggestion:');
 			t.textContent = text;
 		} else {
-			l.textContent = mmlF('Automatic suggestion (%s) – please check:', mt.provider);
+			l.textContent = albaF('Automatic suggestion (%s) – please check:', mt.provider);
 			t.textContent = text;
 			var use = document.createElement('button');
 			use.type = 'button';
 			use.className = 'button-link';
-			use.textContent = mmlT('Apply');
+			use.textContent = albaT('Apply');
 			use.addEventListener('click', function () {
 				var a = area(r);
 				a.value = text;
@@ -201,7 +201,7 @@
 			no.type = 'button';
 			no.className = 'button-link';
 			no.style.marginLeft = '10px';
-			no.textContent = mmlT('Discard');
+			no.textContent = albaT('Discard');
 			no.addEventListener('click', function () { box.remove(); });
 			box.appendChild(use);
 			box.appendChild(no);
@@ -211,7 +211,7 @@
 	function mtFetch(list) {
 		list.forEach(function (r) { mtBox(r, 'load'); });
 		var fd = new FormData();
-		fd.append('action', 'mml_mt');
+		fd.append('action', 'alba_mt');
 		fd.append('nonce', mt.nonce);
 		fd.append('from', mt.from);
 		fd.append('to', mt.to);
@@ -220,7 +220,7 @@
 			.then(function (res) { return res.json(); })
 			.then(function (j) {
 				if (!j || !j.success) {
-					var msg = (j && j.data) ? String(j.data) : mmlT('Unknown error.');
+					var msg = (j && j.data) ? String(j.data) : albaT('Unknown error.');
 					list.forEach(function (r) { mtBox(r, 'err', msg); });
 					return false;
 				}
@@ -228,24 +228,24 @@
 				return true;
 			})
 			.catch(function () {
-				list.forEach(function (r) { mtBox(r, 'err', mmlT('The service is not reachable.')); });
+				list.forEach(function (r) { mtBox(r, 'err', albaT('The service is not reachable.')); });
 				return false;
 			});
 	}
 
 	if (mt) {
 		rows.forEach(function (r) {
-			var b = r.querySelector('.mml-mt-get');
+			var b = r.querySelector('.alba-mt-get');
 			if (b) {
 				b.addEventListener('click', function () { mtFetch([r]); });
 			}
 		});
-		var mtAll = document.getElementById('mml-mt-all');
+		var mtAll = document.getElementById('alba-mt-all');
 		if (mtAll) {
 			mtAll.addEventListener('click', function () {
 				var todo = rows.filter(function (r) {
-					var tm = r.querySelector('.mml-tm');
-					return r.querySelector('.mml-mt-get') && area(r).value.replace(/\s+/g, '') === '' && !(tm && !tm.classList.contains('mml-hide'));
+					var tm = r.querySelector('.alba-tm');
+					return r.querySelector('.alba-mt-get') && area(r).value.replace(/\s+/g, '') === '' && !(tm && !tm.classList.contains('alba-hide'));
 				});
 				if (!todo.length) {
 					return;
@@ -268,7 +268,7 @@
 	}
 
 	form.addEventListener('submit', function () {
-		var data = { title: '', excerpt: '', seg: {}, on: document.getElementById('mml-on').checked };
+		var data = { title: '', excerpt: '', seg: {}, on: document.getElementById('alba-on').checked };
 		rows.forEach(function (r) {
 			var f = r.getAttribute('data-field');
 			var v = area(r).value;
@@ -278,7 +278,7 @@
 				data[f] = v;
 			}
 		});
-		document.getElementById('mml-data').value = JSON.stringify(data);
+		document.getElementById('alba-data').value = JSON.stringify(data);
 		dirty = false;
 	});
 

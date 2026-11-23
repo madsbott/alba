@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 /**
  * Medien pro Sprache: Alt-Text, Titel, Beschriftung und Beschreibung je Sprache, optional ein anderes Bild je Sprache.
  *
- * Gespeichert wird am Original-Medium als Meta _mml_media_{sprache}: alt, title, caption, desc, file (ID eines anderen Mediums).
+ * Gespeichert wird am Original-Medium als Meta _alba_media_{sprache}: alt, title, caption, desc, file (ID eines anderen Mediums).
  * Bearbeiten: in der Mediathek (Anhang-Details im Dialog und auf der Bearbeiten-Seite des Mediums).
  * Frontend (nicht in der Standardsprache):
  *  - wp_get_attachment_image (Beitragsbilder, Theme, WPBakery, Salient …): Alt-Text und Bild ersetzt, srcset/sizes passend zum anderen Bild
@@ -15,13 +15,13 @@ if (!defined('ABSPATH')) {
  *    (ein im Editor übersetzter Alt-Text hat Vorrang); andere Bilddatei samt srcset
  *  - Beschriftung (wp_get_attachment_caption) und Titel (the_title des Mediums)
  */
-class MML_Media {
-	const META = '_mml_media_';
+class ALBA_Media {
+	const META = '_alba_media_';
 
 	private $core;
 	private $busy = false;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->media = $this;
 
@@ -87,7 +87,7 @@ class MML_Media {
 			update_post_meta($id, self::META . $lang, $d);
 		}
 		$c->flush();
-		do_action('mml_media_saved', (int) $id, $lang);
+		do_action('alba_media_saved', (int) $id, $lang);
 	}
 
 	/** Zusammenfassung für Spalten: Sprachen mit Eintrag */
@@ -106,12 +106,12 @@ class MML_Media {
 	 * ------------------------------------------------------------- */
 
 	public function assets() {
-		wp_enqueue_script('mml-media', MML_URL . 'assets/media.js', ['jquery', 'mml-i18n'], MML_VERSION, true);
-		wp_localize_script('mml-media', 'mmlMedia', [
+		wp_enqueue_script('alba-media', ALBA_URL . 'assets/media.js', ['jquery', 'alba-i18n'], ALBA_VERSION, true);
+		wp_localize_script('alba-media', 'albaMedia', [
 			'ajax'   => admin_url('admin-ajax.php'),
-			'nonce'  => wp_create_nonce('mml_mt'),
+			'nonce'  => wp_create_nonce('alba_mt'),
 			'from'   => $this->core->default,
-			'mt'     => MML_MT::enabled(),
+			'mt'     => ALBA_MT::enabled(),
 			'choose' => __('Choose image', 'alba'),
 		]);
 	}
@@ -127,7 +127,7 @@ class MML_Media {
 		];
 		$is_img = strpos((string) $post->post_mime_type, 'image/') === 0;
 		$rows = ['alt' => __('Alt text', 'alba'), 'title' => __('Title', 'alba'), 'caption' => __('Caption', 'alba'), 'desc' => __('Description', 'alba')];
-		$h = '<div class="mml-media" data-lang="' . esc_attr($lang) . '" style="display:grid;gap:6px;max-width:560px">';
+		$h = '<div class="alba-media" data-lang="' . esc_attr($lang) . '" style="display:grid;gap:6px;max-width:560px">';
 		foreach ($rows as $k => $label) {
 			if ($k === 'alt' && !$is_img) {
 				continue;
@@ -143,14 +143,14 @@ class MML_Media {
 		}
 		if ($is_img) {
 			$thumb = $v['file'] ? wp_get_attachment_image((int) $v['file'], [60, 60]) : '';
-			$h .= '<div class="mml-media-file"><span style="display:block;font-size:12px;color:#646970">' . esc_html__('Different image for this language (optional)', 'alba') . '</span>'
-				. '<span class="mml-media-thumb">' . $thumb . '</span> '
+			$h .= '<div class="alba-media-file"><span style="display:block;font-size:12px;color:#646970">' . esc_html__('Different image for this language (optional)', 'alba') . '</span>'
+				. '<span class="alba-media-thumb">' . $thumb . '</span> '
 				. '<input type="hidden" data-k="file" name="' . esc_attr($name('file')) . '" value="' . (int) $v['file'] . '"> '
-				. '<button type="button" class="button mml-media-pick">' . esc_html__('Choose image', 'alba') . '</button> '
-				. '<button type="button" class="button-link mml-media-clear"' . ($v['file'] ? '' : ' style="display:none"') . '>entfernen</button></div>';
+				. '<button type="button" class="button alba-media-pick">' . esc_html__('Choose image', 'alba') . '</button> '
+				. '<button type="button" class="button-link alba-media-clear"' . ($v['file'] ? '' : ' style="display:none"') . '>entfernen</button></div>';
 		}
-		if (MML_MT::enabled()) {
-			$h .= '<div><button type="button" class="button mml-media-mt">' . esc_html__('Translate texts from the original', 'alba') . '</button> <span class="mml-media-msg description"></span></div>';
+		if (ALBA_MT::enabled()) {
+			$h .= '<div><button type="button" class="button alba-media-mt">' . esc_html__('Translate texts from the original', 'alba') . '</button> <span class="alba-media-msg description"></span></div>';
 		}
 		return $h . '</div>';
 	}
@@ -160,11 +160,11 @@ class MML_Media {
 			return $fields;
 		}
 		foreach ($this->langs() as $code => $l) {
-			$fields['mml_media_' . $code] = [
+			$fields['alba_media_' . $code] = [
 				'label' => $l['name'],
 				'input' => 'html',
 				'html'  => $this->fields_html($post, $code, function ($k) use ($post, $code) {
-					return 'attachments[' . (int) $post->ID . '][mml_' . $code . '_' . $k . ']';
+					return 'attachments[' . (int) $post->ID . '][alba_' . $code . '_' . $k . ']';
 				}),
 				'helps' => __('Alba: text and image for this language', 'alba'),
 			];
@@ -181,9 +181,9 @@ class MML_Media {
 			$has = false;
 			$in = [];
 			foreach ($keys as $k) {
-				if (isset($attachment['mml_' . $code . '_' . $k])) {
+				if (isset($attachment['alba_' . $code . '_' . $k])) {
 					$has = true;
-					$in[$k] = wp_slash($attachment['mml_' . $code . '_' . $k]);
+					$in[$k] = wp_slash($attachment['alba_' . $code . '_' . $k]);
 				}
 			}
 			if ($has) {
@@ -197,16 +197,16 @@ class MML_Media {
 		if (!$this->langs()) {
 			return;
 		}
-		add_meta_box('mml-media', __('Languages (Alba)', 'alba'), [$this, 'box'], 'attachment', 'normal', 'default');
+		add_meta_box('alba-media', __('Languages (Alba)', 'alba'), [$this, 'box'], 'attachment', 'normal', 'default');
 	}
 
 	public function box($post) {
-		wp_nonce_field('mml_media_' . $post->ID, 'mml_media_nonce');
+		wp_nonce_field('alba_media_' . $post->ID, 'alba_media_nonce');
 		$first = true;
 		foreach ($this->langs() as $code => $l) {
 			echo '<h4 style="margin:' . ($first ? '0' : '14px') . ' 0 6px">' . esc_html($l['name']) . '</h4>';
 			echo $this->fields_html($post, $code, function ($k) use ($code) { // phpcs:ignore WordPress.Security.EscapeOutput
-				return 'mml_media[' . sanitize_key($code) . '][' . sanitize_key($k) . ']';
+				return 'alba_media[' . sanitize_key($code) . '][' . sanitize_key($k) . ']';
 			});
 			$first = false;
 		}
@@ -214,11 +214,11 @@ class MML_Media {
 	}
 
 	public function box_save($id) {
-		if (empty($_POST['mml_media_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mml_media_nonce'])), 'mml_media_' . $id) || !current_user_can('edit_post', $id)) {
+		if (empty($_POST['alba_media_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['alba_media_nonce'])), 'alba_media_' . $id) || !current_user_can('edit_post', $id)) {
 			return;
 		}
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each field is sanitised when it is saved.
-		$in = isset($_POST['mml_media']) && is_array($_POST['mml_media']) ? wp_unslash($_POST['mml_media']) : [];
+		$in = isset($_POST['alba_media']) && is_array($_POST['alba_media']) ? wp_unslash($_POST['alba_media']) : [];
 		foreach ($this->langs() as $code => $l) {
 			if (isset($in[$code]) && is_array($in[$code])) {
 				$this->store($id, $code, wp_slash($in[$code]));
@@ -228,13 +228,13 @@ class MML_Media {
 
 	public function column($cols) {
 		if ($this->langs()) {
-			$cols['mml_media'] = __('Languages', 'alba');
+			$cols['alba_media'] = __('Languages', 'alba');
 		}
 		return $cols;
 	}
 
 	public function column_cell($col, $id) {
-		if ($col !== 'mml_media') {
+		if ($col !== 'alba_media') {
 			return;
 		}
 		$f = $this->filled($id);

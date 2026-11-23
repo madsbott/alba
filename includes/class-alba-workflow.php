@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
  * Arbeitsablauf mit Übersetzern: Aufträge, Fristen, Status „Zur Prüfung“, E-Mail-Benachrichtigungen.
  *
  * Gilt für Übersetzungen im Übersetzungseditor (Editor-Übersetzungen am Original). Je Inhalt und Sprache wird ein Auftrag
- * als Beitrags-Meta _mml_wf_{sprache} gespeichert:
+ * als Beitrags-Meta _alba_wf_{sprache} gespeichert:
  *   to  = zuständiger Benutzer, by = wer zugewiesen hat, due = Frist (Y-m-d),
  *   st  = '' (kein offener Vorgang), 'open' (in Arbeit) oder 'review' (zur Prüfung eingereicht),
  *   at/rv = Zeitpunkt der Zuweisung / Einreichung, nt = Fingerabdruck des Originals bei der letzten „Original geändert“-Mail,
@@ -16,13 +16,13 @@ if (!defined('ABSPATH')) {
  * bei Änderung des Originals nach der Übersetzung (an den Zuständigen und die eingestellte Adresse) und täglich
  * zur Frist (am Vortag und wenn überfällig).
  */
-class MML_Workflow {
-	const META = '_mml_wf_';
-	const CRON = 'mml_wf_daily';
+class ALBA_Workflow {
+	const META = '_alba_wf_';
+	const CRON = 'alba_wf_daily';
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->workflow = $this;
 
@@ -35,8 +35,8 @@ class MML_Workflow {
 		});
 
 		if (is_admin()) {
-			add_action('admin_post_mml_wf_assign', [$this, 'handle_assign']);
-			add_action('admin_post_mml_wf_return', [$this, 'handle_return']);
+			add_action('admin_post_alba_wf_assign', [$this, 'handle_assign']);
+			add_action('admin_post_alba_wf_return', [$this, 'handle_return']);
 			add_action('admin_init', [$this, 'register']);
 		}
 	}
@@ -72,13 +72,13 @@ class MML_Workflow {
 
 	/** Benutzer, denen ein Auftrag zugewiesen werden kann */
 	public function users() {
-		$users = get_users(['capability__in' => [MML_Roles::CAP, 'edit_posts'], 'orderby' => 'display_name', 'fields' => ['ID', 'display_name']]);
+		$users = get_users(['capability__in' => [ALBA_Roles::CAP, 'edit_posts'], 'orderby' => 'display_name', 'fields' => ['ID', 'display_name']]);
 		return is_array($users) ? $users : [];
 	}
 
 	private function valid_user($uid) {
 		$uid = (int) $uid;
-		return $uid > 0 && ($u = get_userdata($uid)) && (user_can($u, MML_Roles::CAP) || user_can($u, 'edit_posts'));
+		return $uid > 0 && ($u = get_userdata($uid)) && (user_can($u, ALBA_Roles::CAP) || user_can($u, 'edit_posts'));
 	}
 
 	private function valid_due($d) {
@@ -157,7 +157,7 @@ class MML_Workflow {
 		}
 		$cur = null;
 		foreach ($c->langs as $lang => $l) {
-			if ($lang === $c->default || !metadata_exists('post', $id, MML_Editor::TR . $lang) || !$c->editor->outdated($id, $lang)) {
+			if ($lang === $c->default || !metadata_exists('post', $id, ALBA_Editor::TR . $lang) || !$c->editor->outdated($id, $lang)) {
 				continue;
 			}
 			if ($cur === null) {
@@ -208,12 +208,12 @@ class MML_Workflow {
 	 * ------------------------------------------------------------- */
 
 	private function mails_on() {
-		return get_option('mml_wf_mail', '1') === '1';
+		return get_option('alba_wf_mail', '1') === '1';
 	}
 
 	private function cc() {
 		$out = [];
-		foreach (preg_split('/[\s,;]+/', (string) get_option('mml_wf_cc', '')) as $m) {
+		foreach (preg_split('/[\s,;]+/', (string) get_option('alba_wf_cc', '')) as $m) {
 			if ($m !== '' && is_email($m)) {
 				$out[] = $m;
 			}
@@ -322,14 +322,14 @@ To revise:
 	 * ------------------------------------------------------------- */
 
 	private function back($post, $lang, $msg) {
-		wp_safe_redirect(add_query_arg('mml_wf', rawurlencode($msg), $this->core->editor->url($post, $lang)));
+		wp_safe_redirect(add_query_arg('alba_wf', rawurlencode($msg), $this->core->editor->url($post, $lang)));
 		exit;
 	}
 
 	public function handle_assign() {
 		$id = isset($_POST['post']) ? (int) $_POST['post'] : 0;
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
-		check_admin_referer('mml_wf_' . $id . '_' . $lang);
+		check_admin_referer('alba_wf_' . $id . '_' . $lang);
 		if (!current_user_can('edit_others_posts') || !$this->core->roles->can_translate($id, $lang)) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
@@ -342,7 +342,7 @@ To revise:
 	public function handle_return() {
 		$id = isset($_POST['post']) ? (int) $_POST['post'] : 0;
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
-		check_admin_referer('mml_wf_' . $id . '_' . $lang);
+		check_admin_referer('alba_wf_' . $id . '_' . $lang);
 		if (!$this->core->roles->can_translate($id, $lang) || !$this->core->roles->can_publish($id)) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
@@ -367,11 +367,11 @@ To revise:
 			return;
 		}
 		$overdue = $w['due'] !== '' && $w['st'] === 'open' && $w['due'] < wp_date('Y-m-d');
-		if (!empty($_GET['mml_wf'])) {
-			echo '<div class="notice notice-success inline"><p>' . esc_html(sanitize_text_field(wp_unslash($_GET['mml_wf']))) . '</p></div>';
+		if (!empty($_GET['alba_wf'])) {
+			echo '<div class="notice notice-success inline"><p>' . esc_html(sanitize_text_field(wp_unslash($_GET['alba_wf']))) . '</p></div>';
 		}
 		?>
-		<div class="mml-wf" style="background:#fff;border:1px solid #dcdcde;border-left:4px solid <?php echo $w['st'] === 'review' ? '#dba617' : '#2271b1'; ?>;padding:10px 14px;margin:12px 0;max-width:1100px">
+		<div class="alba-wf" style="background:#fff;border:1px solid #dcdcde;border-left:4px solid <?php echo $w['st'] === 'review' ? '#dba617' : '#2271b1'; ?>;padding:10px 14px;margin:12px 0;max-width:1100px">
 			<strong><?php echo esc_html__('Assignment', 'alba'); ?></strong> <?php echo esc_html__('· Assigned to:', 'alba'); ?> <strong><?php echo esc_html($u ? $u->display_name : esc_html__('nobody', 'alba')); ?></strong> <?php echo esc_html__('· Deadline:', 'alba'); ?> <strong<?php echo $overdue ? ' style="color:#b32d2e"' : ''; ?>><?php echo $w['due'] !== '' ? esc_html(wp_date('d.m.Y', strtotime($w['due'] . ' 12:00:00'))) . ($overdue ? esc_html__(' (overdue)', 'alba') : '') : esc_html__('none', 'alba'); ?></strong>
 			<?php if ($w['st'] !== '') : ?> <?php echo esc_html__('· Status:', 'alba'); ?> <strong><?php echo esc_html($this->status_label($w['st'])); ?></strong><?php endif; ?>
 			<?php if ($w['st'] === 'review') : ?>
@@ -381,10 +381,10 @@ To revise:
 
 			<?php if ($can_assign) : ?>
 				<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-					<input type="hidden" name="action" value="mml_wf_assign">
+					<input type="hidden" name="action" value="alba_wf_assign">
 					<input type="hidden" name="post" value="<?php echo (int) $id; ?>">
 					<input type="hidden" name="lang" value="<?php echo esc_attr($lang); ?>">
-					<?php wp_nonce_field('mml_wf_' . $id . '_' . $lang); ?>
+					<?php wp_nonce_field('alba_wf_' . $id . '_' . $lang); ?>
 					<select name="to">
 						<option value="0"><?php echo esc_html__('– nobody –', 'alba'); ?></option>
 						<?php foreach ($this->users() as $usr) : ?><option value="<?php echo (int) $usr->ID; ?>" <?php selected((int) $w['to'], (int) $usr->ID); ?>><?php echo esc_html($usr->display_name); ?></option><?php endforeach; ?>
@@ -395,10 +395,10 @@ To revise:
 			<?php endif; ?>
 			<?php if ($w['st'] === 'review' && $can_pub) : ?>
 				<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-					<input type="hidden" name="action" value="mml_wf_return">
+					<input type="hidden" name="action" value="alba_wf_return">
 					<input type="hidden" name="post" value="<?php echo (int) $id; ?>">
 					<input type="hidden" name="lang" value="<?php echo esc_attr($lang); ?>">
-					<?php wp_nonce_field('mml_wf_' . $id . '_' . $lang); ?>
+					<?php wp_nonce_field('alba_wf_' . $id . '_' . $lang); ?>
 					<input type="text" name="note" class="regular-text" placeholder="<?php echo esc_attr__('Note for the translator (optional)', 'alba'); ?>">
 					<button class="button"><?php echo esc_html__('Return for revision', 'alba'); ?></button>
 				</form>
@@ -412,10 +412,10 @@ To revise:
 	 * ------------------------------------------------------------- */
 
 	public function register() {
-		register_setting('mml', 'mml_wf_mail', ['sanitize_callback' => function ($v) {
+		register_setting('alba', 'alba_wf_mail', ['sanitize_callback' => function ($v) {
 			return $v === '1' ? '1' : '0';
 		}]);
-		register_setting('mml', 'mml_wf_cc', ['sanitize_callback' => function ($v) {
+		register_setting('alba', 'alba_wf_cc', ['sanitize_callback' => function ($v) {
 			$out = [];
 			foreach (preg_split('/[\s,;]+/', (string) $v) as $m) {
 				if ($m !== '' && is_email($m)) {
@@ -428,18 +428,18 @@ To revise:
 
 	public function card() {
 		?>
-		<section class="mml-card" data-tab="lang">
-			<header class="mml-card-h"><span class="dashicons dashicons-email-alt"></span><div><h2><?php echo esc_html__('Assignments & notifications', 'alba'); ?></h2><p><?php echo esc_html__('Assign, deadlines, for review, emails.', 'alba'); ?></p></div></header>
-			<div class="mml-card-b">
+		<section class="alba-card" data-tab="lang">
+			<header class="alba-card-h"><span class="dashicons dashicons-email-alt"></span><div><h2><?php echo esc_html__('Assignments & notifications', 'alba'); ?></h2><p><?php echo esc_html__('Assign, deadlines, for review, emails.', 'alba'); ?></p></div></header>
+			<div class="alba-card-b">
 				<p><?php echo esc_html__('You assign translations in the translation editor or via bulk action in the "My translations" list. Translators submit finished texts "for review"; an editor approves or returns them.', 'alba'); ?></p>
-				<div class="mml-fields">
-					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Emails', 'alba'); ?></div><div class="mml-ctl">
-						<label><input type="checkbox" name="mml_wf_mail" value="1" <?php checked(get_option('mml_wf_mail', '1'), '1'); ?>> <?php echo esc_html__('Send notifications by email', 'alba'); ?></label>
-						<p class="mml-hint"><?php echo esc_html__('On assignment, submission for review, return, changed original after translation, and at the deadline (the day before and when overdue, once a day).', 'alba'); ?></p>
+				<div class="alba-fields">
+					<div class="alba-field"><div class="alba-label"><?php echo esc_html__('Emails', 'alba'); ?></div><div class="alba-ctl">
+						<label><input type="checkbox" name="alba_wf_mail" value="1" <?php checked(get_option('alba_wf_mail', '1'), '1'); ?>> <?php echo esc_html__('Send notifications by email', 'alba'); ?></label>
+						<p class="alba-hint"><?php echo esc_html__('On assignment, submission for review, return, changed original after translation, and at the deadline (the day before and when overdue, once a day).', 'alba'); ?></p>
 					</div></div>
-					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Additional address(es)', 'alba'); ?></div><div class="mml-ctl">
-						<input type="text" class="regular-text" name="mml_wf_cc" value="<?php echo esc_attr((string) get_option('mml_wf_cc', '')); ?>" placeholder="redaktion@example.com">
-						<p class="mml-hint"><?php echo esc_html__('Receives notifications about submitted translations, changed originals and overdue deadlines. Separate several addresses with commas. If empty, submissions go to the person who made the assignment (otherwise to the administrator address).', 'alba'); ?></p>
+					<div class="alba-field"><div class="alba-label"><?php echo esc_html__('Additional address(es)', 'alba'); ?></div><div class="alba-ctl">
+						<input type="text" class="regular-text" name="alba_wf_cc" value="<?php echo esc_attr((string) get_option('alba_wf_cc', '')); ?>" placeholder="redaktion@example.com">
+						<p class="alba-hint"><?php echo esc_html__('Receives notifications about submitted translations, changed originals and overdue deadlines. Separate several addresses with commas. If empty, submissions go to the person who made the assignment (otherwise to the administrator address).', 'alba'); ?></p>
 					</div></div>
 				</div>
 			</div>

@@ -4,7 +4,7 @@ Tags: multilingual, translation, language switcher, hreflang, xliff
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.11.8
+Stable tag: 0.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,12 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 
 == Changelog ==
 
+= 0.12.0 =
+* All internal names now use the prefix "alba_" instead of "mml_" (options, meta fields, hooks, functions, classes, CSS classes, translator role, log table)
+* Existing data is migrated automatically once on the first page load after the update. Please make a backup before updating
+* Theme functions renamed: alba_current_lang(), alba_get_translation(), alba_get_term_translation(), alba_switcher(); the shortcodes [mml_switcher] and [mml_string] keep working as aliases
+* The filter "mml_theme_dropdown_arrow" is now "alba_theme_dropdown_arrow"; CSS classes "mml-..." are now "alba-..."
+
 = 0.11.8 =
 * Output escaping completed for all admin screens; sentences that were split around markup are now whole translatable texts
 * Database queries documented and checked
@@ -117,6 +123,9 @@ You decide under "Languages > Settings > Uninstall": remove data (with or withou
 * "Translator" role
 
 == Upgrade Notice ==
+
+= 0.12.0 =
+Internal names changed from mml_ to alba_; data is migrated automatically. Make a backup first. Custom CSS using .mml-... classes must be changed to .alba-...
 
 = 0.11.8 =
 Hardening release, no feature changes.

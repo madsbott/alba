@@ -1,19 +1,19 @@
 /**
  * Alba – Sprachfilter für die Begriffsauswahl im Editor.
- * Block-Editor: REST-Anfragen für Begriffe bekommen mml_lang, neue Begriffe werden in der gewählten Sprache angelegt.
- * Klassischer Editor: Kategorie-Checkliste wird per JS gefiltert, Tag-Vorschläge und Schnell-Hinzufügen bekommen mml_lang.
- * Die Sprache wird live aus dem Dropdown der Box "Sprache & Übersetzungen" gelesen (#mml_lang).
+ * Block-Editor: REST-Anfragen für Begriffe bekommen alba_lang, neue Begriffe werden in der gewählten Sprache angelegt.
+ * Klassischer Editor: Kategorie-Checkliste wird per JS gefiltert, Tag-Vorschläge und Schnell-Hinzufügen bekommen alba_lang.
+ * Die Sprache wird live aus dem Dropdown der Box "Sprache & Übersetzungen" gelesen (#alba_lang).
  */
 (function () {
 	'use strict';
 
-	var cfg = window.mmlEditor;
+	var cfg = window.albaEditor;
 	if (!cfg) {
 		return;
 	}
 
 	function curLang() {
-		var s = document.getElementById('mml_lang');
+		var s = document.getElementById('alba_lang');
 		return (s && s.value) ? s.value : cfg.lang;
 	}
 
@@ -29,14 +29,14 @@
 					var method = String(options.method || 'GET').toUpperCase();
 					if (method === 'GET') {
 						// bereits zugewiesene Begriffe (include=…) bleiben immer sichtbar
-						if (path.indexOf('include=') === -1 && path.indexOf('mml_lang=') === -1) {
+						if (path.indexOf('include=') === -1 && path.indexOf('alba_lang=') === -1) {
 							options = Object.assign({}, options, {
-								path: path + (path.indexOf('?') === -1 ? '?' : '&') + 'mml_lang=' + encodeURIComponent(curLang())
+								path: path + (path.indexOf('?') === -1 ? '?' : '&') + 'alba_lang=' + encodeURIComponent(curLang())
 							});
 						}
-					} else if (method === 'POST' && options.data && typeof options.data === 'object' && !options.data.mml_lang) {
+					} else if (method === 'POST' && options.data && typeof options.data === 'object' && !options.data.alba_lang) {
 						options = Object.assign({}, options, {
-							data: Object.assign({}, options.data, { mml_lang: curLang() })
+							data: Object.assign({}, options.data, { alba_lang: curLang() })
 						});
 					}
 				}
@@ -81,12 +81,12 @@
 						continue;
 					}
 					var termLang = map[String(input.value)] || lang; // unbekannte (neu angelegte) Begriffe bleiben sichtbar
-					var show = termLang === lang || input.checked || li.querySelector('li:not([data-mml-hide])') !== null;
+					var show = termLang === lang || input.checked || li.querySelector('li:not([data-alba-hide])') !== null;
 					if (show) {
-						li.removeAttribute('data-mml-hide');
+						li.removeAttribute('data-alba-hide');
 						li.style.display = '';
 					} else {
-						li.setAttribute('data-mml-hide', '1');
+						li.setAttribute('data-alba-hide', '1');
 						li.style.display = 'none';
 					}
 				}
@@ -122,10 +122,10 @@
 	if (window.jQuery && typeof jQuery.ajaxPrefilter === 'function') {
 		jQuery.ajaxPrefilter(function (o) {
 			var url = o.url || '';
-			if (url.indexOf('action=ajax-tag-search') !== -1 && url.indexOf('mml_lang=') === -1) {
-				o.url = url + '&mml_lang=' + encodeURIComponent(curLang());
-			} else if (typeof o.data === 'string' && /(^|&)action=add-(?!meta)/.test(o.data) && o.data.indexOf('mml_lang=') === -1) {
-				o.data += '&mml_lang=' + encodeURIComponent(curLang());
+			if (url.indexOf('action=ajax-tag-search') !== -1 && url.indexOf('alba_lang=') === -1) {
+				o.url = url + '&alba_lang=' + encodeURIComponent(curLang());
+			} else if (typeof o.data === 'string' && /(^|&)action=add-(?!meta)/.test(o.data) && o.data.indexOf('alba_lang=') === -1) {
+				o.data += '&alba_lang=' + encodeURIComponent(curLang());
 			}
 		});
 	}
@@ -134,7 +134,7 @@
 	 * Sprachwechsel im Dropdown
 	 * ------------------------------------------------------------- */
 	document.addEventListener('change', function (e) {
-		if (e.target && e.target.id === 'mml_lang') {
+		if (e.target && e.target.id === 'alba_lang') {
 			scheduleApply();
 			refreshBlockEditor();
 		}

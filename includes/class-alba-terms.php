@@ -5,13 +5,13 @@ if (!defined('ABSPATH')) {
 
 /**
  * Übersetzung von Taxonomie-Begriffen (Kategorien, Schlagwörter, eigene Taxonomien).
- * Sprache und Gruppe liegen als Term-Meta (_mml_lang, _mml_group).
+ * Sprache und Gruppe liegen als Term-Meta (_alba_lang, _alba_group).
  */
-class MML_Terms {
+class ALBA_Terms {
 	private $core;
 	private $cache = [];
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->terms = $this;
 
@@ -20,7 +20,7 @@ class MML_Terms {
 		if (is_admin()) {
 			add_action('admin_enqueue_scripts', [$this, 'enqueue']);
 			add_action('admin_init', [$this, 'admin_init']);
-			add_action('admin_post_mml_new_term', [$this, 'handle_new']);
+			add_action('admin_post_alba_new_term', [$this, 'handle_new']);
 			return;
 		}
 		add_filter('get_terms_args', [$this, 'filter_args'], 10, 2);
@@ -31,15 +31,15 @@ class MML_Terms {
 	 * ------------------------------------------------------------- */
 
 	public function lang($term_id) {
-		$l = get_term_meta($term_id, '_mml_lang', true);
+		$l = get_term_meta($term_id, '_alba_lang', true);
 		return ($l && isset($this->core->langs[$l])) ? $l : $this->core->default;
 	}
 
 	public function group($term_id, $create = false) {
-		$g = get_term_meta($term_id, '_mml_group', true);
+		$g = get_term_meta($term_id, '_alba_group', true);
 		if (!$g && $create) {
 			$g = wp_generate_uuid4();
-			update_term_meta($term_id, '_mml_group', $g);
+			update_term_meta($term_id, '_alba_group', $g);
 		}
 		return $g;
 	}
@@ -55,16 +55,16 @@ class MML_Terms {
 			return $this->cache[$term_id];
 		}
 		$out = [$this->lang($term_id) => $term_id];
-		$g = get_term_meta($term_id, '_mml_group', true);
+		$g = get_term_meta($term_id, '_alba_group', true);
 		$t = get_term($term_id);
 		if ($g && $t && !is_wp_error($t)) {
 			$ids = get_terms([
 				'taxonomy'   => $t->taxonomy,
 				'hide_empty' => false,
 				'fields'     => 'ids',
-				'meta_key'   => '_mml_group',
+				'meta_key'   => '_alba_group',
 				'meta_value' => $g,
-				'mml_skip'   => 1,
+				'alba_skip'   => 1,
 			]);
 			if (!is_wp_error($ids)) {
 				foreach ($ids as $i) {
@@ -103,7 +103,7 @@ class MML_Terms {
 
 	public function filter_args($args, $taxonomies) {
 		$c = $this->core;
-		if (!empty($args['mml_skip']) || wp_doing_cron() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('WP_CLI') && WP_CLI)) {
+		if (!empty($args['alba_skip']) || wp_doing_cron() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('WP_CLI') && WP_CLI)) {
 			return $args;
 		}
 		foreach (['include', 'object_ids', 'slug', 'name', 'term_taxonomy_id'] as $k) {
@@ -129,7 +129,7 @@ class MML_Terms {
 		$c = $this->core;
 		$src = get_term($term_id);
 		if (!$src || is_wp_error($src) || !in_array($src->taxonomy, $c->taxonomies, true) || !isset($c->langs[$lang])) {
-			return new WP_Error('mml', __('This term cannot be translated.', 'alba'));
+			return new WP_Error('alba', __('This term cannot be translated.', 'alba'));
 		}
 		$existing = $this->translation($term_id, $lang);
 		if ($existing) {
@@ -147,8 +147,8 @@ class MML_Terms {
 		}
 
 		$this->group($term_id, true);
-		if (!metadata_exists('term', $term_id, '_mml_lang')) {
-			update_term_meta($term_id, '_mml_lang', $from);
+		if (!metadata_exists('term', $term_id, '_alba_lang')) {
+			update_term_meta($term_id, '_alba_lang', $from);
 		}
 
 		$parent = 0;
@@ -170,8 +170,8 @@ class MML_Terms {
 			return $r;
 		}
 		$new = (int) $r['term_id'];
-		update_term_meta($new, '_mml_lang', $lang);
-		update_term_meta($new, '_mml_group', $this->group($term_id));
+		update_term_meta($new, '_alba_lang', $lang);
+		update_term_meta($new, '_alba_group', $this->group($term_id));
 		$this->flush();
 		return $new;
 	}
@@ -227,9 +227,9 @@ class MML_Terms {
 		}
 	}
 
-	/** Block-Editor: ?mml_lang=xx filtert die Begriffsliste (bereits zugewiesene per include bleiben unberührt) */
+	/** Block-Editor: ?alba_lang=xx filtert die Begriffsliste (bereits zugewiesene per include bleiben unberührt) */
 	public function rest_query($args, $request) {
-		$lang = sanitize_key((string) $request->get_param('mml_lang'));
+		$lang = sanitize_key((string) $request->get_param('alba_lang'));
 		if ($lang === '' || !isset($this->core->langs[$lang]) || !empty($args['include'])) {
 			return $args;
 		}
@@ -241,19 +241,19 @@ class MML_Terms {
 		if (!$creating) {
 			return;
 		}
-		$lang = sanitize_key((string) $request->get_param('mml_lang'));
+		$lang = sanitize_key((string) $request->get_param('alba_lang'));
 		if ($lang !== '' && isset($this->core->langs[$lang])) {
-			update_term_meta($term->term_id, '_mml_lang', $lang);
+			update_term_meta($term->term_id, '_alba_lang', $lang);
 			$this->flush();
 		}
 	}
 
 	/** Klassischer Editor: Tag-Vorschläge (Ajax) nach Sprache filtern */
 	public function admin_args($args, $taxonomies) {
-		if (!wp_doing_ajax() || !isset($_GET['action']) || $_GET['action'] !== 'ajax-tag-search' || empty($_GET['mml_lang']) || !empty($args['mml_skip'])) {
+		if (!wp_doing_ajax() || !isset($_GET['action']) || $_GET['action'] !== 'ajax-tag-search' || empty($_GET['alba_lang']) || !empty($args['alba_skip'])) {
 			return $args;
 		}
-		$lang = sanitize_key(wp_unslash($_GET['mml_lang']));
+		$lang = sanitize_key(wp_unslash($_GET['alba_lang']));
 		$taxonomies = (array) $taxonomies;
 		if (!isset($this->core->langs[$lang]) || !$taxonomies || array_diff($taxonomies, $this->core->taxonomies)) {
 			return $args;
@@ -263,12 +263,12 @@ class MML_Terms {
 
 	/** Begriffe, die beim Speichern eines Beitrags oder per Schnell-Hinzufügen entstehen, übernehmen die Editor-Sprache */
 	public function auto_lang($term_id) {
-		if (metadata_exists('term', $term_id, '_mml_lang')) {
+		if (metadata_exists('term', $term_id, '_alba_lang')) {
 			return;
 		}
 		$lang = '';
-		if (!empty($_REQUEST['mml_lang'])) {
-			$l = sanitize_key(wp_unslash($_REQUEST['mml_lang']));
+		if (!empty($_REQUEST['alba_lang'])) {
+			$l = sanitize_key(wp_unslash($_REQUEST['alba_lang']));
 			if (isset($this->core->langs[$l])) {
 				$lang = $l;
 			}
@@ -284,7 +284,7 @@ class MML_Terms {
 			}
 		}
 		if ($lang !== '') {
-			update_term_meta($term_id, '_mml_lang', $lang);
+			update_term_meta($term_id, '_alba_lang', $lang);
 			$this->flush();
 		}
 	}
@@ -304,7 +304,7 @@ class MML_Terms {
 		}
 
 		$post_id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
-		$req = isset($_GET['mml_lang']) ? sanitize_key(wp_unslash($_GET['mml_lang'])) : '';
+		$req = isset($_GET['alba_lang']) ? sanitize_key(wp_unslash($_GET['alba_lang'])) : '';
 		$lang = $post_id ? $c->post_lang($post_id) : (isset($c->langs[$req]) ? $req : $c->default);
 
 		$bases = [];
@@ -313,7 +313,7 @@ class MML_Terms {
 			$obj = get_taxonomy($tx);
 			$bases[] = $obj->rest_base ? $obj->rest_base : $tx;
 			if ($obj->hierarchical) {
-				$ids = get_terms(['taxonomy' => $tx, 'hide_empty' => false, 'fields' => 'ids', 'mml_skip' => 1]);
+				$ids = get_terms(['taxonomy' => $tx, 'hide_empty' => false, 'fields' => 'ids', 'alba_skip' => 1]);
 				$map = [];
 				if (!is_wp_error($ids)) {
 					foreach ($ids as $id) {
@@ -324,8 +324,8 @@ class MML_Terms {
 			}
 		}
 
-		wp_enqueue_script('mml-editor', MML_URL . 'assets/editor.js', ['jquery', 'wp-api-fetch'], MML_VERSION, true);
-		wp_add_inline_script('mml-editor', 'window.mmlEditor = ' . wp_json_encode([
+		wp_enqueue_script('alba-editor', ALBA_URL . 'assets/editor.js', ['jquery', 'wp-api-fetch'], ALBA_VERSION, true);
+		wp_add_inline_script('alba-editor', 'window.albaEditor = ' . wp_json_encode([
 			'lang'  => $lang,
 			'bases' => $bases,
 			'terms' => (object) $terms,
@@ -350,18 +350,18 @@ class MML_Terms {
 
 	private function new_url($term_id, $lang, $auto) {
 		return wp_nonce_url(
-			admin_url('admin-post.php?action=mml_new_term&term=' . (int) $term_id . '&lang=' . rawurlencode($lang) . ($auto ? '&auto=1' : '')),
-			'mml_term_new_' . (int) $term_id . '_' . $lang . ($auto ? '_auto' : '')
+			admin_url('admin-post.php?action=alba_new_term&term=' . (int) $term_id . '&lang=' . rawurlencode($lang) . ($auto ? '&auto=1' : '')),
+			'alba_term_new_' . (int) $term_id . '_' . $lang . ($auto ? '_auto' : '')
 		);
 	}
 
 	public function col_head($cols) {
-		$cols['mml'] = __('Languages', 'alba');
+		$cols['alba'] = __('Languages', 'alba');
 		return $cols;
 	}
 
 	public function col_body($content, $column, $term_id) {
-		if ($column !== 'mml') {
+		if ($column !== 'alba') {
 			return $content;
 		}
 		$t = get_term($term_id);
@@ -372,16 +372,16 @@ class MML_Terms {
 		$html = '';
 		foreach ($this->core->langs as $code => $l) {
 			if (isset($tr[$code])) {
-				$html .= '<a class="mml-pill mml-has" href="' . esc_url(get_edit_term_link($tr[$code], $t->taxonomy)) . '" title="' . esc_attr($l['name']) . '">' . esc_html(strtoupper($code)) . '</a>';
+				$html .= '<a class="alba-pill alba-has" href="' . esc_url(get_edit_term_link($tr[$code], $t->taxonomy)) . '" title="' . esc_attr($l['name']) . '">' . esc_html(strtoupper($code)) . '</a>';
 			} else {
-				$html .= '<a class="mml-pill mml-add" href="' . esc_url($this->new_url($term_id, $code, false)) . '" title="' . esc_attr(__('Create translation: ', 'alba') . $l['name']) . '">+ ' . esc_html(strtoupper($code)) . '</a>';
+				$html .= '<a class="alba-pill alba-add" href="' . esc_url($this->new_url($term_id, $code, false)) . '" title="' . esc_attr(__('Create translation: ', 'alba') . $l['name']) . '">+ ' . esc_html(strtoupper($code)) . '</a>';
 			}
 		}
 		return $html;
 	}
 
 	private function lang_select($current) {
-		$html = '<select name="mml_term_lang" id="mml_term_lang">';
+		$html = '<select name="alba_term_lang" id="alba_term_lang">';
 		foreach ($this->core->langs as $code => $l) {
 			$html .= '<option value="' . esc_attr($code) . '"' . selected($current, $code, false) . '>' . esc_html($l['name']) . '</option>';
 		}
@@ -389,18 +389,18 @@ class MML_Terms {
 	}
 
 	public function field_add($taxonomy) {
-		wp_nonce_field('mml_term_new', 'mml_term_nonce');
-		echo '<div class="form-field"><label for="mml_term_lang">' . esc_html__('Language', 'alba') . '</label>' . $this->lang_select($this->core->default) . '<p>'  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- lang_select() returns escaped markup.
+		wp_nonce_field('alba_term_new', 'alba_term_nonce');
+		echo '<div class="form-field"><label for="alba_term_lang">' . esc_html__('Language', 'alba') . '</label>' . $this->lang_select($this->core->default) . '<p>'  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- lang_select() returns escaped markup.
  . esc_html__('Language of this term. You create translations after saving.', 'alba') . '</p></div>';
 	}
 
 	public function field_edit($term, $taxonomy) {
 		$c = $this->core;
-		wp_nonce_field('mml_term_' . $term->term_id, 'mml_term_nonce');
+		wp_nonce_field('alba_term_' . $term->term_id, 'alba_term_nonce');
 		$cur = $this->lang($term->term_id);
 		$tr = $this->translations($term->term_id);
 
-		echo '<tr class="form-field"><th scope="row"><label for="mml_term_lang">' . esc_html__('Language', 'alba') . '</label></th><td>' . $this->lang_select($cur) . '</td></tr>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- lang_select() returns escaped markup.
+		echo '<tr class="form-field"><th scope="row"><label for="alba_term_lang">' . esc_html__('Language', 'alba') . '</label></th><td>' . $this->lang_select($cur) . '</td></tr>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- lang_select() returns escaped markup.
 		echo '<tr class="form-field"><th scope="row">' . esc_html__('Translations', 'alba') . '</th><td>';
 		foreach ($c->langs as $code => $l) {
 			if ($code === $cur) {
@@ -419,11 +419,11 @@ class MML_Terms {
 	}
 
 	public function save_term($term_id) {
-		if (!isset($_POST['mml_term_nonce'])) {
+		if (!isset($_POST['alba_term_nonce'])) {
 			return;
 		}
-		$n = sanitize_text_field(wp_unslash($_POST['mml_term_nonce']));
-		if (!wp_verify_nonce($n, 'mml_term_new') && !wp_verify_nonce($n, 'mml_term_' . $term_id)) {
+		$n = sanitize_text_field(wp_unslash($_POST['alba_term_nonce']));
+		if (!wp_verify_nonce($n, 'alba_term_new') && !wp_verify_nonce($n, 'alba_term_' . $term_id)) {
 			return;
 		}
 		$t = get_term($term_id);
@@ -434,11 +434,11 @@ class MML_Terms {
 		if (!$tax || !current_user_can($tax->cap->edit_terms)) {
 			return;
 		}
-		$lang = isset($_POST['mml_term_lang']) ? sanitize_key(wp_unslash($_POST['mml_term_lang'])) : '';
+		$lang = isset($_POST['alba_term_lang']) ? sanitize_key(wp_unslash($_POST['alba_term_lang'])) : '';
 		if (!isset($this->core->langs[$lang])) {
 			$lang = $this->core->default;
 		}
-		update_term_meta($term_id, '_mml_lang', $lang);
+		update_term_meta($term_id, '_alba_lang', $lang);
 		$this->group($term_id, true);
 		$this->flush();
 	}
@@ -447,7 +447,7 @@ class MML_Terms {
 		$id = isset($_GET['term']) ? (int) $_GET['term'] : 0;
 		$lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
 		$auto = !empty($_GET['auto']);
-		check_admin_referer('mml_term_new_' . $id . '_' . $lang . ($auto ? '_auto' : ''));
+		check_admin_referer('alba_term_new_' . $id . '_' . $lang . ($auto ? '_auto' : ''));
 
 		$t = $id ? get_term($id) : null;
 		if (!$t || is_wp_error($t) || !in_array($t->taxonomy, $this->core->taxonomies, true) || !isset($this->core->langs[$lang])) {

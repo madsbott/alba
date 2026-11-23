@@ -7,17 +7,17 @@ if (!defined('ABSPATH')) {
  * Links-rechts-Übersetzungseditor (wie bei WPML), ohne zweiten Beitrag.
  *
  * Die Übersetzung hängt als Meta am Originalbeitrag:
- *   _mml_tr_{lang}  Array: title, excerpt, seg (md5(Originaltext) => Übersetzung)
- *   _mml_on_{lang}  '1' = im Frontend sichtbar
+ *   _alba_tr_{lang}  Array: title, excerpt, seg (md5(Originaltext) => Übersetzung)
+ *   _alba_on_{lang}  '1' = im Frontend sichtbar
  * Der Inhalt wird in Textabschnitte zerlegt (Block-Struktur, Shortcodes, Bilder und Attribute bleiben unberührt und erscheinen nicht im Editor).
  * Unter /en/ werden Titel, Auszug und Textabschnitte des Originals zur Laufzeit ersetzt;
  * fehlende Abschnitte erscheinen im Original. Wird der Originaltext geändert, ist nur dieser Abschnitt wieder offen.
  */
-class MML_Editor {
-	const TR = '_mml_tr_';
-	const ON = '_mml_on_';
+class ALBA_Editor {
+	const TR = '_alba_tr_';
+	const ON = '_alba_on_';
 	const PAGE = 'alba-translate';
-	const SLUG = '_mml_slug_';
+	const SLUG = '_alba_slug_';
 
 	private static $inline = ['a', 'abbr', 'acronym', 'b', 'bdi', 'bdo', 'big', 'br', 'cite', 'code', 'data', 'del', 'dfn', 'em', 'font', 'i', 'img', 'ins', 'kbd', 'mark', 'q', 's', 'samp', 'small', 'span', 'strike', 'strong', 'sub', 'sup', 'time', 'tt', 'u', 'var', 'wbr'];
 
@@ -26,7 +26,7 @@ class MML_Editor {
 	private $memo = [];
 	private $plain = false;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->editor = $this;
 
@@ -42,7 +42,7 @@ class MML_Editor {
 
 		if (is_admin()) {
 			add_action('admin_menu', [$this, 'menu'], 20);
-			add_action('admin_post_mml_save_tr', [$this, 'save']);
+			add_action('admin_post_alba_save_tr', [$this, 'save']);
 			add_action('admin_enqueue_scripts', [$this, 'assets']);
 		} else {
 			add_filter('the_title', [$this, 'f_title'], 5, 2);
@@ -109,7 +109,7 @@ class MML_Editor {
 			return false;
 		}
 		$cur = $this->sig($src);
-		$base = (string) get_post_meta($tid, '_mml_src_sig', true);
+		$base = (string) get_post_meta($tid, '_alba_src_sig', true);
 		if ($base === '') {
 			// Ältere Übersetzung ohne Vergleichswert: nach Änderungsdatum entscheiden
 			$tr = get_post($tid);
@@ -134,7 +134,7 @@ class MML_Editor {
 		}
 		$src = get_post((int) $t[$c->default]);
 		if ($src) {
-			update_post_meta($tid, '_mml_src_sig', $this->sig($src));
+			update_post_meta($tid, '_alba_src_sig', $this->sig($src));
 		}
 	}
 
@@ -436,7 +436,7 @@ class MML_Editor {
 
 	/** Attribute mit sichtbarem Text, die in Shortcodes (z. B. WPBakery) mit übersetzt werden */
 	private function text_attrs() {
-		return array_values(array_unique((array) apply_filters('mml_shortcode_text_attrs', array_merge(
+		return array_values(array_unique((array) apply_filters('alba_shortcode_text_attrs', array_merge(
 			['title', 'text', 'heading', 'subheading', 'subtitle', 'sub_title', 'label', 'caption', 'description', 'button_text', 'btn_title', 'btn_text', 'header', 'link_text', 'tagline', 'quote', 'message', 'alt', 'h2', 'h4'],
 			$this->extra_names()
 		))));
@@ -482,15 +482,15 @@ class MML_Editor {
 
 	/** Eigene Feldnamen (Einstellungen), gelten für Element-/Block-Attribute */
 	private function extra_names() {
-		return $this->list_opt('mml_extra_attrs');
+		return $this->list_opt('alba_extra_attrs');
 	}
 
 	private function html_attr_names() {
-		return $this->opt('mml_t_attrs') ? array_values((array) apply_filters('mml_html_text_attrs', ['alt', 'title', 'aria-label', 'placeholder'])) : [];
+		return $this->opt('alba_t_attrs') ? array_values((array) apply_filters('alba_html_text_attrs', ['alt', 'title', 'aria-label', 'placeholder'])) : [];
 	}
 
 	private function block_keys() {
-		return array_values(array_unique((array) apply_filters('mml_block_text_attrs', array_merge(
+		return array_values(array_unique((array) apply_filters('alba_block_text_attrs', array_merge(
 			['label', 'title', 'text', 'alt', 'caption', 'heading', 'subheading', 'subtitle', 'description', 'buttonText', 'placeholder', 'content', 'linkText', 'tagline', 'quote', 'message'],
 			$this->extra_names()
 		))));
@@ -600,7 +600,7 @@ class MML_Editor {
 
 	/** Text in den JSON-Attributen eines Block-Kommentars (Core-/ACF-/eigene Blöcke) */
 	private function block_json($tok, $fn) {
-		if (!$this->opt('mml_t_blocks') || !preg_match('~^(<!--\s+wp:([a-z0-9_-]+(?:/[a-z0-9_-]+)?)\s+)(\{.*\})(\s+/?-->)$~s', $tok, $m)) {
+		if (!$this->opt('alba_t_blocks') || !preg_match('~^(<!--\s+wp:([a-z0-9_-]+(?:/[a-z0-9_-]+)?)\s+)(\{.*\})(\s+/?-->)$~s', $tok, $m)) {
 			return $tok;
 		}
 		$attrs = json_decode($m[3], true);
@@ -637,9 +637,9 @@ class MML_Editor {
 
 	/** Feldnamen (Meta-Schlüssel) mit übersetzbarem Text: eigene Liste plus ACF-Textfelder des Beitrags */
 	public function meta_keys($post_id = 0) {
-		$keys = $this->list_opt('mml_meta_keys');
+		$keys = $this->list_opt('alba_meta_keys');
 		$post_id = (int) $post_id;
-		if ($post_id && $this->opt('mml_t_acf') && function_exists('acf_get_field')) {
+		if ($post_id && $this->opt('alba_t_acf') && function_exists('acf_get_field')) {
 			foreach ((array) get_post_meta($post_id) as $k => $v) {
 				if ($k !== '' && $k[0] !== '_' && isset($v[0]) && is_string($v[0]) && $this->acf_text($post_id, $k)) {
 					$keys[] = $k;
@@ -673,8 +673,8 @@ class MML_Editor {
 	public function meta_texts($post_id) {
 		$out = [];
 		$post_id = (int) $post_id;
-		$manual = $this->list_opt('mml_meta_keys');
-		if (!$manual && !($this->opt('mml_t_acf') && function_exists('acf_get_field'))) {
+		$manual = $this->list_opt('alba_meta_keys');
+		if (!$manual && !($this->opt('alba_t_acf') && function_exists('acf_get_field'))) {
 			return $out;
 		}
 		$all = (array) get_post_meta($post_id);
@@ -682,7 +682,7 @@ class MML_Editor {
 			if ($k === '' || $k[0] === '_' || !isset($v[0]) || !is_string($v[0]) || trim($v[0]) === '') {
 				continue;
 			}
-			if ($this->key_match($k, $manual) || ($this->opt('mml_t_acf') && function_exists('acf_get_field') && $this->acf_text($post_id, $k))) {
+			if ($this->key_match($k, $manual) || ($this->opt('alba_t_acf') && function_exists('acf_get_field') && $this->acf_text($post_id, $k))) {
 				$val = maybe_unserialize($v[0]);
 				if (is_string($val) && preg_match('/\p{L}/u', $val) && !$this->not_text($val)) {
 					$out[$k] = $val;
@@ -718,8 +718,8 @@ class MML_Editor {
 		if (!$d || !$d['seg']) {
 			return $value;
 		}
-		$manual = $this->list_opt('mml_meta_keys');
-		if (!$this->key_match($key, $manual) && !($this->opt('mml_t_acf') && function_exists('acf_get_field') && $this->acf_text($id, $key))) {
+		$manual = $this->list_opt('alba_meta_keys');
+		if (!$this->key_match($key, $manual) && !($this->opt('alba_t_acf') && function_exists('acf_get_field') && $this->acf_text($id, $key))) {
 			return $value;
 		}
 		$busy = true;
@@ -1057,7 +1057,7 @@ class MML_Editor {
 			$this->memo = [];
 			$c->flush();
 			clean_post_cache($id);
-			do_action('mml_translation_saved', $id, $lang);
+			do_action('alba_translation_saved', $id, $lang);
 
 			if ($c->log) {
 				$parts = [];
@@ -1199,15 +1199,15 @@ class MML_Editor {
 		if (!isset($_GET['page']) || $_GET['page'] !== self::PAGE) {
 			return;
 		}
-		wp_enqueue_script('mml-translate', MML_URL . 'assets/translate.js', ['mml-i18n'], MML_VERSION, true);
-		if (MML_MT::enabled()) {
+		wp_enqueue_script('alba-translate', ALBA_URL . 'assets/translate.js', ['alba-i18n'], ALBA_VERSION, true);
+		if (ALBA_MT::enabled()) {
 			$pid = isset($_GET['post']) ? (int) $_GET['post'] : 0;
-			wp_localize_script('mml-translate', 'mmlMT', [
+			wp_localize_script('alba-translate', 'albaMT', [
 				'url'      => admin_url('admin-ajax.php'),
-				'nonce'    => wp_create_nonce('mml_mt'),
+				'nonce'    => wp_create_nonce('alba_mt'),
 				'from'     => $pid ? $this->core->post_lang($pid) : $this->core->default,
 				'to'       => isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '',
-				'provider' => MML_MT::provider_name(),
+				'provider' => ALBA_MT::provider_name(),
 			]);
 		}
 	}
@@ -1230,28 +1230,28 @@ class MML_Editor {
 		$terms = isset($x['terms']) ? $x['terms'] : [];
 		$tm = isset($x['tm']) ? $x['tm'] : '';
 		$is_slug = !empty($x['slug']);
-		$mt = !$is_slug && MML_MT::enabled();
+		$mt = !$is_slug && ALBA_MT::enabled();
 		?>
-		<div class="mml-row<?php echo $changed ? ' mml-changed' : ''; ?>" data-field="<?php echo esc_attr($field); ?>"<?php echo $hash !== '' ? ' data-hash="' . esc_attr($hash) . '"' : ''; ?>>
-			<div class="mml-label"><?php echo esc_html($label); ?><?php echo !empty($x['max']) ? ' <span class="mml-cnt" data-max="' . (int) $x['max'] . '"></span>' : ''; ?><?php echo $changed ? ' <span class="mml-badge">' . esc_html__('Original changed', 'alba') . '</span>' : ''; ?></div>
-			<div class="mml-src"><?php echo $src_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts. ?></div>
-			<div class="mml-tgt">
+		<div class="alba-row<?php echo $changed ? ' alba-changed' : ''; ?>" data-field="<?php echo esc_attr($field); ?>"<?php echo $hash !== '' ? ' data-hash="' . esc_attr($hash) . '"' : ''; ?>>
+			<div class="alba-label"><?php echo esc_html($label); ?><?php echo !empty($x['max']) ? ' <span class="alba-cnt" data-max="' . (int) $x['max'] . '"></span>' : ''; ?><?php echo $changed ? ' <span class="alba-badge">' . esc_html__('Original changed', 'alba') . '</span>' : ''; ?></div>
+			<div class="alba-src"><?php echo $src_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts. ?></div>
+			<div class="alba-tgt">
 				<textarea rows="<?php echo (int) $rows; ?>" data-src="<?php echo esc_attr($copy); ?>" data-raw="<?php echo esc_attr($src_raw); ?>"><?php echo esc_textarea($val); ?></textarea>
 				<?php if ($is_slug) : ?>
-					<button type="button" class="button-link mml-slug-gen"><?php echo esc_html__('Generate from translated title', 'alba'); ?></button>
+					<button type="button" class="button-link alba-slug-gen"><?php echo esc_html__('Generate from translated title', 'alba'); ?></button>
 				<?php else : ?>
-					<button type="button" class="button-link mml-copy"><?php echo esc_html__('Copy original', 'alba'); ?></button>
+					<button type="button" class="button-link alba-copy"><?php echo esc_html__('Copy original', 'alba'); ?></button>
 				<?php endif; ?>
 				<?php if ($mt) : ?>
-					<button type="button" class="button-link mml-mt-get"><?php echo esc_html__('Suggest automatically', 'alba'); ?></button>
+					<button type="button" class="button-link alba-mt-get"><?php echo esc_html__('Suggest automatically', 'alba'); ?></button>
 				<?php endif; ?>
 				<?php if ($tm !== '') : ?>
-					<div class="mml-tm" data-tm="<?php echo esc_attr($tm); ?>"><span class="mml-tm-l"><?php echo esc_html__('From translation memory:', 'alba'); ?></span> <em><?php echo esc_html(wp_html_excerpt(wp_strip_all_tags($tm), 120, '…')); ?></em> <button type="button" class="button-link mml-tm-use"><?php echo esc_html__('Apply', 'alba'); ?></button></div>
+					<div class="alba-tm" data-tm="<?php echo esc_attr($tm); ?>"><span class="alba-tm-l"><?php echo esc_html__('From translation memory:', 'alba'); ?></span> <em><?php echo esc_html(wp_html_excerpt(wp_strip_all_tags($tm), 120, '…')); ?></em> <button type="button" class="button-link alba-tm-use"><?php echo esc_html__('Apply', 'alba'); ?></button></div>
 				<?php endif; ?>
 				<?php if ($terms) : ?>
-					<div class="mml-terms"><span class="mml-tm-l"><?php echo esc_html__('Glossary:', 'alba'); ?></span>
+					<div class="alba-terms"><span class="alba-tm-l"><?php echo esc_html__('Glossary:', 'alba'); ?></span>
 						<?php foreach ($terms as $t) : ?>
-							<span class="mml-term" data-target="<?php echo esc_attr($t['target']); ?>" data-cs="<?php echo $t['cs'] ? 1 : 0; ?>"><?php echo esc_html($t['keep'] ? $t['term'] . __(' – unchanged', 'alba') : $t['term'] . ' → ' . $t['target']); ?></span>
+							<span class="alba-term" data-target="<?php echo esc_attr($t['target']); ?>" data-cs="<?php echo $t['cs'] ? 1 : 0; ?>"><?php echo esc_html($t['keep'] ? $t['term'] . __(' – unchanged', 'alba') : $t['term'] . ' → ' . $t['target']); ?></span>
 						<?php endforeach; ?>
 					</div>
 				<?php endif; ?>
@@ -1273,7 +1273,7 @@ class MML_Editor {
 			wp_die(esc_html__('Source and target language are the same.', 'alba'));
 		}
 
-		echo '<div class="wrap mml-tr"><h1>' . esc_html__('Translate:', 'alba') . ' ' . esc_html($post->post_title !== '' ? $post->post_title : __('(no title)', 'alba')) . '</h1>';
+		echo '<div class="wrap alba-tr"><h1>' . esc_html__('Translate:', 'alba') . ' ' . esc_html($post->post_title !== '' ? $post->post_title : __('(no title)', 'alba')) . '</h1>';
 
 		$real = $c->translation($id, $lang, false);
 		if ($real) {
@@ -1314,36 +1314,36 @@ class MML_Editor {
 		$e_chg = $known && trim($post->post_excerpt) !== '' && $d['eh'] !== md5($post->post_excerpt);
 		?>
 		<style>
-			.mml-tr .mml-bar{position:sticky;top:32px;z-index:10;background:#fff;border:1px solid #c3c4c7;padding:10px 14px;margin:12px 0;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-			.mml-tr .mml-bar .mml-grow{flex:1}
-			.mml-tr .mml-heads,.mml-tr .mml-row{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;max-width:1400px}
-			.mml-tr .mml-heads{font-weight:600;margin-bottom:6px}
-			.mml-tr .mml-row{background:#fff;border:1px solid #c3c4c7;border-left:4px solid #dba617;padding:10px 12px;margin-bottom:8px}
-			.mml-tr .mml-row.mml-done{border-left-color:#68b17a}
-			.mml-tr .mml-row.mml-changed{border-left-color:#d63638}
-			.mml-tr .mml-badge{background:#d63638;color:#fff;border-radius:3px;padding:1px 6px;margin-left:6px;text-transform:none;letter-spacing:0}
-			.mml-tr .mml-label{grid-column:1/-1;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#787c82;margin-bottom:4px}
-			.mml-tr .mml-src{background:#f6f7f7;padding:8px 10px;overflow-wrap:anywhere}
-			.mml-tr .mml-tgt textarea{width:100%;min-height:40px;resize:vertical;font-family:inherit;font-size:14px}
-			.mml-tr .mml-copy{font-size:12px}
-			.mml-tr .mml-tm,.mml-tr .mml-terms{font-size:12px;color:#50575e;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
-			.mml-tr .mml-tm.mml-hide{display:none}
-			.mml-tr .mml-mt{margin-top:6px;padding:6px 10px;border-left:3px solid #72aee6;background:#f0f6fc;font-size:12px}
-			.mml-tr .mml-mt .mml-mt-t{display:block;margin:2px 0 4px;color:#1d2327;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
-			.mml-tr .mml-mt.mml-err{border-left-color:#d63638;background:#fcf0f1}
-			.mml-tr .mml-mt-get{font-size:12px;margin-left:10px}
-			.mml-tr .mml-tm-l{color:#787c82}
-			.mml-tr .mml-term{background:#f0f6fc;border:1px solid #72aee6;color:#0a4b78;border-radius:999px;padding:0 9px;line-height:20px}
-			.mml-tr .mml-term.mml-ok{background:#edfaef;border-color:#68b17a;color:#1e4620}
-			.mml-tr .mml-term.mml-miss{background:#fcf0f1;border-color:#d63638;color:#8a2424}
-			@media(max-width:900px){.mml-tr .mml-heads,.mml-tr .mml-row{grid-template-columns:1fr}.mml-tr .mml-bar{top:46px}}
+			.alba-tr .alba-bar{position:sticky;top:32px;z-index:10;background:#fff;border:1px solid #c3c4c7;padding:10px 14px;margin:12px 0;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+			.alba-tr .alba-bar .alba-grow{flex:1}
+			.alba-tr .alba-heads,.alba-tr .alba-row{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;max-width:1400px}
+			.alba-tr .alba-heads{font-weight:600;margin-bottom:6px}
+			.alba-tr .alba-row{background:#fff;border:1px solid #c3c4c7;border-left:4px solid #dba617;padding:10px 12px;margin-bottom:8px}
+			.alba-tr .alba-row.alba-done{border-left-color:#68b17a}
+			.alba-tr .alba-row.alba-changed{border-left-color:#d63638}
+			.alba-tr .alba-badge{background:#d63638;color:#fff;border-radius:3px;padding:1px 6px;margin-left:6px;text-transform:none;letter-spacing:0}
+			.alba-tr .alba-label{grid-column:1/-1;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#787c82;margin-bottom:4px}
+			.alba-tr .alba-src{background:#f6f7f7;padding:8px 10px;overflow-wrap:anywhere}
+			.alba-tr .alba-tgt textarea{width:100%;min-height:40px;resize:vertical;font-family:inherit;font-size:14px}
+			.alba-tr .alba-copy{font-size:12px}
+			.alba-tr .alba-tm,.alba-tr .alba-terms{font-size:12px;color:#50575e;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+			.alba-tr .alba-tm.alba-hide{display:none}
+			.alba-tr .alba-mt{margin-top:6px;padding:6px 10px;border-left:3px solid #72aee6;background:#f0f6fc;font-size:12px}
+			.alba-tr .alba-mt .alba-mt-t{display:block;margin:2px 0 4px;color:#1d2327;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+			.alba-tr .alba-mt.alba-err{border-left-color:#d63638;background:#fcf0f1}
+			.alba-tr .alba-mt-get{font-size:12px;margin-left:10px}
+			.alba-tr .alba-tm-l{color:#787c82}
+			.alba-tr .alba-term{background:#f0f6fc;border:1px solid #72aee6;color:#0a4b78;border-radius:999px;padding:0 9px;line-height:20px}
+			.alba-tr .alba-term.alba-ok{background:#edfaef;border-color:#68b17a;color:#1e4620}
+			.alba-tr .alba-term.alba-miss{background:#fcf0f1;border-color:#d63638;color:#8a2424}
+			@media(max-width:900px){.alba-tr .alba-heads,.alba-tr .alba-row{grid-template-columns:1fr}.alba-tr .alba-bar{top:46px}}
 		</style>
 		<p>
 			<?php echo esc_html($c->langs[$from]['name'] . ' → ' . $c->langs[$lang]['name']); ?> ·
 			<?php if (current_user_can('edit_post', $id)) : ?><a href="<?php echo esc_url(get_edit_post_link($id)); ?>"><?php echo esc_html__('Edit original', 'alba'); ?></a><?php endif; ?>
 			<?php if ($c->xliff && current_user_can('edit_others_posts')) : ?>· <a href="<?php echo esc_url($c->xliff->export_url($id, $lang)); ?>"><?php echo esc_html__('Export as XLIFF', 'alba'); ?></a><?php endif; ?>
 			<?php if ($c->log && current_user_can('edit_others_posts') && ($last = $c->log->last($id, $lang))) : $lu = get_userdata((int) $last->user_id); ?>
-				<?php echo esc_html__('· Last saved by', 'alba'); ?> <strong><?php echo esc_html($lu ? $lu->display_name : 'unbekannt'); ?></strong> am <?php echo esc_html(wp_date('d.m.Y H:i', strtotime($last->time . ' UTC'))); ?> (<a href="<?php echo esc_url(admin_url('admin.php?page=' . MML_Log::PAGE . '&post=' . (int) $id . '&lang=' . rawurlencode($lang))); ?>"><?php echo esc_html__('Log', 'alba'); ?></a>)
+				<?php echo esc_html__('· Last saved by', 'alba'); ?> <strong><?php echo esc_html($lu ? $lu->display_name : 'unbekannt'); ?></strong> am <?php echo esc_html(wp_date('d.m.Y H:i', strtotime($last->time . ' UTC'))); ?> (<a href="<?php echo esc_url(admin_url('admin.php?page=' . ALBA_Log::PAGE . '&post=' . (int) $id . '&lang=' . rawurlencode($lang))); ?>"><?php echo esc_html__('Log', 'alba'); ?></a>)
 			<?php endif; ?>
 			<?php if ($on && $post->post_status === 'publish') : ?>
 				· <a href="<?php echo esc_url($c->with_lang($lang, function () use ($id) { return get_permalink($id); })); ?>" target="_blank" rel="noopener"><?php echo esc_html__('View translation', 'alba'); ?></a>
@@ -1355,26 +1355,26 @@ class MML_Editor {
 		<p class="description"><?php echo esc_html__('Empty fields appear in the original on the frontend. If you edit the original text, only the changed section is open again. Images, layout and links of the block structure remain unchanged.', 'alba'); ?></p>
 
 		<?php if ($c->workflow) { $c->workflow->box($post, $lang); } ?>
-		<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" id="mml-tr-form">
-			<input type="hidden" name="action" value="mml_save_tr">
+		<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" id="alba-tr-form">
+			<input type="hidden" name="action" value="alba_save_tr">
 			<input type="hidden" name="post" value="<?php echo (int) $id; ?>">
 			<input type="hidden" name="lang" value="<?php echo esc_attr($lang); ?>">
-			<input type="hidden" name="mml_data" id="mml-data" value="">
-			<?php wp_nonce_field('mml_tr_' . $id . '_' . $lang); ?>
+			<input type="hidden" name="alba_data" id="alba-data" value="">
+			<?php wp_nonce_field('alba_tr_' . $id . '_' . $lang); ?>
 
-			<div class="mml-bar">
-				<strong id="mml-count">&nbsp;</strong>
-				<span class="mml-grow"></span>
-				<?php if (MML_MT::enabled()) : ?><button type="button" class="button" id="mml-mt-all"><?php echo esc_html__('Fetch suggestions for empty fields', 'alba'); ?></button><?php endif; ?>
-				<?php if ($tm_n) : ?><button type="button" class="button" id="mml-tm-all"><?php echo (int) $tm_n; ?> <?php echo esc_html__('Insert suggestions from translation memory', 'alba'); ?></button><?php endif; ?>
-				<button type="button" class="button" id="mml-fill"><?php echo esc_html__('Fill empty fields with the original', 'alba'); ?></button>
+			<div class="alba-bar">
+				<strong id="alba-count">&nbsp;</strong>
+				<span class="alba-grow"></span>
+				<?php if (ALBA_MT::enabled()) : ?><button type="button" class="button" id="alba-mt-all"><?php echo esc_html__('Fetch suggestions for empty fields', 'alba'); ?></button><?php endif; ?>
+				<?php if ($tm_n) : ?><button type="button" class="button" id="alba-tm-all"><?php echo (int) $tm_n; ?> <?php echo esc_html__('Insert suggestions from translation memory', 'alba'); ?></button><?php endif; ?>
+				<button type="button" class="button" id="alba-fill"><?php echo esc_html__('Fill empty fields with the original', 'alba'); ?></button>
 				<?php $can_pub = $c->roles->can_publish($id); ?>
-				<label><input type="checkbox" id="mml-on" <?php checked($on); ?> <?php disabled(!$can_pub); ?>> <?php echo esc_html__('Show on the frontend', 'alba'); ?></label><?php if (!$can_pub) : ?> <span class="description"><?php echo esc_html__('An editor grants the approval.', 'alba'); ?></span><?php endif; ?>
-				<?php if (!$can_pub) : ?><button type="submit" name="mml_review" value="1" class="button"><?php echo esc_html__('Save & submit for review', 'alba'); ?></button><?php endif; ?>
+				<label><input type="checkbox" id="alba-on" <?php checked($on); ?> <?php disabled(!$can_pub); ?>> <?php echo esc_html__('Show on the frontend', 'alba'); ?></label><?php if (!$can_pub) : ?> <span class="description"><?php echo esc_html__('An editor grants the approval.', 'alba'); ?></span><?php endif; ?>
+				<?php if (!$can_pub) : ?><button type="submit" name="alba_review" value="1" class="button"><?php echo esc_html__('Save & submit for review', 'alba'); ?></button><?php endif; ?>
 				<button type="submit" class="button button-primary"><?php echo esc_html__('Save', 'alba'); ?></button>
 			</div>
 
-			<div class="mml-heads"><div><?php echo esc_html($c->langs[$from]['name']); ?> <?php echo esc_html__('(original)', 'alba'); ?></div><div><?php echo esc_html($c->langs[$lang]['name']); ?></div></div>
+			<div class="alba-heads"><div><?php echo esc_html($c->langs[$from]['name']); ?> <?php echo esc_html__('(original)', 'alba'); ?></div><div><?php echo esc_html($c->langs[$lang]['name']); ?></div></div>
 			<?php
 			$this->row(__('Title', 'alba'), 'title', '', esc_html($post->post_title), $post->post_title, $d['title'], 1, $t_chg, $this->gl_extra($post->post_title, '', $lang, false));
 			if ($post->post_name !== '' && !in_array($post->post_status, ['auto-draft'], true)) {
@@ -1411,7 +1411,7 @@ class MML_Editor {
 		$c = $this->core;
 		$id = isset($_POST['post']) ? (int) $_POST['post'] : 0;
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
-		check_admin_referer('mml_tr_' . $id . '_' . $lang);
+		check_admin_referer('alba_tr_' . $id . '_' . $lang);
 
 		$post = $id ? get_post($id) : null;
 		if (!$post || !isset($c->langs[$lang]) || !$c->is_translatable($post->post_type) || !$c->roles->can_translate($id, $lang)) {
@@ -1422,7 +1422,7 @@ class MML_Editor {
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON payload; every field is sanitised when it is saved.
-		$in = json_decode(wp_unslash(isset($_POST['mml_data']) ? (string) $_POST['mml_data'] : ''), true);
+		$in = json_decode(wp_unslash(isset($_POST['alba_data']) ? (string) $_POST['alba_data'] : ''), true);
 		if (!is_array($in)) {
 			wp_die(esc_html__('Invalid data.', 'alba'));
 		}
@@ -1484,10 +1484,10 @@ class MML_Editor {
 		$this->memo = [];
 		$c->flush();
 		clean_post_cache($id);
-		do_action('mml_translation_saved', $id, $lang);
+		do_action('alba_translation_saved', $id, $lang);
 
 		if ($c->workflow) {
-			$c->workflow->after_save($id, $lang, !empty($_POST['mml_review']) && !$c->roles->can_publish($id), $on_in);
+			$c->workflow->after_save($id, $lang, !empty($_POST['alba_review']) && !$c->roles->can_publish($id), $on_in);
 		}
 
 		if ($c->log) {

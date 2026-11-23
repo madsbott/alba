@@ -12,19 +12,19 @@ if (!defined('ABSPATH')) {
  * Vorschläge werden nie automatisch gespeichert: Im Editor muss jeder Text mit "Übernehmen" bestätigt
  * und anschließend gespeichert werden. Glossar-Begriffe werden geschützt und danach eingesetzt.
  */
-class MML_MT {
+class ALBA_MT {
 	const CACHE_DAYS = 30;
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->mt = $this;
-		add_action('wp_ajax_mml_mt', [$this, 'ajax']);
+		add_action('wp_ajax_alba_mt', [$this, 'ajax']);
 	}
 
 	public static function provider() {
-		$p = get_option('mml_mt_provider', 'off');
+		$p = get_option('alba_mt_provider', 'off');
 		return in_array($p, ['mymemory', 'libre'], true) ? $p : 'off';
 	}
 
@@ -41,8 +41,8 @@ class MML_MT {
 	 * ------------------------------------------------------------- */
 
 	public function ajax() {
-		check_ajax_referer('mml_mt', 'nonce');
-		if (!(current_user_can('edit_posts') || current_user_can(MML_Roles::CAP)) || !self::enabled()) {
+		check_ajax_referer('alba_mt', 'nonce');
+		if (!(current_user_can('edit_posts') || current_user_can(ALBA_Roles::CAP)) || !self::enabled()) {
 			wp_send_json_error(__('Not allowed, or automatic translation is turned off.', 'alba'));
 		}
 		$c = $this->core;
@@ -78,7 +78,7 @@ class MML_MT {
 		if (trim(wp_strip_all_tags($text)) === '') {
 			return $text;
 		}
-		$key = 'mml_mt_' . md5(self::provider() . '|' . get_option('mml_mt_url', '') . '|' . $from . '|' . $to . '|' . $text . '|' . md5(wp_json_encode(get_option(MML_Glossary::OPT, []))));
+		$key = 'alba_mt_' . md5(self::provider() . '|' . get_option('alba_mt_url', '') . '|' . $from . '|' . $to . '|' . $text . '|' . md5(wp_json_encode(get_option(ALBA_Glossary::OPT, []))));
 		$hit = get_transient($key);
 		if (is_string($hit) && $hit !== '') {
 			return $hit;
@@ -116,7 +116,7 @@ class MML_MT {
 			$done = '';
 			foreach ($chunks as $ch) {
 				if (++$calls > 14) {
-					return new WP_Error('mml_mt', __('The text is too long for MyMemory. Please translate it section by section.', 'alba'));
+					return new WP_Error('alba_mt', __('The text is too long for MyMemory. Please translate it section by section.', 'alba'));
 				}
 				$r = $this->mymemory_call($ch, $from, $to);
 				if (is_wp_error($r)) {
@@ -159,49 +159,49 @@ class MML_MT {
 
 	private function mymemory_call($q, $from, $to) {
 		$args = ['q' => $q, 'langpair' => $from . '|' . $to];
-		$mail = trim((string) get_option('mml_mt_email', ''));
+		$mail = trim((string) get_option('alba_mt_email', ''));
 		if ($mail !== '' && is_email($mail)) {
 			$args['de'] = $mail;
 		}
-		$r = wp_remote_get(add_query_arg(rawurlencode_deep($args), 'https://api.mymemory.translated.net/get'), ['timeout' => 15, 'headers' => ['User-Agent' => 'Alba/' . MML_VERSION]]);
+		$r = wp_remote_get(add_query_arg(rawurlencode_deep($args), 'https://api.mymemory.translated.net/get'), ['timeout' => 15, 'headers' => ['User-Agent' => 'Alba/' . ALBA_VERSION]]);
 		if (is_wp_error($r)) {
-			return new WP_Error('mml_mt', __('MyMemory is not reachable: ', 'alba') . $r->get_error_message());
+			return new WP_Error('alba_mt', __('MyMemory is not reachable: ', 'alba') . $r->get_error_message());
 		}
 		$d = json_decode(wp_remote_retrieve_body($r), true);
 		$status = is_array($d) && isset($d['responseStatus']) ? (int) $d['responseStatus'] : 0;
 		$txt = is_array($d) && isset($d['responseData']['translatedText']) ? (string) $d['responseData']['translatedText'] : '';
 		if ($status === 429 || ($txt !== '' && stripos($txt, 'MYMEMORY WARNING') !== false) || !empty($d['quotaFinished'])) {
-			return new WP_Error('mml_mt', __('The daily limit of MyMemory has been reached. With an email address in the settings it increases considerably; otherwise try again tomorrow or use LibreTranslate.', 'alba'));
+			return new WP_Error('alba_mt', __('The daily limit of MyMemory has been reached. With an email address in the settings it increases considerably; otherwise try again tomorrow or use LibreTranslate.', 'alba'));
 		}
 		if ($status !== 200 || $txt === '') {
 			$why = is_array($d) && !empty($d['responseDetails']) ? (string) $d['responseDetails'] : __('No response', 'alba');
-			return new WP_Error('mml_mt', 'MyMemory: ' . wp_strip_all_tags($why));
+			return new WP_Error('alba_mt', 'MyMemory: ' . wp_strip_all_tags($why));
 		}
 		return html_entity_decode($txt, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	}
 
 	private function libre($html, $from, $to) {
-		$url = trim((string) get_option('mml_mt_url', ''));
+		$url = trim((string) get_option('alba_mt_url', ''));
 		if ($url === '') {
-			return new WP_Error('mml_mt', __('LibreTranslate: Please enter the server URL in the settings.', 'alba'));
+			return new WP_Error('alba_mt', __('LibreTranslate: Please enter the server URL in the settings.', 'alba'));
 		}
 		$body = ['q' => $html, 'source' => $from, 'target' => $to, 'format' => 'html'];
-		$key = trim((string) get_option('mml_mt_key', ''));
+		$key = trim((string) get_option('alba_mt_key', ''));
 		if ($key !== '') {
 			$body['api_key'] = $key;
 		}
 		$r = wp_remote_post(untrailingslashit($url) . '/translate', [
 			'timeout' => 25,
-			'headers' => ['Content-Type' => 'application/json', 'User-Agent' => 'Alba/' . MML_VERSION],
+			'headers' => ['Content-Type' => 'application/json', 'User-Agent' => 'Alba/' . ALBA_VERSION],
 			'body'    => wp_json_encode($body),
 		]);
 		if (is_wp_error($r)) {
-			return new WP_Error('mml_mt', __('LibreTranslate is not reachable: ', 'alba') . $r->get_error_message());
+			return new WP_Error('alba_mt', __('LibreTranslate is not reachable: ', 'alba') . $r->get_error_message());
 		}
 		$d = json_decode(wp_remote_retrieve_body($r), true);
 		if (!is_array($d) || empty($d['translatedText'])) {
 			$why = is_array($d) && !empty($d['error']) ? (string) $d['error'] : 'HTTP ' . wp_remote_retrieve_response_code($r);
-			return new WP_Error('mml_mt', 'LibreTranslate: ' . wp_strip_all_tags($why));
+			return new WP_Error('alba_mt', 'LibreTranslate: ' . wp_strip_all_tags($why));
 		}
 		return (string) $d['translatedText'];
 	}

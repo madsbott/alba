@@ -8,38 +8,38 @@ if (!defined('ABSPATH')) {
  *
  * Unterstützt: WP Rocket, LiteSpeed Cache (Plugin) und LiteSpeed-Server-Cache per Header
  * (z. B. Hostinger), W3 Total Cache, WP Super Cache, WP Fastest Cache, Breeze, SG Optimizer, Nginx Helper.
- * Eigene Anbindung: Aktion `mml_purge_all` bzw. `mml_purge_urls` (Array von URLs).
+ * Eigene Anbindung: Aktion `alba_purge_all` bzw. `alba_purge_urls` (Array von URLs).
  *
  * Einstellung (Sprachen > Einstellungen > Cache): smart (Seite, Übersetzungen, Startseiten) | all | off
  */
-class MML_Cache {
+class ALBA_Cache {
 	private $core;
 	private $all_done = false;
 
 	/** Einstellungen, nach deren Änderung der Cache komplett geleert wird */
 	private static $options = [
-		'mml_languages', 'mml_default', 'mml_post_types', 'mml_taxonomies', 'mml_menu_location', 'mml_display',
-		'mml_hide_missing', 'mml_autodetect', 'mml_autodetect_method', 'mml_t_attrs', 'mml_t_blocks', 'mml_t_acf', 'mml_meta_keys', 'mml_extra_attrs', 'mml_menu_style', 'mml_dd_arrow', 'mml_nav_switcher', 'mml_strings', 'mml_search', 'mml_comments', 'mml_menu_map',
+		'alba_languages', 'alba_default', 'alba_post_types', 'alba_taxonomies', 'alba_menu_location', 'alba_display',
+		'alba_hide_missing', 'alba_autodetect', 'alba_autodetect_method', 'alba_t_attrs', 'alba_t_blocks', 'alba_t_acf', 'alba_meta_keys', 'alba_extra_attrs', 'alba_menu_style', 'alba_dd_arrow', 'alba_nav_switcher', 'alba_strings', 'alba_search', 'alba_comments', 'alba_menu_map',
 	];
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->page_cache = $this;
 
-		add_action('mml_translation_saved', [$this, 'on_post'], 10, 1);
-		add_action('mml_post_links_saved', [$this, 'on_post'], 10, 1);
+		add_action('alba_translation_saved', [$this, 'on_post'], 10, 1);
+		add_action('alba_post_links_saved', [$this, 'on_post'], 10, 1);
 		add_action('updated_option', [$this, 'on_option'], 10, 1);
 		add_action('added_option', [$this, 'on_option'], 10, 1);
-		add_action('admin_post_mml_purge_cache', [$this, 'handle_purge']);
+		add_action('admin_post_alba_purge_cache', [$this, 'handle_purge']);
 	}
 
 	public static function mode() {
-		$m = get_option('mml_cache_purge', 'smart');
+		$m = get_option('alba_cache_purge', 'smart');
 		return in_array($m, ['all', 'off'], true) ? $m : 'smart';
 	}
 
 	public static function purge_url() {
-		return wp_nonce_url(admin_url('admin-post.php?action=mml_purge_cache'), 'mml_purge_cache');
+		return wp_nonce_url(admin_url('admin-post.php?action=alba_purge_cache'), 'alba_purge_cache');
 	}
 
 	/* ---------------------------------------------------------------
@@ -66,13 +66,13 @@ class MML_Cache {
 	}
 
 	public function handle_purge() {
-		check_admin_referer('mml_purge_cache');
+		check_admin_referer('alba_purge_cache');
 		if (!current_user_can('manage_options')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$this->all_done = false;
 		$this->purge_all();
-		wp_safe_redirect(admin_url('admin.php?page=alba-settings&mml_purged=1'));
+		wp_safe_redirect(admin_url('admin.php?page=alba-settings&alba_purged=1'));
 		exit;
 	}
 
@@ -130,7 +130,7 @@ class MML_Cache {
 		}
 		if (defined('LSCWP_V')) {
 			foreach ($urls as $u) {
-				do_action('litespeed_purge_url', $u);
+				do_action('litespeed_purge_url', $u); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 			}
 		} else {
 			$this->ls_header();
@@ -148,13 +148,13 @@ class MML_Cache {
 		}
 
 		// Caches ohne URL-Schnittstelle: komplett leeren
-		do_action('breeze_clear_all_cache');
+		do_action('breeze_clear_all_cache'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 		if (function_exists('sg_cachepress_purge_cache')) {
 			sg_cachepress_purge_cache();
 		}
-		do_action('rt_nginx_helper_purge_all');
+		do_action('rt_nginx_helper_purge_all'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 
-		do_action('mml_purge_urls', $urls, $id);
+		do_action('alba_purge_urls', $urls, $id);
 	}
 
 	public function purge_all() {
@@ -167,7 +167,7 @@ class MML_Cache {
 			rocket_clean_domain();
 		}
 		if (defined('LSCWP_V')) {
-			do_action('litespeed_purge_all');
+			do_action('litespeed_purge_all'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 		} else {
 			$this->ls_header();
 		}
@@ -180,12 +180,12 @@ class MML_Cache {
 		if (function_exists('wpfc_clear_all_cache')) {
 			wpfc_clear_all_cache(true);
 		}
-		do_action('breeze_clear_all_cache');
+		do_action('breeze_clear_all_cache'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 		if (function_exists('sg_cachepress_purge_cache')) {
 			sg_cachepress_purge_cache();
 		}
-		do_action('rt_nginx_helper_purge_all');
+		do_action('rt_nginx_helper_purge_all'); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core or cache plugin hook, intentionally called.
 
-		do_action('mml_purge_all');
+		do_action('alba_purge_all');
 	}
 }

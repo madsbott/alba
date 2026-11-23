@@ -7,10 +7,10 @@ if (!defined('ABSPATH')) {
  * Block "Sprachumschalter" (alba/switcher): serverseitig gerendert, Vorschau im Editor per JS.
  * Attribute: variant (list|dropdown|menu), display (name|code), hideMissing, hideCurrent.
  */
-class MML_Switcher_Block {
+class ALBA_Switcher_Block {
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		add_action('init', [$this, 'register']);
 	}
@@ -25,13 +25,13 @@ class MML_Switcher_Block {
 		}
 
 		wp_register_script(
-			'mml-switcher-block',
-			MML_URL . 'assets/switcher-block.js',
-			['mml-i18n', 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components'],
-			MML_VERSION,
+			'alba-switcher-block',
+			ALBA_URL . 'assets/switcher-block.js',
+			['alba-i18n', 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components'],
+			ALBA_VERSION,
 			true
 		);
-		wp_add_inline_script('mml-switcher-block', 'window.mmlBlock = ' . wp_json_encode([
+		wp_add_inline_script('alba-switcher-block', 'window.albaBlock = ' . wp_json_encode([
 			'langs'   => $langs,
 			'current' => $this->core->default,
 		]) . ';', 'before');
@@ -54,7 +54,7 @@ class MML_Switcher_Block {
 				'typography' => ['fontSize' => true],
 				'spacing'    => ['margin' => true, 'padding' => true],
 			],
-			'editor_script'   => 'mml-switcher-block',
+			'editor_script'   => 'alba-switcher-block',
 			'render_callback' => [$this, 'render'],
 		];
 		register_block_type('alba/switcher', $def);
@@ -75,6 +75,6 @@ class MML_Switcher_Block {
 			'hide_missing' => !empty($attrs['hideMissing']) ? 1 : 0,
 			'hide_current' => !empty($attrs['hideCurrent']) ? 1 : 0,
 		]);
-		return '<div ' . get_block_wrapper_attributes(['class' => 'mml-switcher-block']) . '>' . $html . '</div>';
+		return '<div ' . get_block_wrapper_attributes(['class' => 'alba-switcher-block']) . '>' . $html . '</div>';
 	}
 }

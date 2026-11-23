@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 /**
  * Updates direkt in WordPress (Dashboard > Aktualisierungen / Plugins), ohne neu zu installieren.
  *
- * Update-Quelle (Sprachen > Einstellungen > Updates oder Konstante MML_UPDATE_URL in der wp-config.php):
+ * Update-Quelle (Sprachen > Einstellungen > Updates oder Konstante ALBA_UPDATE_URL in der wp-config.php):
  *  a) GitHub-Repository, z. B. https://github.com/benutzer/alba
  *     -> es wird das neueste Release gelesen; angehängtes .zip-Asset wird bevorzugt
  *  b) URL einer JSON-Datei:
@@ -14,10 +14,10 @@ if (!defined('ABSPATH')) {
  *      "requires":"6.0","tested":"6.8","requires_php":"7.4"}
  * Das ZIP muss den Ordner "alba/" enthalten (andere Ordnernamen werden automatisch korrigiert).
  */
-class MML_Updater {
+class ALBA_Updater {
 	const SLUG = 'alba';
-	const OPT = 'mml_update_url';
-	const CACHE = 'mml_update_info';
+	const OPT = 'alba_update_url';
+	const CACHE = 'alba_update_info';
 
 	public function __construct() {
 		add_filter('pre_set_site_transient_update_plugins', [$this, 'check']);
@@ -27,7 +27,7 @@ class MML_Updater {
 
 		if (is_admin()) {
 			add_action('admin_init', [$this, 'maybe_upgrade']);
-			add_action('admin_post_mml_check_update', [$this, 'handle_check']);
+			add_action('admin_post_alba_check_update', [$this, 'handle_check']);
 			add_filter('plugin_row_meta', [$this, 'row_meta'], 10, 2);
 			add_action('admin_notices', [$this, 'notices']);
 		}
@@ -38,14 +38,14 @@ class MML_Updater {
 	 * ------------------------------------------------------------- */
 
 	public static function url() {
-		if (defined('MML_UPDATE_URL') && MML_UPDATE_URL !== '') {
-			return (string) MML_UPDATE_URL;
+		if (defined('ALBA_UPDATE_URL') && ALBA_UPDATE_URL !== '') {
+			return (string) ALBA_UPDATE_URL;
 		}
 		return trim((string) get_option(self::OPT, ''));
 	}
 
 	public static function check_url() {
-		return wp_nonce_url(admin_url('admin-post.php?action=mml_check_update'), 'mml_check_update');
+		return wp_nonce_url(admin_url('admin-post.php?action=alba_check_update'), 'alba_check_update');
 	}
 
 	private function valid_version($v) {
@@ -70,7 +70,7 @@ class MML_Updater {
 
 	/** Liest Versionsinfos aus GitHub-Release oder JSON-Datei. Gibt null bei Fehlern zurück. */
 	private function load($url) {
-		$args = ['timeout' => 10, 'headers' => ['User-Agent' => 'Alba/' . MML_VERSION, 'Accept' => 'application/json']];
+		$args = ['timeout' => 10, 'headers' => ['User-Agent' => 'Alba/' . ALBA_VERSION, 'Accept' => 'application/json']];
 
 		$url = trim($url);
 		if (preg_match('~^([\w.\-]+)/([\w.\-]+)$~', $url, $sh)) { // Kurzform "owner/repo"
@@ -154,7 +154,7 @@ class MML_Updater {
 		if (!$info) {
 			return $transient;
 		}
-		$base = plugin_basename(MML_FILE);
+		$base = plugin_basename(ALBA_FILE);
 		$item = (object) [
 			'id'           => $base,
 			'slug'         => self::SLUG,
@@ -167,7 +167,7 @@ class MML_Updater {
 			'icons'        => [],
 			'banners'      => [],
 		];
-		if (version_compare($info['version'], MML_VERSION, '>')) {
+		if (version_compare($info['version'], ALBA_VERSION, '>')) {
 			if (!isset($transient->response) || !is_array($transient->response)) {
 				$transient->response = [];
 			}
@@ -210,7 +210,7 @@ class MML_Updater {
 
 	/** GitHub-Zipball hat einen anderen Ordnernamen: auf "alba" korrigieren */
 	public function fix_folder($source, $remote_source, $upgrader, $hook_extra = []) {
-		if (empty($hook_extra['plugin']) || $hook_extra['plugin'] !== plugin_basename(MML_FILE)) {
+		if (empty($hook_extra['plugin']) || $hook_extra['plugin'] !== plugin_basename(ALBA_FILE)) {
 			return $source;
 		}
 		if (basename(untrailingslashit($source)) === self::SLUG) {
@@ -224,14 +224,14 @@ class MML_Updater {
 		if ($wp_filesystem->move($source, $new, true)) {
 			return $new;
 		}
-		return new WP_Error('mml_update', __('The plugin folder could not be renamed.', 'alba'));
+		return new WP_Error('alba_update', __('The plugin folder could not be renamed.', 'alba'));
 	}
 
 	public function after($upgrader, $options) {
 		if (!is_array($options) || empty($options['type']) || $options['type'] !== 'plugin') {
 			return;
 		}
-		$base = plugin_basename(MML_FILE);
+		$base = plugin_basename(ALBA_FILE);
 		$list = [];
 		if (!empty($options['plugins']) && is_array($options['plugins'])) {
 			$list = $options['plugins'];
@@ -245,10 +245,10 @@ class MML_Updater {
 
 	/** Wird nach einem Update einmalig ausgelöst (Platz für spätere Datenbank-Anpassungen) */
 	public function maybe_upgrade() {
-		$old = get_option('mml_version');
-		if ($old !== MML_VERSION) {
-			update_option('mml_version', MML_VERSION);
-			do_action('mml_upgraded', $old ? $old : '', MML_VERSION);
+		$old = get_option('alba_version');
+		if ($old !== ALBA_VERSION) {
+			update_option('alba_version', ALBA_VERSION);
+			do_action('alba_upgraded', $old ? $old : '', ALBA_VERSION);
 		}
 	}
 
@@ -257,21 +257,21 @@ class MML_Updater {
 	 * ------------------------------------------------------------- */
 
 	public function row_meta($meta, $file) {
-		if ($file === plugin_basename(MML_FILE) && current_user_can('update_plugins')) {
+		if ($file === plugin_basename(ALBA_FILE) && current_user_can('update_plugins')) {
 			$meta[] = '<a href="' . esc_url(self::check_url()) . __('">Check for updates</a>', 'alba');
 		}
 		return $meta;
 	}
 
 	public function handle_check() {
-		check_admin_referer('mml_check_update');
+		check_admin_referer('alba_check_update');
 		if (!current_user_can('update_plugins')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		delete_site_transient(self::CACHE);
 		delete_site_transient('update_plugins');
 		if (self::url() === '') {
-			wp_safe_redirect(admin_url('plugins.php?mml_update=nosource'));
+			wp_safe_redirect(admin_url('plugins.php?alba_update=nosource'));
 			exit;
 		}
 		$info = $this->fetch(true);
@@ -280,28 +280,28 @@ class MML_Updater {
 		}
 		wp_update_plugins();
 		if (!$info) {
-			wp_safe_redirect(admin_url('plugins.php?mml_update=error'));
-		} elseif (version_compare($info['version'], MML_VERSION, '>')) {
-			wp_safe_redirect(admin_url('plugins.php?mml_update=new&mml_v=' . rawurlencode($info['version'])));
+			wp_safe_redirect(admin_url('plugins.php?alba_update=error'));
+		} elseif (version_compare($info['version'], ALBA_VERSION, '>')) {
+			wp_safe_redirect(admin_url('plugins.php?alba_update=new&alba_v=' . rawurlencode($info['version'])));
 		} else {
-			wp_safe_redirect(admin_url('plugins.php?mml_update=current'));
+			wp_safe_redirect(admin_url('plugins.php?alba_update=current'));
 		}
 		exit;
 	}
 
 	public function notices() {
-		if (empty($_GET['mml_update']) || !current_user_can('update_plugins')) {
+		if (empty($_GET['alba_update']) || !current_user_can('update_plugins')) {
 			return;
 		}
-		$state = sanitize_key(wp_unslash($_GET['mml_update']));
-		$v = isset($_GET['mml_v']) ? sanitize_text_field(wp_unslash($_GET['mml_v'])) : '';
+		$state = sanitize_key(wp_unslash($_GET['alba_update']));
+		$v = isset($_GET['alba_v']) ? sanitize_text_field(wp_unslash($_GET['alba_v'])) : '';
 		switch ($state) {
 			case 'new':
 				$msg = __('Alba: Version ', 'alba') . $v . __(' is available. You can update it now in the plugin list.', 'alba');
 				$type = 'success';
 				break;
 			case 'current':
-				$msg = __('Alba is up to date (version ', 'alba') . MML_VERSION . ').';
+				$msg = __('Alba is up to date (version ', 'alba') . ALBA_VERSION . ').';
 				$type = 'info';
 				break;
 			case 'nosource':

@@ -7,22 +7,22 @@ if (!defined('ABSPATH')) {
  * .po/.pot-Export und -Import für die Zeichenfolgen (Sprachen > Import / Export).
  *
  * Export: pro Sprache eine .po-Datei (oder eine .pot-Vorlage ohne Übersetzungen).
- * Jeder Eintrag trägt einen Kommentar "#. mml-id: …", damit der Import auch nach der Bearbeitung
+ * Jeder Eintrag trägt einen Kommentar "#. alba-id: …", damit der Import auch nach der Bearbeitung
  * in Poedit & Co. exakt zuordnet. Ohne diesen Kommentar wird über Kontext + Originaltext gematcht.
  */
-class MML_Po {
+class ALBA_Po {
 	const MAX_BYTES = 3145728; // 3 MB
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		if (!is_admin()) {
 			return;
 		}
 		add_action('admin_menu', [$this, 'menu'], 12);
-		add_action('admin_post_mml_po_export', [$this, 'export']);
-		add_action('admin_post_mml_po_import', [$this, 'import']);
+		add_action('admin_post_alba_po_export', [$this, 'export']);
+		add_action('admin_post_alba_po_import', [$this, 'import']);
 		add_action('admin_notices', [$this, 'notices']);
 	}
 
@@ -49,7 +49,7 @@ class MML_Po {
 			return;
 		}
 		$c = $this->core;
-		$all = get_option(MML_Strings::OPT, []);
+		$all = get_option(ALBA_Strings::OPT, []);
 		$domains = [];
 		foreach ((array) $all as $s) {
 			if (isset($s['domain'])) {
@@ -60,8 +60,8 @@ class MML_Po {
 		?>
 		<h2><?php echo esc_html__('Export', 'alba'); ?></h2>
 		<form method="get" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-			<input type="hidden" name="action" value="mml_po_export">
-			<?php wp_nonce_field('mml_po_export'); ?>
+			<input type="hidden" name="action" value="alba_po_export">
+			<?php wp_nonce_field('alba_po_export'); ?>
 			<select name="lang">
 				<option value=""><?php echo esc_html__('Template (.pot, without translations)', 'alba'); ?></option>
 				<?php foreach ($c->langs as $code => $l) : ?>
@@ -79,8 +79,8 @@ class MML_Po {
 
 		<h2><?php echo esc_html__('Import', 'alba'); ?></h2>
 		<form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-			<input type="hidden" name="action" value="mml_po_import">
-			<?php wp_nonce_field('mml_po_import'); ?>
+			<input type="hidden" name="action" value="alba_po_import">
+			<?php wp_nonce_field('alba_po_import'); ?>
 			<p>
 				<label><?php echo esc_html__('Target language', 'alba'); ?>
 
@@ -103,15 +103,15 @@ class MML_Po {
 		if (!isset($_GET['page']) || $_GET['page'] !== 'alba-po' || !current_user_can('manage_options')) {
 			return;
 		}
-		if (!empty($_GET['mml_po_err'])) {
-			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html(sanitize_text_field(wp_unslash($_GET['mml_po_err']))) . '</p></div>';
+		if (!empty($_GET['alba_po_err'])) {
+			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html(sanitize_text_field(wp_unslash($_GET['alba_po_err']))) . '</p></div>';
 		}
-		if (isset($_GET['mml_po_ok'])) {
-			$txt = (int) $_GET['mml_po_ok'] . __(' translations imported', 'alba');
+		if (isset($_GET['alba_po_ok'])) {
+			$txt = (int) $_GET['alba_po_ok'] . __(' translations imported', 'alba');
 			$bits = [
-				'mml_po_keep'   => __('already existed and were kept', 'alba'),
-				'mml_po_miss'   => __('without matching entry', 'alba'),
-				'mml_po_ignore' => __('ignored (fuzzy, empty or plural)', 'alba'),
+				'alba_po_keep'   => __('already existed and were kept', 'alba'),
+				'alba_po_miss'   => __('without matching entry', 'alba'),
+				'alba_po_ignore' => __('ignored (fuzzy, empty or plural)', 'alba'),
 			];
 			foreach ($bits as $k => $label) {
 				if (!empty($_GET[$k])) {
@@ -127,7 +127,7 @@ class MML_Po {
 	 * ------------------------------------------------------------- */
 
 	public function export() {
-		check_admin_referer('mml_po_export');
+		check_admin_referer('alba_po_export');
 		if (!current_user_can('manage_options')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
@@ -161,7 +161,7 @@ class MML_Po {
 
 	public function build($lang, $dom = '') {
 		$c = $this->core;
-		$all = get_option(MML_Strings::OPT, []);
+		$all = get_option(ALBA_Strings::OPT, []);
 		if (!is_array($all)) {
 			$all = [];
 		}
@@ -179,7 +179,7 @@ class MML_Po {
 
 		$out = "# Alba - Strings\n";
 		$out .= "msgid \"\"\nmsgstr \"\"\n";
-		$out .= $this->header_line('Project-Id-Version', 'Alba ' . MML_VERSION);
+		$out .= $this->header_line('Project-Id-Version', 'Alba ' . ALBA_VERSION);
 		$out .= $this->header_line('Language', $loc);
 		$out .= $this->header_line('MIME-Version', '1.0');
 		$out .= $this->header_line('Content-Type', 'text/plain; charset=UTF-8');
@@ -204,7 +204,7 @@ class MML_Po {
 			}
 			$seen[$k] = true;
 
-			$out .= "\n#. mml-id: " . $id . "\n#. domain: " . $this->line($s['domain']) . "\n";
+			$out .= "\n#. alba-id: " . $id . "\n#. domain: " . $this->line($s['domain']) . "\n";
 			if (!empty($s['name'])) {
 				$out .= '#. name: ' . $this->line($s['name']) . "\n";
 			}
@@ -228,45 +228,45 @@ class MML_Po {
 	}
 
 	public function import() {
-		check_admin_referer('mml_po_import');
+		check_admin_referer('alba_po_import');
 		if (!current_user_can('manage_options')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$c = $this->core;
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
 		if (!isset($c->langs[$lang])) {
-			$this->back(['mml_po_err' => __('Unknown target language.', 'alba')]);
+			$this->back(['alba_po_err' => __('Unknown target language.', 'alba')]);
 		}
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Upload array; name, size and type are validated below.
 		$f = isset($_FILES['po_file']) ? $_FILES['po_file'] : null;
 		if (!$f || (int) $f['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) {
-			$this->back(['mml_po_err' => __('Upload failed.', 'alba')]);
+			$this->back(['alba_po_err' => __('Upload failed.', 'alba')]);
 		}
 		$ext = strtolower(pathinfo((string) $f['name'], PATHINFO_EXTENSION));
 		if (!in_array($ext, ['po', 'pot'], true)) {
-			$this->back(['mml_po_err' => __('Please upload a .po or .pot file.', 'alba')]);
+			$this->back(['alba_po_err' => __('Please upload a .po or .pot file.', 'alba')]);
 		}
 		if ((int) $f['size'] > self::MAX_BYTES) {
-			$this->back(['mml_po_err' => __('The file is larger than 3 MB.', 'alba')]);
+			$this->back(['alba_po_err' => __('The file is larger than 3 MB.', 'alba')]);
 		}
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads the local uploaded temp file, not a URL.
 		$text = (string) file_get_contents($f['tmp_name']);
 		if (function_exists('mb_check_encoding') && !mb_check_encoding($text, 'UTF-8')) {
-			$this->back(['mml_po_err' => __('The file is not UTF-8 encoded.', 'alba')]);
+			$this->back(['alba_po_err' => __('The file is not UTF-8 encoded.', 'alba')]);
 		}
 
 		$res = $this->apply($this->parse($text), $lang, !empty($_POST['keep']));
 		$this->back([
-			'mml_po_ok'     => $res['ok'],
-			'mml_po_keep'   => $res['keep'],
-			'mml_po_miss'   => $res['miss'],
-			'mml_po_ignore' => $res['ignore'],
+			'alba_po_ok'     => $res['ok'],
+			'alba_po_keep'   => $res['keep'],
+			'alba_po_miss'   => $res['miss'],
+			'alba_po_ignore' => $res['ignore'],
 		]);
 	}
 
 	/** Übernimmt geparste Einträge in die gespeicherten Zeichenfolgen */
 	public function apply(array $entries, $lang, $keep) {
-		$all = get_option(MML_Strings::OPT, []);
+		$all = get_option(ALBA_Strings::OPT, []);
 		if (!is_array($all)) {
 			$all = [];
 		}
@@ -290,8 +290,8 @@ class MML_Po {
 				continue;
 			}
 			$targets = [];
-			if ($e['mmlid'] !== '' && isset($all[$e['mmlid']])) {
-				$targets[] = $e['mmlid'];
+			if ($e['albaid'] !== '' && isset($all[$e['albaid']])) {
+				$targets[] = $e['albaid'];
 			} else {
 				$k = (string) $e['ctx'] . "\0" . $e['id'];
 				if (isset($by_text[$k])) {
@@ -312,7 +312,7 @@ class MML_Po {
 				$res['ok']++;
 			}
 		}
-		update_option(MML_Strings::OPT, $all, false);
+		update_option(ALBA_Strings::OPT, $all, false);
 		return $res;
 	}
 
@@ -336,10 +336,10 @@ class MML_Po {
 	}
 
 	private function blank() {
-		return ['ctx' => null, 'id' => null, 'str' => null, 'mmlid' => '', 'fuzzy' => false, 'plural' => false];
+		return ['ctx' => null, 'id' => null, 'str' => null, 'albaid' => '', 'fuzzy' => false, 'plural' => false];
 	}
 
-	/** Liest .po-Text: gibt Liste von Einträgen (ctx, id, str, mmlid, fuzzy, plural) zurück */
+	/** Liest .po-Text: gibt Liste von Einträgen (ctx, id, str, albaid, fuzzy, plural) zurück */
 	public function parse($text) {
 		$text = preg_replace('/^\xEF\xBB\xBF/', '', (string) $text);
 		$entries = [];
@@ -374,8 +374,8 @@ class MML_Po {
 				$field = null;
 				if (strpos($line, '#,') === 0 && stripos($line, 'fuzzy') !== false) {
 					$cur['fuzzy'] = true;
-				} elseif (preg_match('/^#\.\s*mml-id:\s*([a-f0-9]{32})/i', $line, $m)) {
-					$cur['mmlid'] = strtolower($m[1]);
+				} elseif (preg_match('/^#\.\s*(?:alba|mml)-id:\s*([a-f0-9]{32})/i', $line, $m)) {
+					$cur['albaid'] = strtolower($m[1]);
 				}
 				continue;
 			}

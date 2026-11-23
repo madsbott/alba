@@ -14,11 +14,11 @@ if (!defined('ABSPATH')) {
  * - Optional: Sprachumschalter wird an die erste bzw. alle Navigationen angehängt
  * Es wird eine einzige Navigation für alle Sprachen verwendet; im Editor/REST bleibt alles unverändert.
  */
-class MML_Blocks {
+class ALBA_Blocks {
 	private $core;
 	private $nav_count = 0;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		if (is_admin()) {
 			return;
@@ -64,7 +64,7 @@ class MML_Blocks {
 				if ($c->is_translatable($pt) && $c->post_lang($id) !== $lang) {
 					$tid = $c->translation($id, $lang);
 					if (!$tid) {
-						$a['mmlHide'] = true;
+						$a['albaHide'] = true;
 						$block['attrs'] = $a;
 						return $block;
 					}
@@ -81,7 +81,7 @@ class MML_Blocks {
 					$tid = $c->terms->translation($id, $lang);
 					$link = $tid ? $c->terms->link($tid, $lang) : '';
 					if ($link === '') {
-						$a['mmlHide'] = true;
+						$a['albaHide'] = true;
 						$block['attrs'] = $a;
 						return $block;
 					}
@@ -114,7 +114,7 @@ class MML_Blocks {
 	}
 
 	public function maybe_hide($content, $block = null, $instance = null) {
-		if (is_array($block) && !empty($block['attrs']['mmlHide'])) {
+		if (is_array($block) && !empty($block['attrs']['albaHide'])) {
 			return '';
 		}
 		return $content;
@@ -143,7 +143,7 @@ class MML_Blocks {
 	 * ------------------------------------------------------------- */
 
 	public function append_switcher($content, $block = null, $instance = null) {
-		$mode = get_option('mml_nav_switcher', '');
+		$mode = get_option('alba_nav_switcher', '');
 		if ($mode === '' || $this->skip() || trim((string) $content) === '') {
 			return $content;
 		}
@@ -167,9 +167,9 @@ class MML_Blocks {
 		if (!$f) {
 			return '';
 		}
-		$display = get_option('mml_display', 'name');
-		$hide = (int) get_option('mml_hide_missing', 0);
-		if (get_option('mml_menu_style', 'list') === 'dropdown') {
+		$display = get_option('alba_display', 'name');
+		$hide = (int) get_option('alba_hide_missing', 0);
+		if (get_option('alba_menu_style', 'list') === 'dropdown') {
 			$dd = $f->dropdown_item(['display' => $display, 'hide_missing' => $hide], 'block');
 			if ($dd !== '') {
 				return $dd;
@@ -181,9 +181,9 @@ class MML_Blocks {
 				continue;
 			}
 			$label = ($display === 'code') ? strtoupper($l['code']) : $l['name'];
-			$cls = 'wp-block-navigation-item wp-block-navigation-link mml-lang mml-lang-' . $l['code']
-				. ($l['current'] ? ' mml-current current-menu-item' : '')
-				. ($l['missing'] ? ' mml-missing' : '');
+			$cls = 'wp-block-navigation-item wp-block-navigation-link alba-lang alba-lang-' . $l['code']
+				. ($l['current'] ? ' alba-current current-menu-item' : '')
+				. ($l['missing'] ? ' alba-missing' : '');
 			$html .= '<li class="' . esc_attr($cls) . '"><a class="wp-block-navigation-item__content" href="' . esc_url($l['url']) . '" hreflang="' . esc_attr($l['code']) . '" lang="' . esc_attr($l['code']) . '"'
 				. ($l['current'] ? ' aria-current="true"' : '') . '><span class="wp-block-navigation-item__label">' . esc_html($label) . '</span></a></li>';
 		}

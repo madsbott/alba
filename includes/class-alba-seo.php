@@ -6,21 +6,21 @@ if (!defined('ABSPATH')) {
 /**
  * Sitemaps und Sprachverweise.
  *
- * - XML-Sitemap pro Sprache unter /mml-sitemap.xml (Index), /mml-sitemap-{sprache}-{n}.xml (Inhalte) und
- *   /mml-sitemap-{sprache}-terms.xml (Startseite und Begriffsarchive). Jeder Eintrag nennt alle Sprachfassungen
+ * - XML-Sitemap pro Sprache unter /alba-sitemap.xml (Index), /alba-sitemap-{sprache}-{n}.xml (Inhalte) und
+ *   /alba-sitemap-{sprache}-terms.xml (Startseite und Begriffsarchive). Jeder Eintrag nennt alle Sprachfassungen
  *   als xhtml:link (hreflang) und x-default.
  * - Die Sitemap wird in robots.txt eingetragen und in den Index von Yoast SEO bzw. Rank Math eingehängt.
  * - og:locale passend zur Sprache (Yoast, Rank Math; ohne SEO-Plugin gibt das Plugin selbst og:locale aus).
  * - canonical: trägt eine Seite in einer Fremdsprache ein Kanonikal ohne Sprachpräfix, wird es auf die Sprach-URL korrigiert.
  */
-class MML_Seo {
+class ALBA_Seo {
 	const PER_PAGE = 1000;
-	const OPT_SITEMAP = 'mml_sitemap';
-	const OPT_OG = 'mml_ogloc';
+	const OPT_SITEMAP = 'alba_sitemap';
+	const OPT_OG = 'alba_ogloc';
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->seo = $this;
 
@@ -29,7 +29,7 @@ class MML_Seo {
 		add_filter('wpseo_sitemap_index', [$this, 'append_index']);
 		add_filter('rank_math/sitemap/index', [$this, 'append_index']);
 
-		foreach (['save_post', 'deleted_post', 'mml_translation_saved', 'created_term', 'edited_term', 'delete_term', 'update_option_mml_languages', 'update_option_mml_post_types', 'update_option_mml_taxonomies'] as $h) {
+		foreach (['save_post', 'deleted_post', 'alba_translation_saved', 'created_term', 'edited_term', 'delete_term', 'update_option_alba_languages', 'update_option_alba_post_types', 'update_option_alba_taxonomies'] as $h) {
 			add_action($h, [$this, 'bump']);
 		}
 
@@ -44,7 +44,7 @@ class MML_Seo {
 		}
 		if (is_admin()) {
 			add_action('admin_init', [$this, 'register']);
-			add_action('admin_post_mml_sitemap_rebuild', [$this, 'rebuild']);
+			add_action('admin_post_alba_sitemap_rebuild', [$this, 'rebuild']);
 		}
 	}
 
@@ -53,14 +53,14 @@ class MML_Seo {
 	}
 
 	public function bump() {
-		update_option('mml_sm_v', (string) microtime(true), false);
+		update_option('alba_sm_v', (string) microtime(true), false);
 	}
 
 	private function ver() {
-		$v = get_option('mml_sm_v', '');
+		$v = get_option('alba_sm_v', '');
 		if ($v === '') {
 			$v = '1';
-			add_option('mml_sm_v', $v, '', false);
+			add_option('alba_sm_v', $v, '', false);
 		}
 		return $v;
 	}
@@ -70,16 +70,16 @@ class MML_Seo {
 	 * ------------------------------------------------------------- */
 
 	public function index_url() {
-		return home_url('/mml-sitemap.xml');
+		return home_url('/alba-sitemap.xml');
 	}
 
 	private function file_url($lang, $part) {
-		return trailingslashit(set_url_scheme(get_option('home'))) . 'mml-sitemap-' . $lang . '-' . $part . '.xml';
+		return trailingslashit(set_url_scheme(get_option('home'))) . 'alba-sitemap-' . $lang . '-' . $part . '.xml';
 	}
 
 	/** Alle Dateien: Liste von [lang, part] */
 	public function files() {
-		$key = 'mml_sm_files_' . md5($this->ver());
+		$key = 'alba_sm_files_' . md5($this->ver());
 		$hit = get_transient($key);
 		if (is_array($hit)) {
 			return $hit;
@@ -113,7 +113,7 @@ class MML_Seo {
 			$path = substr($path, strlen($base));
 		}
 		$path = ltrim($path, '/');
-		return strpos($path, 'mml-sitemap') === 0 ? $path : '';
+		return strpos($path, 'alba-sitemap') === 0 ? $path : '';
 	}
 
 	public function serve() {
@@ -125,11 +125,11 @@ class MML_Seo {
 			return;
 		}
 		$c = $this->core;
-		if ($name === 'mml-sitemap.xml') {
+		if ($name === 'alba-sitemap.xml') {
 			$xml = $this->cached('index', function () {
 				return $this->build_index();
 			});
-		} elseif (preg_match('#^mml-sitemap-(.+)-(terms|\d+)\.xml$#', $name, $m) && isset($c->langs[$m[1]])) {
+		} elseif (preg_match('#^alba-sitemap-(.+)-(terms|\d+)\.xml$#', $name, $m) && isset($c->langs[$m[1]])) {
 			$lang = $m[1];
 			$part = $m[2];
 			$xml = $this->cached($lang . '-' . $part, function () use ($lang, $part) {
@@ -150,7 +150,7 @@ class MML_Seo {
 	}
 
 	private function cached($name, $fn) {
-		$key = 'mml_sm_' . md5($this->ver() . '|' . $name);
+		$key = 'alba_sm_' . md5($this->ver() . '|' . $name);
 		$hit = get_transient($key);
 		if (is_string($hit) && $hit !== '') {
 			return $hit;
@@ -222,7 +222,7 @@ class MML_Seo {
 			'meta_query'             => [$this->core->lang_meta_query($lang, true)],
 			'suppress_filters'       => true,
 			'ignore_sticky_posts'    => true,
-			'mml_skip'               => 1,
+			'alba_skip'               => 1,
 			'update_post_term_cache' => false,
 		];
 	}
@@ -289,7 +289,7 @@ class MML_Seo {
 				if (!$o || !$o->public || $left <= 0) {
 					continue;
 				}
-				$terms = get_terms(['taxonomy' => $tx, 'hide_empty' => true, 'number' => 0, 'mml_skip' => 1]);
+				$terms = get_terms(['taxonomy' => $tx, 'hide_empty' => true, 'number' => 0, 'alba_skip' => 1]);
 				if (is_wp_error($terms)) {
 					continue;
 				}
@@ -401,7 +401,7 @@ class MML_Seo {
 
 	public function register() {
 		foreach ([self::OPT_SITEMAP, self::OPT_OG] as $o) {
-			register_setting('mml', $o, ['sanitize_callback' => function ($v) {
+			register_setting('alba', $o, ['sanitize_callback' => function ($v) {
 				return $v === '1' ? '1' : '0';
 			}]);
 		}
@@ -411,9 +411,9 @@ class MML_Seo {
 		if (!current_user_can('manage_options')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
-		check_admin_referer('mml_sitemap_rebuild');
+		check_admin_referer('alba_sitemap_rebuild');
 		$this->bump();
-		wp_safe_redirect(add_query_arg('mml_sm', '1', admin_url('admin.php?page=alba-settings#seo')));
+		wp_safe_redirect(add_query_arg('alba_sm', '1', admin_url('admin.php?page=alba-settings#seo')));
 		exit;
 	}
 
@@ -422,27 +422,27 @@ class MML_Seo {
 		$seo = $c->editor ? $c->editor->seo_plugin() : '';
 		$on = $this->enabled();
 		?>
-		<section class="mml-card" data-tab="seo">
-			<header class="mml-card-h"><span class="dashicons dashicons-chart-area"></span><div><h2><?php echo esc_html__('Sitemap & language references', 'alba'); ?></h2><p><?php echo esc_html__('XML sitemap per language, hreflang, og:locale, canonical.', 'alba'); ?></p></div></header>
-			<div class="mml-card-b">
-				<?php if (!empty($_GET['mml_sm'])) : ?><div class="notice notice-success inline"><p><?php echo esc_html__('The sitemap is rebuilt on the next request.', 'alba'); ?></p></div><?php endif; ?>
-				<div class="mml-fields">
-					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Sitemap', 'alba'); ?></div><div class="mml-ctl">
-						<label><input type="checkbox" name="mml_sitemap" value="1" <?php checked($on); ?>> <?php echo esc_html__('Provide a sitemap for all languages', 'alba'); ?></label>
-						<?php if ($on) : ?><p class="mml-hint"><a href="<?php echo esc_url($this->index_url()); ?>" target="_blank" rel="noopener"><?php echo esc_html($this->index_url()); ?></a> · <?php echo count($this->files()); ?> <?php echo esc_html__('files. Each entry lists all language versions (hreflang, x-default).', 'alba'); ?></p><?php endif; ?>
-						<p class="mml-hint"><?php echo esc_html__('The entry in', 'alba'); ?> <code>robots.txt</code> <?php echo esc_html__('is made automatically', 'alba'); ?><?php echo $seo ? esc_html(sprintf(/* translators: %s: name of the SEO plugin */ esc_html__(' and the files are added to the sitemap index of %s', 'alba'), $seo)) : ''; ?><?php echo esc_html__('. Pages with "noindex" (Yoast, Rank Math) and password-protected content are not included.', 'alba'); ?><?php echo $seo ? esc_html__(' The sitemap of ', 'alba') . esc_html($seo) . esc_html__(' remains and also contains the default language and separate translation posts; duplicate URLs do no harm.', 'alba') : ''; ?></p>
+		<section class="alba-card" data-tab="seo">
+			<header class="alba-card-h"><span class="dashicons dashicons-chart-area"></span><div><h2><?php echo esc_html__('Sitemap & language references', 'alba'); ?></h2><p><?php echo esc_html__('XML sitemap per language, hreflang, og:locale, canonical.', 'alba'); ?></p></div></header>
+			<div class="alba-card-b">
+				<?php if (!empty($_GET['alba_sm'])) : ?><div class="notice notice-success inline"><p><?php echo esc_html__('The sitemap is rebuilt on the next request.', 'alba'); ?></p></div><?php endif; ?>
+				<div class="alba-fields">
+					<div class="alba-field"><div class="alba-label"><?php echo esc_html__('Sitemap', 'alba'); ?></div><div class="alba-ctl">
+						<label><input type="checkbox" name="alba_sitemap" value="1" <?php checked($on); ?>> <?php echo esc_html__('Provide a sitemap for all languages', 'alba'); ?></label>
+						<?php if ($on) : ?><p class="alba-hint"><a href="<?php echo esc_url($this->index_url()); ?>" target="_blank" rel="noopener"><?php echo esc_html($this->index_url()); ?></a> · <?php echo count($this->files()); ?> <?php echo esc_html__('files. Each entry lists all language versions (hreflang, x-default).', 'alba'); ?></p><?php endif; ?>
+						<p class="alba-hint"><?php echo esc_html__('The entry in', 'alba'); ?> <code>robots.txt</code> <?php echo esc_html__('is made automatically', 'alba'); ?><?php echo $seo ? esc_html(sprintf(/* translators: %s: name of the SEO plugin */ esc_html__(' and the files are added to the sitemap index of %s', 'alba'), $seo)) : ''; ?><?php echo esc_html__('. Pages with "noindex" (Yoast, Rank Math) and password-protected content are not included.', 'alba'); ?><?php echo $seo ? esc_html__(' The sitemap of ', 'alba') . esc_html($seo) . esc_html__(' remains and also contains the default language and separate translation posts; duplicate URLs do no harm.', 'alba') : ''; ?></p>
 					</div></div>
-					<div class="mml-field"><div class="mml-label">og:locale</div><div class="mml-ctl">
-						<label><input type="checkbox" name="mml_ogloc" value="1" <?php checked(get_option(self::OPT_OG, '1'), '1'); ?>> <?php echo esc_html__('Set language for social media previews (', 'alba'); ?><code>og:locale</code>)</label>
-						<p class="mml-hint"><?php echo $seo ? esc_html(sprintf(/* translators: %s: name of the SEO plugin */ esc_html__('Passed to %s.', 'alba'), $seo)) : esc_html__('Without an SEO plugin, Alba outputs the meta tag itself.', 'alba'); ?> <?php echo esc_html__('Canonical URLs without a language prefix are corrected automatically in other languages.', 'alba'); ?></p>
+					<div class="alba-field"><div class="alba-label">og:locale</div><div class="alba-ctl">
+						<label><input type="checkbox" name="alba_ogloc" value="1" <?php checked(get_option(self::OPT_OG, '1'), '1'); ?>> <?php echo esc_html__('Set language for social media previews (', 'alba'); ?><code>og:locale</code>)</label>
+						<p class="alba-hint"><?php echo $seo ? esc_html(sprintf(/* translators: %s: name of the SEO plugin */ esc_html__('Passed to %s.', 'alba'), $seo)) : esc_html__('Without an SEO plugin, Alba outputs the meta tag itself.', 'alba'); ?> <?php echo esc_html__('Canonical URLs without a language prefix are corrected automatically in other languages.', 'alba'); ?></p>
 					</div></div>
-					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Check', 'alba'); ?></div><div class="mml-ctl">
-						<ul class="mml-hint" style="list-style:disc;margin-left:18px">
+					<div class="alba-field"><div class="alba-label"><?php echo esc_html__('Check', 'alba'); ?></div><div class="alba-ctl">
+						<ul class="alba-hint" style="list-style:disc;margin-left:18px">
 							<li><?php echo get_option('blog_public') ? esc_html__('Search engines are allowed.', 'alba') : '<strong>' . esc_html__('Warning:', 'alba') . '</strong> ' . esc_html__('"Discourage search engines from indexing this site" is active (Settings > Reading).', 'alba'); ?></li>
 							<li><?php echo file_exists(ABSPATH . 'robots.txt') ? '<strong>' . esc_html__('Warning:', 'alba') . '</strong> ' . esc_html__('There is a real robots.txt in the root directory; WordPress cannot add the sitemap entry there. Please add the line', 'alba') . ' <code>Sitemap: ' . esc_html($this->index_url()) . '</code> ' . esc_html__('yourself.', 'alba') : esc_html__('robots.txt is generated by WordPress and contains the sitemap.', 'alba'); ?></li>
 							<li><?php echo get_option('permalink_structure') ? esc_html__('Permalinks are active.', 'alba') : '<strong>' . esc_html__('Note:', 'alba') . '</strong> ' . esc_html__('Without pretty permalinks, the language URLs use', 'alba') . ' <code>?lang=</code>.'; ?></li>
 						</ul>
-						<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=mml_sitemap_rebuild'), 'mml_sitemap_rebuild')); ?>"><?php echo esc_html__('Rebuild sitemap', 'alba'); ?></a>
+						<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=alba_sitemap_rebuild'), 'alba_sitemap_rebuild')); ?>"><?php echo esc_html__('Rebuild sitemap', 'alba'); ?></a>
 					</div></div>
 				</div>
 			</div>

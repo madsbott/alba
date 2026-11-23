@@ -10,26 +10,26 @@ if (!defined('ABSPATH')) {
  * solange die Tabellen noch in der Datenbank sind).
  *
  *  Einstellungen  Sprachen (Name, Locale), Standardsprache, übersetzbare Inhaltstypen und Taxonomien
- *  Beiträge       Sprache und Übersetzungsgruppe je Beitrag (_mml_lang, _mml_group); „Übersetzung muss aktualisiert werden“ aus WPML bleibt als veraltet erhalten
+ *  Beiträge       Sprache und Übersetzungsgruppe je Beitrag (_alba_lang, _alba_group); „Übersetzung muss aktualisiert werden“ aus WPML bleibt als veraltet erhalten
  *  Begriffe       Sprache und Gruppe je Kategorie/Schlagwort/Taxonomie-Begriff
  *  Menüs          Zuordnung der Menüs je Sprache (Einstellungen > Suche, Kommentare & Menüs)
  *  Medien         Alt-Text, Titel, Beschriftung, Beschreibung und andere Bilddatei der übersetzten Medien (am Original-Medium)
  *  Zeichenfolgen  String-Übersetzungen (Zeichenfolgen; wirksam für Theme/Plugin-Texte, Seitentitel, Slogan und Widget-Titel)
  * Es werden keine Beiträge angelegt oder gelöscht; die Importschritte sind wiederholbar. Ein Probelauf zählt nur.
  */
-class MML_Wpml {
+class ALBA_Wpml {
 	const PAGE = 'alba-wpml';
 	const BATCH = 200;
 
 	private $core;
 	private $dry = false;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->wpml = $this;
 		if (is_admin()) {
 			add_action('admin_menu', [$this, 'menu'], 30);
-			add_action('wp_ajax_mml_wpml_step', [$this, 'ajax']);
+			add_action('wp_ajax_alba_wpml_step', [$this, 'ajax']);
 		}
 	}
 
@@ -54,7 +54,7 @@ class MML_Wpml {
 
 	public function menu() {
 		if ($this->available()) {
-			add_submenu_page(MML_Dashboard::SLUG, __('WPML import', 'alba'), __('WPML import', 'alba'), 'manage_options', self::PAGE, [$this, 'page']);
+			add_submenu_page(ALBA_Dashboard::SLUG, __('WPML import', 'alba'), __('WPML import', 'alba'), 'manage_options', self::PAGE, [$this, 'page']);
 		}
 	}
 
@@ -112,25 +112,25 @@ class MML_Wpml {
 			</tbody></table>
 			<?php foreach ($a['warn'] as $w) : ?><div class="notice notice-info inline"><p><?php echo esc_html($w); ?></p></div><?php endforeach; ?>
 			<p style="margin-top:14px">
-				<label><input type="checkbox" id="mml-w-dry" checked> <?php echo esc_html__('Dry run (write nothing)', 'alba'); ?></label><br>
-				<label><input type="checkbox" id="mml-w-over"> <?php echo esc_html__('overwrite content that is already assigned', 'alba'); ?></label><br>
-				<label><input type="checkbox" id="mml-w-lang" checked> <?php echo esc_html__('Import languages, default language, content types and taxonomies', 'alba'); ?></label>
+				<label><input type="checkbox" id="alba-w-dry" checked> <?php echo esc_html__('Dry run (write nothing)', 'alba'); ?></label><br>
+				<label><input type="checkbox" id="alba-w-over"> <?php echo esc_html__('overwrite content that is already assigned', 'alba'); ?></label><br>
+				<label><input type="checkbox" id="alba-w-lang" checked> <?php echo esc_html__('Import languages, default language, content types and taxonomies', 'alba'); ?></label>
 			</p>
-			<p><button class="button button-primary" id="mml-w-go"><?php echo esc_html__('Start import', 'alba'); ?></button></p>
-			<table class="widefat striped" id="mml-w-tab" style="max-width:760px;display:none"><thead><tr><th><?php echo esc_html__('Step', 'alba'); ?></th><th><?php echo esc_html__('Result', 'alba'); ?></th></tr></thead><tbody></tbody></table>
+			<p><button class="button button-primary" id="alba-w-go"><?php echo esc_html__('Start import', 'alba'); ?></button></p>
+			<table class="widefat striped" id="alba-w-tab" style="max-width:760px;display:none"><thead><tr><th><?php echo esc_html__('Step', 'alba'); ?></th><th><?php echo esc_html__('Result', 'alba'); ?></th></tr></thead><tbody></tbody></table>
 			<script>
 			(function () {
 				var steps = [['settings', <?php echo wp_json_encode(__('Settings', 'alba')); ?>], ['posts', <?php echo wp_json_encode(__('Posts and pages', 'alba')); ?>], ['terms', <?php echo wp_json_encode(__('Terms (categories, tags …)', 'alba')); ?>], ['menus', <?php echo wp_json_encode(__('Menus', 'alba')); ?>], ['media', <?php echo wp_json_encode(__('Media', 'alba')); ?>], ['strings', <?php echo wp_json_encode(__('Strings', 'alba')); ?>]];
-				var go = document.getElementById('mml-w-go'), tab = document.getElementById('mml-w-tab'), body = tab.querySelector('tbody');
-				var ajax = <?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>, nonce = <?php echo wp_json_encode(wp_create_nonce('mml_wpml')); ?>;
+				var go = document.getElementById('alba-w-go'), tab = document.getElementById('alba-w-tab'), body = tab.querySelector('tbody');
+				var ajax = <?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>, nonce = <?php echo wp_json_encode(wp_create_nonce('alba_wpml')); ?>;
 				function call(step, cursor, opts) {
 					var fd = new FormData();
-					fd.append('action', 'mml_wpml_step'); fd.append('nonce', nonce); fd.append('step', step); fd.append('cursor', cursor);
+					fd.append('action', 'alba_wpml_step'); fd.append('nonce', nonce); fd.append('step', step); fd.append('cursor', cursor);
 					Object.keys(opts).forEach(function (k) { fd.append(k, opts[k] ? '1' : '0'); });
 					return fetch(ajax, {method: 'POST', credentials: 'same-origin', body: fd}).then(function (r) { return r.json(); });
 				}
 				go.addEventListener('click', function () {
-					var opts = {dry: document.getElementById('mml-w-dry').checked, over: document.getElementById('mml-w-over').checked, lang: document.getElementById('mml-w-lang').checked};
+					var opts = {dry: document.getElementById('alba-w-dry').checked, over: document.getElementById('alba-w-over').checked, lang: document.getElementById('alba-w-lang').checked};
 					if (!opts.dry && !confirm(<?php echo wp_json_encode(__('Really import? Please create a database backup first.', 'alba')); ?>)) { return; }
 					go.disabled = true; tab.style.display = ''; body.innerHTML = '';
 					var i = 0;
@@ -162,7 +162,7 @@ class MML_Wpml {
 	 * ------------------------------------------------------------- */
 
 	public function ajax() {
-		check_ajax_referer('mml_wpml', 'nonce');
+		check_ajax_referer('alba_wpml', 'nonce');
 		if (!current_user_can('manage_options') || !$this->available()) {
 			wp_send_json_error(__('Not allowed or no WPML data found.', 'alba'));
 		}
@@ -217,7 +217,7 @@ class MML_Wpml {
 		if (empty($o['lang'])) {
 			return $this->res(true, 0, [__('skipped', 'alba') => 1], [__('Not selected: languages and types are not adjusted.', 'alba')]);
 		}
-		$langs = get_option('mml_languages');
+		$langs = get_option('alba_languages');
 		$langs = is_array($langs) ? $langs : [];
 		if ($this->has('icl_languages')) {
 			$rows = (array) $wpdb->get_results('SELECT code, english_name, default_locale FROM ' . $this->tn('icl_languages') . ' WHERE active = 1', ARRAY_A);
@@ -247,19 +247,19 @@ class MML_Wpml {
 		$def = isset($s['default_language']) ? sanitize_key($s['default_language']) : '';
 		if (!$this->dry) {
 			if ($langs) {
-				update_option('mml_languages', $langs);
+				update_option('alba_languages', $langs);
 			}
 			if ($def !== '' && isset($langs[$def])) {
-				update_option('mml_default', $def);
+				update_option('alba_default', $def);
 			}
 		}
 		if ($def !== '') {
 			$notes[] = __('Default language: ', 'alba') . $def . '.';
 		}
 
-		$pt = get_option('mml_post_types');
+		$pt = get_option('alba_post_types');
 		$pt = is_array($pt) && $pt ? array_values($pt) : ['post', 'page'];
-		$tx = get_option('mml_taxonomies');
+		$tx = get_option('alba_taxonomies');
 		$tx = is_array($tx) ? array_values($tx) : [];
 		foreach ((array) $wpdb->get_col('SELECT DISTINCT element_type FROM ' . $this->tn('icl_translations')) as $et) {
 			if (strpos($et, 'post_') === 0) {
@@ -279,9 +279,9 @@ class MML_Wpml {
 			}
 		}
 		if (!$this->dry) {
-			update_option('mml_post_types', $pt);
+			update_option('alba_post_types', $pt);
 			if ($tx) {
-				update_option('mml_taxonomies', $tx);
+				update_option('alba_taxonomies', $tx);
 			}
 			$c->post_types = $pt;
 			$c->taxonomies = $tx ?: $c->taxonomies;
@@ -326,14 +326,14 @@ class MML_Wpml {
 				$n[__('Post missing', 'alba')]++;
 				continue;
 			}
-			if (!$o['over'] && metadata_exists('post', $id, '_mml_group')) {
+			if (!$o['over'] && metadata_exists('post', $id, '_alba_group')) {
 				$n[__('skipped', 'alba')]++;
 				continue;
 			}
 			$n[__('assigned', 'alba')]++;
 			if (!$this->dry) {
-				update_post_meta($id, '_mml_lang', $lang);
-				update_post_meta($id, '_mml_group', 'wpml-' . (int) $r['trid']);
+				update_post_meta($id, '_alba_lang', $lang);
+				update_post_meta($id, '_alba_group', 'wpml-' . (int) $r['trid']);
 			}
 			if (in_array((int) $r['translation_id'], $upd, true)) {
 				$n[__('outdated', 'alba')]++;
@@ -345,7 +345,7 @@ class MML_Wpml {
 			foreach ($rows as $r) {
 				$id = (int) $r['element_id'];
 				$lang = sanitize_key((string) $r['language_code']);
-				if ($lang && $lang !== $c->default && isset($c->langs[$lang]) && get_post($id) && get_post_meta($id, '_mml_group', true) === 'wpml-' . (int) $r['trid'] && !in_array((int) $r['translation_id'], $upd, true) && $c->editor) {
+				if ($lang && $lang !== $c->default && isset($c->langs[$lang]) && get_post($id) && get_post_meta($id, '_alba_group', true) === 'wpml-' . (int) $r['trid'] && !in_array((int) $r['translation_id'], $upd, true) && $c->editor) {
 					$c->editor->mark_synced($id);
 				}
 			}
@@ -382,14 +382,14 @@ class MML_Wpml {
 				$n[__('Term missing', 'alba')]++;
 				continue;
 			}
-			if (!$o['over'] && metadata_exists('term', $tid, '_mml_group')) {
+			if (!$o['over'] && metadata_exists('term', $tid, '_alba_group')) {
 				$n[__('skipped', 'alba')]++;
 				continue;
 			}
 			$n[__('assigned', 'alba')]++;
 			if (!$this->dry) {
-				update_term_meta($tid, '_mml_lang', $lang);
-				update_term_meta($tid, '_mml_group', 'wpml-' . (int) $r['trid']);
+				update_term_meta($tid, '_alba_lang', $lang);
+				update_term_meta($tid, '_alba_group', 'wpml-' . (int) $r['trid']);
 			}
 		}
 		if (!$this->dry && $c->terms) {
@@ -414,7 +414,7 @@ class MML_Wpml {
 				$groups[(int) $r['trid']][sanitize_key((string) $r['language_code'])] = $tid;
 			}
 		}
-		$map = get_option('mml_menu_map', []);
+		$map = get_option('alba_menu_map', []);
 		$map = is_array($map) ? $map : [];
 		$map += ['menu' => [], 'nav' => []];
 		$n = [__('Menus assigned', 'alba') => 0, __('skipped', 'alba') => 0];
@@ -437,7 +437,7 @@ class MML_Wpml {
 			}
 		}
 		if (!$this->dry && $n[__('Menus assigned', 'alba')]) {
-			update_option('mml_menu_map', $map);
+			update_option('alba_menu_map', $map);
 		}
 		return $this->res(true, 0, $n);
 	}
@@ -472,7 +472,7 @@ class MML_Wpml {
 				if ($id === $src || $lang === $c->default || !isset($c->langs[$lang]) || get_post_type($id) !== 'attachment') {
 					continue;
 				}
-				if (!$o['over'] && metadata_exists('post', $src, MML_Media::META . $lang)) {
+				if (!$o['over'] && metadata_exists('post', $src, ALBA_Media::META . $lang)) {
 					$n[__('skipped', 'alba')]++;
 					continue;
 				}
@@ -515,7 +515,7 @@ class MML_Wpml {
 		$n = [__('Translations', 'alba') => 0, __('Without translation', 'alba') => 0, __('Limit reached', 'alba') => 0];
 		$notes = [];
 		$last = $cursor;
-		$all = get_option(MML_Strings::OPT, []);
+		$all = get_option(ALBA_Strings::OPT, []);
 		$all = is_array($all) ? $all : [];
 		$dirty = false;
 		$ids = wp_list_pluck($rows, 'id');
@@ -557,7 +557,7 @@ class MML_Wpml {
 					continue;
 				}
 				if (!isset($all[$id])) {
-					if (count($all) >= MML_Strings::MAX) {
+					if (count($all) >= ALBA_Strings::MAX) {
 						$n[__('Limit reached', 'alba')]++;
 						continue;
 					}
@@ -573,10 +573,10 @@ class MML_Wpml {
 			$n[__('Translations', 'alba')] += $count;
 		}
 		if ($dirty && !$this->dry) {
-			update_option(MML_Strings::OPT, $all, false);
+			update_option(ALBA_Strings::OPT, $all, false);
 		}
 		if ($n[__('Limit reached', 'alba')]) {
-			$notes[] = __('The limit of ', 'alba') . MML_Strings::MAX . __(' strings has been reached, the rest was not imported.', 'alba');
+			$notes[] = __('The limit of ', 'alba') . ALBA_Strings::MAX . __(' strings has been reached, the rest was not imported.', 'alba');
 		}
 		return $this->res(count($rows) < 300, $last, $n, $notes);
 	}

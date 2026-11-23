@@ -11,29 +11,29 @@ if (!defined('ABSPATH')) {
  * stehen als geschützte Platzhalter im Text und kommen beim Import aus dem Original zurück, nie aus der Datei.
  * Import: zuerst Vorschau (neu / geändert / übersprungen), dann Übernahme. Die Freigabe im Frontend bleibt unverändert.
  */
-class MML_Xliff {
+class ALBA_Xliff {
 	const PAGE = 'alba-xliff';
 	const MAX_BYTES = 5242880;
 	const LIMIT = 2000;
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->xliff = $this;
 		add_action('admin_menu', [$this, 'menu']);
-		add_action('admin_post_mml_xliff_export', [$this, 'export']);
-		add_action('admin_post_mml_xliff_upload', [$this, 'upload']);
-		add_action('admin_post_mml_xliff_apply', [$this, 'apply']);
+		add_action('admin_post_alba_xliff_export', [$this, 'export']);
+		add_action('admin_post_alba_xliff_upload', [$this, 'upload']);
+		add_action('admin_post_alba_xliff_apply', [$this, 'apply']);
 	}
 
 	public function menu() {
-		add_submenu_page(MML_Dashboard::SLUG, __('Languages – XLIFF', 'alba'), 'XLIFF', 'edit_others_posts', self::PAGE, [$this, 'page']);
+		add_submenu_page(ALBA_Dashboard::SLUG, __('Languages – XLIFF', 'alba'), 'XLIFF', 'edit_others_posts', self::PAGE, [$this, 'page']);
 	}
 
 	/** Download-Adresse für einen einzelnen Inhalt (Link im Editor) */
 	public function export_url($post_id, $lang) {
-		return wp_nonce_url(add_query_arg(['action' => 'mml_xliff_export', 'post' => (int) $post_id, 'lang' => $lang, 'fmt' => '1.2', 'tr' => 1], admin_url('admin-post.php')), 'mml_xliff_export');
+		return wp_nonce_url(add_query_arg(['action' => 'alba_xliff_export', 'post' => (int) $post_id, 'lang' => $lang, 'fmt' => '1.2', 'tr' => 1], admin_url('admin-post.php')), 'alba_xliff_export');
 	}
 
 	/* ---------------------------------------------------------------
@@ -333,7 +333,7 @@ class MML_Xliff {
 				return [];
 			}
 			foreach ($types as $t) {
-				$list = get_posts(['post_type' => $t, 'post_status' => ['publish', 'draft', 'pending', 'private', 'future'], 'posts_per_page' => self::LIMIT, 'orderby' => 'ID', 'order' => 'ASC', 'no_found_rows' => true, 'suppress_filters' => true, 'mml_skip' => 1]);
+				$list = get_posts(['post_type' => $t, 'post_status' => ['publish', 'draft', 'pending', 'private', 'future'], 'posts_per_page' => self::LIMIT, 'orderby' => 'ID', 'order' => 'ASC', 'no_found_rows' => true, 'suppress_filters' => true, 'alba_skip' => 1]);
 				update_meta_cache('post', wp_list_pluck($list, 'ID'));
 				foreach ($list as $p) {
 					if (current_user_can('edit_post', $p->ID)) {
@@ -380,7 +380,7 @@ class MML_Xliff {
 				$x .= '<notes><note category="developer">' . $this->esc($note) . '</note></notes>' . "\n";
 			} else {
 				$x .= '<file original="' . $this->esc($orig) . '" source-language="' . $this->esc($src) . '" target-language="' . $this->esc($tgt) . '" datatype="html" tool-id="alba">' . "\n";
-				$x .= '<header><tool tool-id="alba" tool-name="Alba" tool-version="' . $this->esc(MML_VERSION) . '"/><note>' . $this->esc($note) . '</note></header>' . "\n<body>\n";
+				$x .= '<header><tool tool-id="alba" tool-name="Alba" tool-version="' . $this->esc(ALBA_VERSION) . '"/><note>' . $this->esc($note) . '</note></header>' . "\n<body>\n";
 			}
 			foreach ($this->units($post, $lang, $with_tr) as $u) {
 				$s = $this->inline($u['src'], $u['html'], $fmt);
@@ -413,7 +413,7 @@ class MML_Xliff {
 	}
 
 	public function export() {
-		check_admin_referer('mml_xliff_export');
+		check_admin_referer('alba_xliff_export');
 		$c = $this->core;
 		$one = isset($_GET['post']) ? (int) $_GET['post'] : 0;
 		$pick = [];
@@ -438,12 +438,12 @@ class MML_Xliff {
 			$types = array_values(array_intersect(array_map('sanitize_key', wp_unslash($_GET['types'])), (array) $c->post_types));
 		}
 		if (!$one && !$types && !$pick) {
-			$this->back(['mml_xl_err' => __('Please choose at least one content type.', 'alba')]);
+			$this->back(['alba_xl_err' => __('Please choose at least one content type.', 'alba')]);
 		}
 		@set_time_limit(120);
 		$posts = $this->export_posts($lang, $types, !empty($_GET['open']), $one, $pick);
 		if (!$posts) {
-			$this->back(['mml_xl_err' => __('No matching content found (everything translated or separate translation posts exist).', 'alba')]);
+			$this->back(['alba_xl_err' => __('No matching content found (everything translated or separate translation posts exist).', 'alba')]);
 		}
 		$xml = $this->build($posts, $lang, $fmt, !empty($_GET['tr']));
 		$name = 'alba-' . $c->default . '-' . $lang . '-' . ($one ? 'post-' . $one : count($posts) . '-items') . '-' . gmdate('Ymd') . '.xlf';
@@ -501,11 +501,11 @@ class MML_Xliff {
 		$c = $this->core;
 		$e = $c->editor;
 		if (!class_exists('DOMDocument')) {
-			return new WP_Error('mml', __('The PHP extension "DOM" (libxml) is missing on the server. Please ask your host to enable it.', 'alba'));
+			return new WP_Error('alba', __('The PHP extension "DOM" (libxml) is missing on the server. Please ask your host to enable it.', 'alba'));
 		}
 		$xml = (string) preg_replace('/^\xEF\xBB\xBF/', '', (string) $xml);
 		if (stripos($xml, '<!ENTITY') !== false) {
-			return new WP_Error('mml', __('The file contains entity declarations and is not read for security reasons.', 'alba'));
+			return new WP_Error('alba', __('The file contains entity declarations and is not read for security reasons.', 'alba'));
 		}
 		$prev = libxml_use_internal_errors(true);
 		$dom = new DOMDocument();
@@ -514,7 +514,7 @@ class MML_Xliff {
 		libxml_use_internal_errors($prev);
 		$root = $ok ? $dom->documentElement : null;
 		if (!$root || $root->localName !== 'xliff') {
-			return new WP_Error('mml', __('This is not a valid XLIFF file.', 'alba'));
+			return new WP_Error('alba', __('This is not a valid XLIFF file.', 'alba'));
 		}
 		$version = (string) $root->getAttribute('version');
 		$v2 = ($version !== '' && $version[0] === '2');
@@ -531,7 +531,7 @@ class MML_Xliff {
 		}
 		$lang = $choice !== '' ? $choice : $this->detect($tag);
 		if (!isset($c->langs[$lang]) || $lang === $c->default) {
-			return new WP_Error('mml', $choice !== '' ? __('Invalid target language.', 'alba') : __('The target language', 'alba') . ($tag !== '' ? ' „' . $tag . '“' : '') . __(' in the file does not match any language that has been added. Please choose the target language in the form.', 'alba'));
+			return new WP_Error('alba', $choice !== '' ? __('Invalid target language.', 'alba') : __('The target language', 'alba') . ($tag !== '' ? ' „' . $tag . '“' : '') . __(' in the file does not match any language that has been added. Please choose the target language in the form.', 'alba'));
 		}
 
 		$units = $dom->getElementsByTagNameNS('*', $v2 ? 'unit' : 'trans-unit');
@@ -545,7 +545,7 @@ class MML_Xliff {
 			}
 		}
 		if (!$by) {
-			return new WP_Error('mml', __('The file contains no entries that belong to this plugin (export with "Alba" required).', 'alba'));
+			return new WP_Error('alba', __('The file contains no entries that belong to this plugin (export with "Alba" required).', 'alba'));
 		}
 
 		$map = ['title' => 'title', 'excerpt' => 'excerpt', 'seotitle' => 'seo_title', 'seodesc' => 'seo_desc', 'slug' => 'slug'];
@@ -677,56 +677,56 @@ class MML_Xliff {
 	}
 
 	private function tkey($token) {
-		return 'mml_xl_' . get_current_user_id() . '_' . preg_replace('/[^A-Za-z0-9]/', '', (string) $token);
+		return 'alba_xl_' . get_current_user_id() . '_' . preg_replace('/[^A-Za-z0-9]/', '', (string) $token);
 	}
 
 	public function upload() {
-		check_admin_referer('mml_xliff_upload');
+		check_admin_referer('alba_xliff_upload');
 		if (!current_user_can('edit_others_posts')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Upload array; name, size and type are validated below.
 		$f = isset($_FILES['xlf']) ? $_FILES['xlf'] : null;
 		if (!$f || (int) $f['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) {
-			$this->back(['mml_xl_err' => __('Upload failed.', 'alba')]);
+			$this->back(['alba_xl_err' => __('Upload failed.', 'alba')]);
 		}
 		$ext = strtolower(pathinfo((string) $f['name'], PATHINFO_EXTENSION));
 		if (!in_array($ext, ['xlf', 'xliff', 'xml'], true)) {
-			$this->back(['mml_xl_err' => __('Please upload an .xlf or .xliff file.', 'alba')]);
+			$this->back(['alba_xl_err' => __('Please upload an .xlf or .xliff file.', 'alba')]);
 		}
 		if ((int) $f['size'] > self::MAX_BYTES) {
-			$this->back(['mml_xl_err' => __('The file is larger than 5 MB.', 'alba')]);
+			$this->back(['alba_xl_err' => __('The file is larger than 5 MB.', 'alba')]);
 		}
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads the local uploaded temp file, not a URL.
 		$xml = (string) file_get_contents($f['tmp_name']);
 		if (function_exists('mb_check_encoding') && !mb_check_encoding($xml, 'UTF-8')) {
-			$this->back(['mml_xl_err' => __('The file is not UTF-8 encoded.', 'alba')]);
+			$this->back(['alba_xl_err' => __('The file is not UTF-8 encoded.', 'alba')]);
 		}
 		$choice = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
 		@set_time_limit(120);
 		$plan = $this->plan($xml, $choice, sanitize_file_name((string) $f['name']));
 		if (is_wp_error($plan)) {
-			$this->back(['mml_xl_err' => $plan->get_error_message()]);
+			$this->back(['alba_xl_err' => $plan->get_error_message()]);
 		}
 		$token = wp_generate_password(16, false);
 		set_transient($this->tkey($token), $plan, HOUR_IN_SECONDS);
-		$this->back(['mml_xl' => $token]);
+		$this->back(['alba_xl' => $token]);
 	}
 
 	public function apply() {
-		check_admin_referer('mml_xliff_apply');
+		check_admin_referer('alba_xliff_apply');
 		if (!current_user_can('edit_others_posts')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
 		$token = isset($_POST['token']) ? sanitize_text_field(wp_unslash($_POST['token'])) : '';
 		$plan = get_transient($this->tkey($token));
 		if (!is_array($plan) || empty($plan['posts'])) {
-			$this->back(['mml_xl_err' => __('The preview has expired. Please upload the file again.', 'alba')]);
+			$this->back(['alba_xl_err' => __('The preview has expired. Please upload the file again.', 'alba')]);
 		}
 		@set_time_limit(180);
 		$r = $this->run_apply($plan, isset($_POST['mode']) && $_POST['mode'] === 'all');
 		delete_transient($this->tkey($token));
-		$this->back(['mml_xl_done' => 1, 'n_new' => $r['new'], 'n_chg' => $r['chg'], 'n_same' => $r['same'], 'n_kept' => $r['kept'], 'n_posts' => $r['posts'], 'l' => $plan['lang']]);
+		$this->back(['alba_xl_done' => 1, 'n_new' => $r['new'], 'n_chg' => $r['chg'], 'n_same' => $r['same'], 'n_kept' => $r['kept'], 'n_posts' => $r['posts'], 'l' => $plan['lang']]);
 	}
 
 	/* ---------------------------------------------------------------
@@ -739,12 +739,12 @@ class MML_Xliff {
 		}
 		$c = $this->core;
 		echo '<div class="wrap"><h1>' . esc_html__('XLIFF – Export & import for external translators', 'alba') . '</h1>';
-		echo '<style>.mml-xl-card{background:#fff;border:1px solid #dcdcde;border-radius:6px;padding:4px 20px 16px;margin:16px 0;max-width:900px}.mml-xl-card h2{margin-top:14px}.mml-xl-card label{display:inline-block;margin:2px 14px 2px 0}</style>';
+		echo '<style>.alba-xl-card{background:#fff;border:1px solid #dcdcde;border-radius:6px;padding:4px 20px 16px;margin:16px 0;max-width:900px}.alba-xl-card h2{margin-top:14px}.alba-xl-card label{display:inline-block;margin:2px 14px 2px 0}</style>';
 
-		if (!empty($_GET['mml_xl_err'])) {
-			echo '<div class="notice notice-error"><p>' . esc_html(sanitize_text_field(wp_unslash($_GET['mml_xl_err']))) . '</p></div>';
+		if (!empty($_GET['alba_xl_err'])) {
+			echo '<div class="notice notice-error"><p>' . esc_html(sanitize_text_field(wp_unslash($_GET['alba_xl_err']))) . '</p></div>';
 		}
-		if (!empty($_GET['mml_xl_done'])) {
+		if (!empty($_GET['alba_xl_done'])) {
 			$l = isset($_GET['l']) ? sanitize_key(wp_unslash($_GET['l'])) : '';
 			$txt = sprintf(/* translators: 1: new texts, 2: changed texts, 3: items */ __('%1$d new and %2$d changed texts in %3$d items imported', 'alba'), isset($_GET['n_new']) ? absint($_GET['n_new']) : 0, isset($_GET['n_chg']) ? absint($_GET['n_chg']) : 0, isset($_GET['n_posts']) ? absint($_GET['n_posts']) : 0);
 			if (!empty($_GET['n_same'])) {
@@ -756,7 +756,7 @@ class MML_Xliff {
 			echo '<div class="notice notice-success"><p>' . esc_html($txt) . esc_html__('. The texts are in the side-by-side editor', 'alba') . ($l && isset($c->langs[$l]) ? ' (' . esc_html($c->langs[$l]['name']) . ')' : '') . ' ' . esc_html__('ready for review. The import did not change whether a translation is visible on the frontend.', 'alba') . '</p></div>';
 		}
 
-		$token = isset($_GET['mml_xl']) ? sanitize_text_field(wp_unslash($_GET['mml_xl'])) : '';
+		$token = isset($_GET['alba_xl']) ? sanitize_text_field(wp_unslash($_GET['alba_xl'])) : '';
 		$plan = $token !== '' ? get_transient($this->tkey($token)) : false;
 		if (is_array($plan)) {
 			$this->preview($plan, $token);
@@ -775,11 +775,11 @@ class MML_Xliff {
 		?>
 		<p><?php echo esc_html__('Process: export as', 'alba'); ?> <code>.xlf</code> <?php echo esc_html__('→ translator edits the file in their translation tool (Trados, memoQ, Phrase, Crowdin, Poedit …) → import here. Imported texts end up in the side-by-side editor and must be checked and saved there by you.', 'alba'); ?></p>
 
-		<div class="mml-xl-card">
+		<div class="alba-xl-card">
 			<h2><?php echo esc_html__('1. Export', 'alba'); ?></h2>
 			<form method="get" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-				<input type="hidden" name="action" value="mml_xliff_export">
-				<?php wp_nonce_field('mml_xliff_export'); ?>
+				<input type="hidden" name="action" value="alba_xliff_export">
+				<?php wp_nonce_field('alba_xliff_export'); ?>
 				<p>
 					<label><?php echo esc_html__('Target language', 'alba'); ?>
 
@@ -816,11 +816,11 @@ class MML_Xliff {
 			</form>
 		</div>
 
-		<div class="mml-xl-card">
+		<div class="alba-xl-card">
 			<h2><?php echo esc_html__('2. Import', 'alba'); ?></h2>
 			<form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-				<input type="hidden" name="action" value="mml_xliff_upload">
-				<?php wp_nonce_field('mml_xliff_upload'); ?>
+				<input type="hidden" name="action" value="alba_xliff_upload">
+				<?php wp_nonce_field('alba_xliff_upload'); ?>
 				<p>
 					<label><?php echo esc_html__('Target language', 'alba'); ?>
 
@@ -901,9 +901,9 @@ class MML_Xliff {
 		<?php endif; ?>
 
 		<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-top:16px">
-			<input type="hidden" name="action" value="mml_xliff_apply">
+			<input type="hidden" name="action" value="alba_xliff_apply">
 			<input type="hidden" name="token" value="<?php echo esc_attr($token); ?>">
-			<?php wp_nonce_field('mml_xliff_apply'); ?>
+			<?php wp_nonce_field('alba_xliff_apply'); ?>
 			<?php if ($tot['chg']) : ?>
 				<p>
 					<label><input type="radio" name="mode" value="empty" checked> <?php echo esc_html__('Fill empty fields only,', 'alba'); ?> <?php echo (int) $tot['chg']; ?> <?php echo esc_html__('existing translations remain unchanged', 'alba'); ?></label><br>

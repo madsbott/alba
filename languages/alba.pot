@@ -8,2360 +8,2360 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: alba\n"
 
-#: class-mml-workflow.php:311
+#: class-alba-workflow.php:311
 msgid ""
 "\n"
 "\n"
 "Note:\n"
 msgstr ""
 
-#: class-mml-workflow.php:276
+#: class-alba-workflow.php:276
 msgid ""
 "\n"
 "\n"
 "Review and publish:\n"
 msgstr ""
 
-#: class-mml-workflow.php:287
+#: class-alba-workflow.php:287
 msgid ""
 "\n"
 "\n"
 "Revise the translation:\n"
 msgstr ""
 
-#: class-mml-workflow.php:314
+#: class-alba-workflow.php:314
 msgid ""
 "\n"
 "\n"
 "To revise:\n"
 msgstr ""
 
-#: class-mml-workflow.php:258 class-mml-workflow.php:302
+#: class-alba-workflow.php:258 class-alba-workflow.php:302
 msgid ""
 "\n"
 "\n"
 "To translate:\n"
 msgstr ""
 
-#: class-mml-workflow.php:257
+#: class-alba-workflow.php:257
 msgid ""
 "\n"
 "Assigned by: "
 msgstr ""
 
-#: class-mml-workflow.php:248
+#: class-alba-workflow.php:248
 msgid ""
 "\n"
 "Deadline: "
 msgstr ""
 
-#: class-mml-log.php:157
+#: class-alba-log.php:157
 msgid " (deleted)"
 msgstr ""
 
-#: class-mml-workflow.php:375
+#: class-alba-workflow.php:375
 msgid " (overdue)"
 msgstr ""
 
-#: class-mml-seo.php:433
+#: class-alba-seo.php:433
 msgid " The sitemap of "
 msgstr ""
 
-#: class-mml-seo.php:433
+#: class-alba-seo.php:433
 msgid " and the files are added to the sitemap index of %s"
 msgstr ""
 
-#: class-mml-log.php:181
+#: class-alba-log.php:181
 msgid " days"
 msgstr ""
 
-#: class-mml-xliff.php:754
+#: class-alba-xliff.php:754
 msgid " existing translations kept"
 msgstr ""
 
-#: class-mml-workflow.php:274
+#: class-alba-workflow.php:274
 msgid ""
 " has submitted a translation for review:\n"
 "\n"
 msgstr ""
 
-#: class-mml-xliff.php:534
+#: class-alba-xliff.php:534
 msgid " in the file does not match any language that has been added. Please choose the target language in the form."
 msgstr ""
 
-#: class-mml-updater.php:300
+#: class-alba-updater.php:300
 msgid " is available. You can update it now in the plugin list."
 msgstr ""
 
-#: class-mml-xliff.php:868
+#: class-alba-xliff.php:868
 msgid " markup differs"
 msgstr ""
 
-#: class-mml-editor.php:1353
+#: class-alba-editor.php:1353
 msgid " new or changed sections)"
 msgstr ""
 
-#: class-mml-xliff.php:871
+#: class-alba-xliff.php:871
 msgid " not translated"
 msgstr ""
 
-#: class-mml-bulk.php:411
+#: class-alba-bulk.php:411
 msgid " open"
 msgstr ""
 
-#: class-mml-xliff.php:865
+#: class-alba-xliff.php:865
 msgid " original changed"
 msgstr ""
 
-#: class-mml-bulk.php:411
+#: class-alba-bulk.php:411
 msgid " pre-translated"
 msgstr ""
 
-#: class-mml-seo.php:433
+#: class-alba-seo.php:433
 msgid " remains and also contains the default language and separate translation posts; duplicate URLs do no harm."
 msgstr ""
 
-#: class-mml-dashboard.php:430
+#: class-alba-dashboard.php:430
 msgid " strings captured. Without translation: "
 msgstr ""
 
-#: class-mml-wpml.php:579
+#: class-alba-wpml.php:579
 msgid " strings has been reached, the rest was not imported."
 msgstr ""
 
-#: class-mml-bulk.php:411
+#: class-alba-bulk.php:411
 msgid " text"
 msgstr ""
 
-#: class-mml-editor.php:877 class-mml-editor.php:1068
+#: class-alba-editor.php:877 class-alba-editor.php:1068
 msgid " text changed"
 msgstr ""
 
-#: class-mml-editor.php:880
+#: class-alba-editor.php:880
 msgid " text cleared"
 msgstr ""
 
-#: class-mml-editor.php:874 class-mml-editor.php:1065
+#: class-alba-editor.php:874 class-alba-editor.php:1065
 msgid " text newly translated"
 msgstr ""
 
-#: class-mml-bulk.php:411
+#: class-alba-bulk.php:411
 msgid " texts"
 msgstr ""
 
-#: class-mml-editor.php:877 class-mml-editor.php:1068
+#: class-alba-editor.php:877 class-alba-editor.php:1068
 msgid " texts changed"
 msgstr ""
 
-#: class-mml-editor.php:880
+#: class-alba-editor.php:880
 msgid " texts cleared"
 msgstr ""
 
-#: class-mml-editor.php:874 class-mml-editor.php:1065
+#: class-alba-editor.php:874 class-alba-editor.php:1065
 msgid " texts newly translated"
 msgstr ""
 
-#: class-mml-po.php:110
+#: class-alba-po.php:110
 msgid " translations imported"
 msgstr ""
 
-#: class-mml-xliff.php:751
+#: class-alba-xliff.php:751
 msgid " unchanged"
 msgstr ""
 
-#: class-mml-xliff.php:376
+#: class-alba-xliff.php:376
 msgid " · Please leave HTML tags in the text unchanged (they are protected as placeholders)."
 msgstr ""
 
-#: class-mml-admin.php:561 class-mml-admin.php:566
+#: class-alba-admin.php:561 class-alba-admin.php:566
 msgid " – original changed, update translation"
 msgstr ""
 
-#: class-mml-editor.php:1254
+#: class-alba-editor.php:1254
 msgid " – unchanged"
 msgstr ""
 
-#: class-mml-xliff.php:288
+#: class-alba-xliff.php:288
 msgid "\" do not translate"
 msgstr ""
 
-#: class-mml-areas.php:181
+#: class-alba-areas.php:181
 msgid "\" was created as a copy and assigned to the language."
 msgstr ""
 
-#: class-mml-forms.php:490
+#: class-alba-forms.php:490
 msgid "\". Enter the translations there. Emails to you stay in the language in which the form was filled in."
 msgstr ""
 
-#: class-mml-updater.php:261
+#: class-alba-updater.php:261
 msgid "\">Check for updates</a>"
 msgstr ""
 
-#: class-mml-admin.php:343
+#: class-alba-admin.php:343
 msgid "\"Automatic\" shows the arrow if your theme (e.g. Salient: option for dropdown arrows in the header navigation) marks menu items that have a submenu with an arrow. If it does not appear even though the theme option is enabled, choose \"Always show\". Applies to the dropdown in the menu, not to block navigation (WordPress draws the arrow itself there)."
 msgstr ""
 
-#: class-mml-seo.php:441
+#: class-alba-seo.php:441
 msgid "\"Discourage search engines from indexing this site\" is active (Settings > Reading)."
 msgstr ""
 
-#: class-mml-xliff.php:895
+#: class-alba-xliff.php:895
 msgid "\"Markup differs\": The translated text is missing tags or has different ones than the original. Please translate these sections by hand in the editor or re-import them after correcting."
 msgstr ""
 
-#: class-mml-xliff.php:892
+#: class-alba-xliff.php:892
 msgid "\"Original changed\": The original text was edited since the export. These sections stay open and appear again after a new export."
 msgstr ""
 
-#: class-mml-xliff.php:749
+#: class-alba-xliff.php:749
 msgid "%1$d new and %2$d changed texts in %3$d items imported"
 msgstr ""
 
-#: class-mml-roles.php:393
+#: class-alba-roles.php:393
 msgid "%1$d of %2$d open"
 msgstr ""
 
-#: class-mml-editor.php:1096
+#: class-alba-editor.php:1096
 msgid "%1$s \"%2$s\" (%3$s)"
 msgstr ""
 
-#: class-mml-i18n.php:52 class-mml-i18n.php:52
+#: class-alba-i18n.php:52 class-alba-i18n.php:52
 msgid "%1$s of %2$s translated"
 msgstr ""
 
-#: class-mml-bulk.php:150
+#: class-alba-bulk.php:150
 msgid "%d items are exported in one file. Items that already have their own translation post are skipped."
 msgstr ""
 
-#: class-mml-strings.php:743
+#: class-alba-strings.php:744
 msgid "%d pages could not be reached. Your host may block requests to its own site. In that case open your site in the default language once while logged out."
 msgstr ""
 
-#: class-mml-areas.php:167
+#: class-alba-areas.php:167
 msgid "(Appearance → Widgets): Every widget has a \"Languages\" field at the bottom. Nothing ticked = visible in all languages."
 msgstr ""
 
-#: class-mml-log.php:181
+#: class-alba-log.php:181
 msgid "(Languages > Settings > Updates & System)."
 msgstr ""
 
-#: class-mml-editor.php:1386
+#: class-alba-editor.php:1386
 msgid "(automatic, from page title and site name)"
 msgstr ""
 
-#: class-mml-glossary.php:266
+#: class-alba-glossary.php:266
 msgid "(default language) that should be treated consistently, e.g. company and product names."
 msgstr ""
 
-#: class-mml-log.php:215
+#: class-alba-log.php:215
 msgid "(deleted #"
 msgstr ""
 
-#: class-mml-areas.php:168
+#: class-alba-areas.php:168
 msgid "(editor, block widgets, Site Editor): In the block tab of the sidebar, every block has a \"Languages\" section. Use it to show a footer text or a group for one language only. For other languages, simply create a second block."
 msgstr ""
 
-#: class-mml-admin.php:298
+#: class-alba-admin.php:298
 msgid "(meta keys, one per line;"
 msgstr ""
 
-#: class-mml-admin.php:665 class-mml-admin.php:680 class-mml-bulk.php:139
+#: class-alba-admin.php:665 class-alba-admin.php:680 class-alba-bulk.php:139
 msgid "(no title)"
 msgstr ""
 
-#: class-mml-editor.php:1388
+#: class-alba-editor.php:1388
 msgid "(not set)"
 msgstr ""
 
-#: class-mml-editor.php:1377
+#: class-alba-editor.php:1377
 msgid "(original)"
 msgstr ""
 
-#: class-mml-roles.php:395
+#: class-alba-roles.php:395
 msgid "(overdue)"
 msgstr ""
 
-#: class-mml-dashboard.php:231
+#: class-alba-dashboard.php:231
 msgid "(very many items), it continues on the next visit."
 msgstr ""
 
-#: class-mml-admin.php:304
+#: class-alba-admin.php:304
 msgid ") and in block settings that should be translated in addition to the default names (title, text, heading, label, caption, header, btn_text …). One per line."
 msgstr ""
 
-#: class-mml-admin.php:381
+#: class-alba-admin.php:381
 msgid ") remembers the language; after that there is never another redirect, and visitors can switch freely using the switcher. Search engines and other bots are never redirected; neither are requests with"
 msgstr ""
 
-#: class-mml-admin.php:228
+#: class-alba-admin.php:228
 msgid "), all others get one ("
 msgstr ""
 
-#: class-mml-admin.php:228
+#: class-alba-admin.php:228
 msgid "). The locale controls the theme/plugin translation on the frontend (the language pack must be installed)."
 msgstr ""
 
-#: class-mml-admin.php:408
+#: class-alba-admin.php:408
 msgid "). The public service libretranslate.com requires an API key; your own servers often do not."
 msgstr ""
 
-#: class-mml-terms.php:414
+#: class-alba-terms.php:414
 msgid "+ Create translation"
 msgstr ""
 
-#: class-mml-dashboard.php:119
+#: class-alba-dashboard.php:119
 msgid ", function"
 msgstr ""
 
-#: class-mml-wpml.php:108
+#: class-alba-wpml.php:108
 msgid ", languages:"
 msgstr ""
 
-#: class-mml-dashboard.php:119
+#: class-alba-dashboard.php:119
 msgid ", or automatically appended to the menu or block navigation (Settings)."
 msgstr ""
 
-#: class-mml-editor.php:1353
+#: class-alba-editor.php:1353
 msgid ". After saving, the translation counts as up to date again."
 msgstr ""
 
-#: class-mml-seo.php:433
+#: class-alba-seo.php:433
 msgid ". Pages with \"noindex\" (Yoast, Rank Math) and password-protected content are not included."
 msgstr ""
 
-#: class-mml-dashboard.php:73
+#: class-alba-dashboard.php:73
 msgid ". Recommended: choose a structure under Settings > Permalinks."
 msgstr ""
 
-#: class-mml-xliff.php:756
+#: class-alba-xliff.php:756
 msgid ". The texts are in the side-by-side editor"
 msgstr ""
 
-#: class-mml-admin.php:438
+#: class-alba-admin.php:438
 msgid "1 year"
 msgstr ""
 
-#: class-mml-xliff.php:779
+#: class-alba-xliff.php:779
 msgid "1. Export"
 msgstr ""
 
-#: class-mml-admin.php:438
+#: class-alba-admin.php:438
 msgid "180 days"
 msgstr ""
 
-#: class-mml-xliff.php:820
+#: class-alba-xliff.php:820
 msgid "2. Import"
 msgstr ""
 
-#: class-mml-admin.php:438
+#: class-alba-admin.php:438
 msgid "30 days"
 msgstr ""
 
-#: class-mml-admin.php:438
+#: class-alba-admin.php:438
 msgid "90 days"
 msgstr ""
 
-#: class-mml-dashboard.php:412
+#: class-alba-dashboard.php:412
 msgid ": no translation yet. \"Total\" counts originals and separate translation posts, including drafts and private content. At most"
 msgstr ""
 
-#: class-mml-dashboard.php:412
+#: class-alba-dashboard.php:412
 msgid ": saved in the editor, not yet visible on the frontend."
 msgstr ""
 
-#: class-mml-dashboard.php:412
+#: class-alba-dashboard.php:412
 msgid ": the original was changed after the last translation."
 msgstr ""
 
-#: class-mml-admin.php:569
+#: class-alba-admin.php:569
 msgid ": translated (editor)"
 msgstr ""
 
-#: class-mml-admin.php:572
+#: class-alba-admin.php:572
 msgid ": translation not published yet"
 msgstr ""
 
-#: class-mml-admin.php:358
+#: class-alba-admin.php:358
 msgid "= dropdown menu) or in the theme"
 msgstr ""
 
-#: class-mml-admin.php:358
+#: class-alba-admin.php:358
 msgid "= select field,"
 msgstr ""
 
-#: class-mml-admin.php:381
+#: class-alba-admin.php:381
 msgid "A cookie ("
 msgstr ""
 
-#: class-mml-mt.php:62
+#: class-alba-mt.php:62
 msgid "A text is too long (max. 6000 characters)."
 msgstr ""
 
-#: class-mml-workflow.php:255
+#: class-alba-workflow.php:255
 msgid ""
 "A translation has been assigned to you:\n"
 "\n"
 msgstr ""
 
-#: class-mml-workflow.php:274
+#: class-alba-workflow.php:274
 msgid "A translator"
 msgstr ""
 
-#: class-mml-admin.php:297
+#: class-alba-admin.php:297
 msgid "ACF is not active on this website; the option takes effect as soon as it is."
 msgstr ""
 
-#: class-mml-editor.php:1085
+#: class-alba-editor.php:1085
 msgid "ARIA label"
 msgstr ""
 
-#: class-mml-i18n.php:40 class-mml-i18n.php:40
+#: class-alba-i18n.php:40 class-alba-i18n.php:40
 msgid "Abbreviation (DE)"
 msgstr ""
 
-#: class-mml-admin.php:327
+#: class-alba-admin.php:327
 msgid "Abbreviation (DE, EN)"
 msgstr ""
 
-#: class-mml-log.php:276
+#: class-alba-log.php:276
 msgid "Action"
 msgstr ""
 
-#: class-mml-strings.php:352
+#: class-alba-strings.php:353
 msgid "Active theme: %s"
 msgstr ""
 
-#: class-mml-admin.php:250
+#: class-alba-admin.php:250
 msgid "Add language"
 msgstr ""
 
-#: class-mml-dashboard.php:76
+#: class-alba-dashboard.php:76
 msgid "Add more languages"
 msgstr ""
 
-#: class-mml-glossary.php:288
+#: class-alba-glossary.php:288
 msgid "Add term"
 msgstr ""
 
-#: class-mml-strings.php:508
+#: class-alba-strings.php:509
 msgid "Add to the table"
 msgstr ""
 
-#: class-mml-workflow.php:440
+#: class-alba-workflow.php:440
 msgid "Additional address(es)"
 msgstr ""
 
-#: class-mml-admin.php:281
+#: class-alba-admin.php:281
 msgid "Additional translatable texts"
 msgstr ""
 
-#: class-mml-dashboard.php:205
+#: class-alba-dashboard.php:205
 msgid "Affected content"
 msgstr ""
 
-#: class-mml-editor.php:1353
+#: class-alba-editor.php:1353
 msgid "Affected fields are marked red"
 msgstr ""
 
-#: class-mml-updater.php:304
+#: class-alba-updater.php:304
 msgid "Alba is up to date (version "
 msgstr ""
 
-#: class-mml-updater.php:308
+#: class-alba-updater.php:308
 msgid "Alba: No update source is set (Languages > Settings > Updates)."
 msgstr ""
 
-#: class-mml-updater.php:312
+#: class-alba-updater.php:312
 msgid "Alba: The update source could not be read. Please check the address and release."
 msgstr ""
 
-#: class-mml-updater.php:300
+#: class-alba-updater.php:300
 msgid "Alba: Version "
 msgstr ""
 
-#: class-mml-media.php:169
+#: class-alba-media.php:169
 msgid "Alba: text and image for this language"
 msgstr ""
 
-#: class-mml-roles.php:335
+#: class-alba-roles.php:335
 msgid "All content types"
 msgstr ""
 
-#: class-mml-po.php:72 class-mml-strings.php:265
+#: class-alba-po.php:72 class-alba-strings.php:266
 msgid "All domains"
 msgstr ""
 
-#: class-mml-admin.php:585 class-mml-log.php:186
+#: class-alba-admin.php:585 class-alba-log.php:186
 msgid "All languages"
 msgstr ""
 
-#: class-mml-roles.php:331
+#: class-alba-roles.php:331
 msgid "All my languages"
 msgstr ""
 
-#: class-mml-log.php:190
+#: class-alba-log.php:190
 msgid "All users"
 msgstr ""
 
-#: class-mml-strings.php:483
+#: class-alba-strings.php:484
 msgid "Already in the table below:"
 msgstr ""
 
-#: class-mml-media.php:129
+#: class-alba-media.php:129
 msgid "Alt text"
 msgstr ""
 
-#: class-mml-admin.php:286
+#: class-alba-admin.php:286
 msgid "Alt texts, title attributes, ARIA labels and placeholders"
 msgstr ""
 
-#: class-mml-admin.php:340
+#: class-alba-admin.php:340
 msgid "Always show"
 msgstr ""
 
-#: class-mml-bulk.php:267 class-mml-bulk.php:285 class-mml-editor.php:1372
+#: class-alba-bulk.php:267 class-alba-bulk.php:285 class-alba-editor.php:1372
 msgid "An editor grants the approval."
 msgstr ""
 
-#: class-mml-i18n.php:34 class-mml-i18n.php:34
+#: class-alba-i18n.php:34 class-alba-i18n.php:34
 msgid "Appearance"
 msgstr ""
 
-#: class-mml-admin.php:352
+#: class-alba-admin.php:352
 msgid "Append to all navigations"
 msgstr ""
 
-#: class-mml-admin.php:316
+#: class-alba-admin.php:316
 msgid "Append to menu automatically"
 msgstr ""
 
-#: class-mml-admin.php:351
+#: class-alba-admin.php:351
 msgid "Append to the first navigation"
 msgstr ""
 
-#: class-mml-admin.php:354
+#: class-alba-admin.php:354
 msgid "Appends the language links to the navigation blocks. The links of the navigation itself are translated automatically regardless of this setting."
 msgstr ""
 
-#: class-mml-admin.php:454
+#: class-alba-admin.php:454
 msgid "Applies only to \"Delete\" in the plugin list, not to \"Deactivate\" and not to replacing the plugin with an uploaded new version. Removed are settings, strings, and language and translation data on posts and terms (including translations from the side-by-side editor). Separate translation posts (copies) remain as normal content but lose their language assignment."
 msgstr ""
 
-#: class-mml-editor.php:1249 class-mml-i18n.php:48 class-mml-i18n.php:48
+#: class-alba-editor.php:1249 class-alba-i18n.php:48 class-alba-i18n.php:48
 msgid "Apply"
 msgstr ""
 
-#: class-mml-roles.php:369
+#: class-alba-roles.php:369
 msgid "Apply to selection"
 msgstr ""
 
-#: class-mml-roles.php:158
+#: class-alba-roles.php:158
 msgid "Approval"
 msgstr ""
 
-#: class-mml-workflow.php:393
+#: class-alba-workflow.php:393
 msgid "Assign"
 msgstr ""
 
-#: class-mml-bulk.php:163
+#: class-alba-bulk.php:163
 msgid "Assign %d items to:"
 msgstr ""
 
-#: class-mml-bulk.php:53
+#: class-alba-bulk.php:53
 msgid "Assign / set deadline"
 msgstr ""
 
-#: class-mml-workflow.php:432
+#: class-alba-workflow.php:432
 msgid "Assign, deadlines, for review, emails."
 msgstr ""
 
-#: class-mml-roles.php:342
+#: class-alba-roles.php:342
 msgid "Assigned to me"
 msgstr ""
 
-#: class-mml-roles.php:341
+#: class-alba-roles.php:341
 msgid "Assigned to: anyone"
 msgstr ""
 
-#: class-mml-workflow.php:375
+#: class-alba-workflow.php:375
 msgid "Assignment"
 msgstr ""
 
-#: class-mml-workflow.php:339
+#: class-alba-workflow.php:339
 msgid "Assignment created."
 msgstr ""
 
-#: class-mml-bulk.php:326
+#: class-alba-bulk.php:326
 msgid "Assignment removed"
 msgstr ""
 
-#: class-mml-workflow.php:339
+#: class-alba-workflow.php:339
 msgid "Assignment removed."
 msgstr ""
 
-#: class-mml-workflow.php:432
+#: class-alba-workflow.php:432
 msgid "Assignments & notifications"
 msgstr ""
 
-#: class-mml-editor.php:1095
+#: class-alba-editor.php:1095
 msgid "Attribute"
 msgstr ""
 
-#: class-mml-admin.php:339
+#: class-alba-admin.php:339
 msgid "Automatic (as set in the theme)"
 msgstr ""
 
-#: class-mml-admin.php:345
+#: class-alba-admin.php:345
 msgid "Automatic currently means:"
 msgstr ""
 
-#: class-mml-i18n.php:53 class-mml-i18n.php:53
+#: class-alba-i18n.php:53 class-alba-i18n.php:53
 msgid "Automatic suggestion (%s) – please check:"
 msgstr ""
 
-#: class-mml-admin.php:390
+#: class-alba-admin.php:390
 msgid "Automatic translation"
 msgstr ""
 
-#: class-mml-bulk.php:351
+#: class-alba-bulk.php:351
 msgid "Automatic translation is turned off."
 msgstr ""
 
-#: class-mml-admin.php:362
+#: class-alba-admin.php:362
 msgid "Automatically redirect visitors to their browser language on their first visit."
 msgstr ""
 
-#: class-mml-bulk.php:144 class-mml-bulk.php:151 class-mml-xliff.php:899
+#: class-alba-bulk.php:144 class-alba-bulk.php:151 class-alba-xliff.php:899
 msgid "Back"
 msgstr ""
 
-#: class-mml-bulk.php:187
+#: class-alba-bulk.php:187
 msgid "Back to the list"
 msgstr ""
 
-#: class-mml-admin.php:281
+#: class-alba-admin.php:281
 msgid "Besides the page text, these texts appear as separate rows in the translation editor."
 msgstr ""
 
-#: class-mml-dashboard.php:119
+#: class-alba-dashboard.php:119
 msgid "Block \"Language switcher\" (widgets), shortcode"
 msgstr ""
 
-#: class-mml-admin.php:289
+#: class-alba-admin.php:289
 msgid "Block attributes"
 msgstr ""
 
-#: class-mml-editor.php:1095
+#: class-alba-editor.php:1095
 msgid "Block field"
 msgstr ""
 
-#: class-mml-admin.php:348
+#: class-alba-admin.php:348
 msgid "Block navigation (block themes)"
 msgstr ""
 
-#: class-mml-areas.php:168
+#: class-alba-areas.php:168
 msgid "Blocks"
 msgstr ""
 
-#: class-mml-bulk.php:37 class-mml-bulk.php:37
+#: class-alba-bulk.php:37 class-alba-bulk.php:37
 msgid "Bulk action"
 msgstr ""
 
-#: class-mml-editor.php:1290
+#: class-alba-editor.php:1290
 msgid "By import (XLIFF or machine pre-translation) on %s."
 msgstr ""
 
-#: class-mml-admin.php:215
+#: class-alba-admin.php:215
 msgid "Cache"
 msgstr ""
 
-#: class-mml-xliff.php:918
+#: class-alba-xliff.php:918
 msgid "Cancel"
 msgstr ""
 
-#: class-mml-strings.php:411
+#: class-alba-strings.php:412
 msgid "Cannot find a text? Use \"Look for a specific text\" below: Alba tells you where the text comes from and how to translate it."
 msgstr ""
 
-#: class-mml-seo.php:437
+#: class-alba-seo.php:437
 msgid "Canonical URLs without a language prefix are corrected automatically in other languages."
 msgstr ""
 
-#: class-mml-media.php:129
+#: class-alba-media.php:129
 msgid "Caption"
 msgstr ""
 
-#: class-mml-glossary.php:284 class-mml-glossary.php:304
+#: class-alba-glossary.php:284 class-alba-glossary.php:304
 msgid "Case sensitive"
 msgstr ""
 
-#: class-mml-dashboard.php:121
+#: class-alba-dashboard.php:121
 msgid "Categories, tags & co.: language per term, translations in the edit form. In the editor, the selection only shows terms in the post's language."
 msgstr ""
 
-#: class-mml-admin.php:268
+#: class-alba-admin.php:268
 msgid "Categories, tags and other terms that can be translated."
 msgstr ""
 
-#: class-mml-admin.php:434 class-mml-log.php:179
+#: class-alba-admin.php:434 class-alba-log.php:179
 msgid "Change log"
 msgstr ""
 
-#: class-mml-xliff.php:860
+#: class-alba-xliff.php:860
 msgid "Changed"
 msgstr ""
 
-#: class-mml-areas.php:223
+#: class-alba-areas.php:223
 msgid "Changes to the selection take effect after \"Save changes\". \"Create copy\" saves immediately and reloads the page; unsaved changes next to it are lost."
 msgstr ""
 
-#: class-mml-seo.php:439
+#: class-alba-seo.php:439
 msgid "Check"
 msgstr ""
 
-#: class-mml-xliff.php:836
+#: class-alba-xliff.php:836
 msgid "Check file"
 msgstr ""
 
-#: class-mml-admin.php:470
+#: class-alba-admin.php:470
 msgid "Check for updates now"
 msgstr ""
 
-#: class-mml-i18n.php:28 class-mml-i18n.php:28 class-mml-media.php:115
+#: class-alba-i18n.php:28 class-alba-i18n.php:28 class-alba-media.php:115
 msgid "Choose image"
 msgstr ""
 
-#: class-mml-admin.php:226
+#: class-alba-admin.php:226
 msgid "Choose the languages your website appears in."
 msgstr ""
 
-#: class-mml-strings.php:394
+#: class-alba-strings.php:395
 msgid "Choose where the texts come from (usually your theme)."
 msgstr ""
 
-#: class-mml-areas.php:183
+#: class-alba-areas.php:183
 msgid "Choose, per menu and language, which other menu appears instead. This applies to theme locations (e.g. footer), navigation menu widgets and navigation blocks. \"Create copy\" creates a menu with the same items and assigns it; after that you only change what differs. Linked pages automatically point to their translation."
 msgstr ""
 
-#: class-mml-areas.php:167
+#: class-alba-areas.php:167
 msgid "Classic widgets"
 msgstr ""
 
-#: class-mml-strings.php:326
+#: class-alba-strings.php:327
 msgid "Clean up"
 msgstr ""
 
-#: class-mml-glossary.php:319
+#: class-alba-glossary.php:319
 msgid "Clear"
 msgstr ""
 
-#: class-mml-admin.php:427
+#: class-alba-admin.php:427
 msgid "Clear cache now"
 msgstr ""
 
-#: class-mml-log.php:201
+#: class-alba-log.php:201
 msgid "Clear log"
 msgstr ""
 
-#: class-mml-admin.php:421
+#: class-alba-admin.php:421
 msgid "Clear page cache"
 msgstr ""
 
-#: class-mml-strings.php:395
+#: class-alba-strings.php:396
 msgid "Click \"Save and scan now\". Alba visits your site in the default language and collects the texts."
 msgstr ""
 
-#: class-mml-dashboard.php:94
+#: class-alba-dashboard.php:94
 msgid "Code"
 msgstr ""
 
-#: class-mml-admin.php:230
+#: class-alba-admin.php:230
 msgid "Code (URL)"
 msgstr ""
 
-#: class-mml-strings.php:401
+#: class-alba-strings.php:402
 msgid "Collect texts from these sources"
 msgstr ""
 
-#: class-mml-areas.php:152
+#: class-alba-areas.php:152
 msgid "Comments"
 msgstr ""
 
-#: class-mml-areas.php:152
+#: class-alba-areas.php:152
 msgid "Comments separated by language."
 msgstr ""
 
-#: class-mml-bulk.php:182 class-mml-dashboard.php:382 class-mml-log.php:206
+#: class-alba-bulk.php:182 class-alba-dashboard.php:382 class-alba-log.php:206
 msgid "Content"
 msgstr ""
 
-#: class-mml-log.php:276
+#: class-alba-log.php:276
 msgid "Content ID"
 msgstr ""
 
-#: class-mml-dashboard.php:403
+#: class-alba-dashboard.php:403
 msgid "Content for which there is no translation in this language yet"
 msgstr ""
 
-#: class-mml-xliff.php:557
+#: class-alba-xliff.php:557
 msgid "Content no longer exists"
 msgstr ""
 
-#: class-mml-wpml.php:109
+#: class-alba-wpml.php:109
 msgid "Content type"
 msgstr ""
 
-#: class-mml-wpml.php:215 class-mml-wpml.php:270 class-mml-xliff.php:800
+#: class-alba-wpml.php:215 class-alba-wpml.php:270 class-alba-xliff.php:800
 msgid "Content types"
 msgstr ""
 
-#: class-mml-xliff.php:375
+#: class-alba-xliff.php:375
 msgid "Content: "
 msgstr ""
 
-#: class-mml-editor.php:1243
+#: class-alba-editor.php:1243
 msgid "Copy original"
 msgstr ""
 
-#: class-mml-dashboard.php:231
+#: class-alba-dashboard.php:231
 msgid "Counted are titles, excerpts, SEO texts and all text sections (including alt texts, block and field texts) of published originals that are not yet translated into this language. Content with its own translation post is not counted."
 msgstr ""
 
-#: class-mml-wpml.php:107
+#: class-alba-wpml.php:107
 msgid "Create a database backup before importing."
 msgstr ""
 
-#: class-mml-admin.php:675
+#: class-alba-admin.php:675
 msgid "Create a separate post as a copy instead? An existing editor translation will be replaced."
 msgstr ""
 
-#: class-mml-admin.php:675
+#: class-alba-admin.php:675
 msgid "Create as separate post"
 msgstr ""
 
-#: class-mml-areas.php:215
+#: class-alba-areas.php:215
 msgid "Create copy"
 msgstr ""
 
-#: class-mml-terms.php:377
+#: class-alba-terms.php:377
 msgid "Create translation: "
 msgstr ""
 
-#: class-mml-roles.php:154
+#: class-alba-roles.php:154
 msgid "Create user (choose role \"Translator\")"
 msgstr ""
 
-#: class-mml-log.php:109
+#: class-alba-log.php:109
 msgid "Created separate translation post (#"
 msgstr ""
 
-#: class-mml-areas.php:143
+#: class-alba-areas.php:143
 msgid "Current language only, include translation texts in the search"
 msgstr ""
 
-#: class-mml-areas.php:144
+#: class-alba-areas.php:144
 msgid "Current language only, search original texts only"
 msgstr ""
 
-#: class-mml-editor.php:1095
+#: class-alba-editor.php:1095
 msgid "Custom field"
 msgstr ""
 
-#: class-mml-admin.php:294
+#: class-alba-admin.php:294
 msgid "Custom fields"
 msgstr ""
 
-#: class-mml-admin.php:245
+#: class-alba-admin.php:245
 msgid "Custom language …"
 msgstr ""
 
-#: class-mml-roles.php:395
+#: class-alba-roles.php:395
 msgid "Deadline"
 msgstr ""
 
-#: class-mml-workflow.php:298
+#: class-alba-workflow.php:298
 msgid "Deadline tomorrow: "
 msgstr ""
 
-#: class-mml-bulk.php:167
+#: class-alba-bulk.php:167
 msgid "Deadline:"
 msgstr ""
 
-#: class-mml-admin.php:230
+#: class-alba-admin.php:230
 msgid "Default"
 msgstr ""
 
-#: class-mml-wpml.php:257
+#: class-alba-wpml.php:257
 msgid "Default language: "
 msgstr ""
 
-#: class-mml-strings.php:327
+#: class-alba-strings.php:328
 msgid "Delete all entries without a translation?"
 msgstr ""
 
-#: class-mml-strings.php:330
+#: class-alba-strings.php:331
 msgid "Delete untranslated entries"
 msgstr ""
 
-#: class-mml-media.php:129
+#: class-alba-media.php:129
 msgid "Description"
 msgstr ""
 
-#: class-mml-admin.php:296
+#: class-alba-admin.php:296
 msgid "Detect ACF text fields automatically (text, text area, WYSIWYG)"
 msgstr ""
 
-#: class-mml-media.php:146
+#: class-alba-media.php:146
 msgid "Different image for this language (optional)"
 msgstr ""
 
-#: class-mml-i18n.php:49 class-mml-i18n.php:49
+#: class-alba-i18n.php:49 class-alba-i18n.php:49
 msgid "Discard"
 msgstr ""
 
-#: class-mml-admin.php:324 class-mml-areas.php:154
+#: class-alba-admin.php:324 class-alba-areas.php:154
 msgid "Display"
 msgstr ""
 
-#: class-mml-po.php:95
+#: class-alba-po.php:95
 msgid "Do not overwrite existing translations"
 msgstr ""
 
-#: class-mml-strings.php:285
+#: class-alba-strings.php:286
 msgid "Domain"
 msgstr ""
 
-#: class-mml-bulk.php:187
+#: class-alba-bulk.php:187
 msgid "Done."
 msgstr ""
 
-#: class-mml-strings.php:731
+#: class-alba-strings.php:732
 msgid "Done. The text now appears in the table below with the domain \"Theme settings\". Translate it there."
 msgstr ""
 
-#: class-mml-strings.php:729
+#: class-alba-strings.php:730
 msgid "Done. The text now appears in the table below. Translate it there."
 msgstr ""
 
-#: class-mml-po.php:77
+#: class-alba-po.php:77
 msgid "Download"
 msgstr ""
 
-#: class-mml-xliff.php:814
+#: class-alba-xliff.php:814
 msgid "Download XLIFF"
 msgstr ""
 
-#: class-mml-bulk.php:151
+#: class-alba-bulk.php:151
 msgid "Download XLIFF file"
 msgstr ""
 
-#: class-mml-po.php:42
+#: class-alba-po.php:42
 msgid "Download strings as a .po file, have them translated externally and import them again."
 msgstr ""
 
-#: class-mml-i18n.php:36 class-mml-i18n.php:36
+#: class-alba-i18n.php:36 class-alba-i18n.php:36
 msgid "Dropdown (select field)"
 msgstr ""
 
-#: class-mml-admin.php:337
+#: class-alba-admin.php:337
 msgid "Dropdown arrow"
 msgstr ""
 
-#: class-mml-admin.php:333
+#: class-alba-admin.php:333
 msgid "Dropdown menu (current language with submenu)"
 msgstr ""
 
-#: class-mml-i18n.php:37 class-mml-i18n.php:37
+#: class-alba-i18n.php:37 class-alba-i18n.php:37
 msgid "Dropdown menu (submenu)"
 msgstr ""
 
-#: class-mml-wpml.php:115
+#: class-alba-wpml.php:115
 msgid "Dry run (write nothing)"
 msgstr ""
 
-#: class-mml-wpml.php:138
+#: class-alba-wpml.php:138
 msgid "Dry run finished. To import, untick \"Dry run\"."
 msgstr ""
 
-#: class-mml-areas.php:181
+#: class-alba-areas.php:181
 msgid "Edit menu items now"
 msgstr ""
 
-#: class-mml-editor.php:1343
+#: class-alba-editor.php:1343
 msgid "Edit original"
 msgstr ""
 
-#: class-mml-editor.php:1280
+#: class-alba-editor.php:1280
 msgid "Edit post"
 msgstr ""
 
-#: class-mml-admin.php:672
+#: class-alba-admin.php:672
 msgid "Edit translation"
 msgstr ""
 
-#: class-mml-admin.php:672
+#: class-alba-admin.php:672
 msgid "Edit translation (not published)"
 msgstr ""
 
-#: class-mml-editor.php:1095
+#: class-alba-editor.php:1095
 msgid "Element text"
 msgstr ""
 
-#: class-mml-workflow.php:436
+#: class-alba-workflow.php:436
 msgid "Emails"
 msgstr ""
 
-#: class-mml-editor.php:1355
+#: class-alba-editor.php:1355
 msgid "Empty fields appear in the original on the frontend. If you edit the original text, only the changed section is open again. Images, layout and links of the block structure remain unchanged."
 msgstr ""
 
-#: class-mml-media.php:213
+#: class-alba-media.php:213
 msgid "Empty fields show the text of the original on the frontend. A different image replaces the file wherever the media item is output via WordPress functions (featured image, image block, theme, WPBakery)."
 msgstr ""
 
-#: class-mml-frontend.php:223
-msgid "Enabled by the filter mml_theme_dropdown_arrow."
+#: class-alba-frontend.php:224
+msgid "Enabled by the filter alba_theme_dropdown_arrow."
 msgstr ""
 
-#: class-mml-strings.php:273 class-mml-wpml.php:109
+#: class-alba-strings.php:274 class-alba-wpml.php:109
 msgid "Entries"
 msgstr ""
 
-#: class-mml-xliff.php:889
+#: class-alba-xliff.php:889
 msgid "Entries in the file do not belong to this plugin and are ignored."
 msgstr ""
 
-#: class-mml-wpml.php:144
+#: class-alba-wpml.php:144
 msgid "Error"
 msgstr ""
 
-#: class-mml-i18n.php:31 class-mml-i18n.php:31
+#: class-alba-i18n.php:31 class-alba-i18n.php:31
 msgid "Error."
 msgstr ""
 
-#: class-mml-admin.php:369
+#: class-alba-admin.php:369
 msgid "Every page, if a translation exists"
 msgstr ""
 
-#: class-mml-glossary.php:309
+#: class-alba-glossary.php:309
 msgid "Every saved section is remembered. If the same text appears elsewhere, the editor suggests the known translation."
 msgstr ""
 
-#: class-mml-admin.php:358
+#: class-alba-admin.php:358
 msgid "Everywhere else: shortcode"
 msgstr ""
 
-#: class-mml-editor.php:838 class-mml-editor.php:957 class-mml-editor.php:1391
+#: class-alba-editor.php:838 class-alba-editor.php:957 class-alba-editor.php:1391
 msgid "Excerpt"
 msgstr ""
 
-#: class-mml-po.php:97
+#: class-alba-po.php:97
 msgid "Expects UTF-8, maximum 3 MB. \"Fuzzy\" entries, empty translations and plural forms are skipped. Only entries that already exist under \"Strings\" are imported."
 msgstr ""
 
-#: class-mml-xliff.php:837
+#: class-alba-xliff.php:837
 msgid "Expects UTF-8, maximum 5 MB. A preview comes first; nothing is saved until you confirm. Entries whose original text has changed since the export, and texts with changed markup, are skipped."
 msgstr ""
 
-#: class-mml-po.php:61
+#: class-alba-po.php:61
 msgid "Export"
 msgstr ""
 
-#: class-mml-log.php:199
+#: class-alba-log.php:199
 msgid "Export as CSV"
 msgstr ""
 
-#: class-mml-bulk.php:54 class-mml-editor.php:1344
+#: class-alba-bulk.php:54 class-alba-editor.php:1344
 msgid "Export as XLIFF"
 msgstr ""
 
-#: class-mml-editor.php:1368
+#: class-alba-editor.php:1368
 msgid "Fetch suggestions for empty fields"
 msgstr ""
 
-#: class-mml-i18n.php:46 class-mml-i18n.php:46
+#: class-alba-i18n.php:46 class-alba-i18n.php:46
 msgid "Fetching suggestion …"
 msgstr ""
 
-#: class-mml-xliff.php:909
+#: class-alba-xliff.php:909
 msgid "Fill empty fields only,"
 msgstr ""
 
-#: class-mml-editor.php:1370
+#: class-alba-editor.php:1370
 msgid "Fill empty fields with the original"
 msgstr ""
 
-#: class-mml-log.php:197 class-mml-roles.php:354 class-mml-strings.php:272
+#: class-alba-log.php:197 class-alba-roles.php:354 class-alba-strings.php:273
 msgid "Filter"
 msgstr ""
 
-#: class-mml-strings.php:392
+#: class-alba-strings.php:393
 msgid "Find texts of your theme and plugins"
 msgstr ""
 
-#: class-mml-areas.php:190
+#: class-alba-areas.php:190
 msgid "First add a second language."
 msgstr ""
 
-#: class-mml-xliff.php:914
+#: class-alba-xliff.php:914
 msgid "For"
 msgstr ""
 
-#: class-mml-admin.php:300
+#: class-alba-admin.php:300
 msgid "For custom fields and fields from other plugins. On the frontend the text is replaced by the translation when it is read ("
 msgstr ""
 
-#: class-mml-dashboard.php:123
+#: class-alba-dashboard.php:123
 msgid "For developers"
 msgstr ""
 
-#: class-mml-areas.php:174
+#: class-alba-areas.php:174
 msgid "For example, a separate footer menu for each language."
 msgstr ""
 
-#: class-mml-roles.php:348 class-mml-workflow.php:70
+#: class-alba-roles.php:348 class-alba-workflow.php:70
 msgid "For review"
 msgstr ""
 
-#: class-mml-workflow.php:274
+#: class-alba-workflow.php:274
 msgid "For review: "
 msgstr ""
 
-#: class-mml-admin.php:400
+#: class-alba-admin.php:400
 msgid "For suggestions, the original texts are sent to the selected service. This only happens when you click in the editor, never automatically in the background."
 msgstr ""
 
-#: class-mml-xliff.php:792
+#: class-alba-xliff.php:792
 msgid "Format"
 msgstr ""
 
-#: class-mml-forms.php:484
+#: class-alba-forms.php:484
 msgid "Forms"
 msgstr ""
 
-#: class-mml-strings.php:534
+#: class-alba-strings.php:535
 msgid "Found in site or theme settings:"
 msgstr ""
 
-#: class-mml-strings.php:494
+#: class-alba-strings.php:495
 msgid "Found in theme files:"
 msgstr ""
 
-#: class-mml-wpml.php:108
+#: class-alba-wpml.php:108
 msgid "Found: default language in WPML"
 msgstr ""
 
-#: class-mml-editor.php:1249
+#: class-alba-editor.php:1249
 msgid "From translation memory:"
 msgstr ""
 
-#: class-mml-editor.php:1241
+#: class-alba-editor.php:1241
 msgid "Generate from translated title"
 msgstr ""
 
-#: class-mml-admin.php:470
+#: class-alba-admin.php:470
 msgid "GitHub repository (latest release) or URL of a JSON file. If a version higher than"
 msgstr ""
 
-#: class-mml-glossary.php:266
+#: class-alba-glossary.php:266
 msgid "Glossary"
 msgstr ""
 
-#: class-mml-dashboard.php:84
+#: class-alba-dashboard.php:84
 msgid "Glossary & Memory"
 msgstr ""
 
-#: class-mml-glossary.php:241
+#: class-alba-glossary.php:241
 msgid "Glossary & Translation memory"
 msgstr ""
 
-#: class-mml-glossary.php:218
+#: class-alba-glossary.php:218
 msgid "Glossary &amp; Memory"
 msgstr ""
 
-#: class-mml-editor.php:1252
+#: class-alba-editor.php:1252
 msgid "Glossary:"
 msgstr ""
 
-#: class-mml-xliff.php:288 class-mml-xliff.php:288
+#: class-alba-xliff.php:288 class-alba-xliff.php:288
 msgid "Glossary: \""
 msgstr ""
 
-#: class-mml-bulk.php:291
+#: class-alba-bulk.php:291
 msgid "Hidden (bulk action)"
 msgstr ""
 
-#: class-mml-i18n.php:41 class-mml-i18n.php:41
+#: class-alba-i18n.php:41 class-alba-i18n.php:41
 msgid "Hide current language"
 msgstr ""
 
-#: class-mml-i18n.php:42 class-mml-i18n.php:42
+#: class-alba-i18n.php:42 class-alba-i18n.php:42
 msgid "Hide languages without translation"
 msgstr ""
 
-#: class-mml-bulk.php:49
+#: class-alba-bulk.php:49
 msgid "Hide on the frontend"
 msgstr ""
 
-#: class-mml-dashboard.php:94
+#: class-alba-dashboard.php:94
 msgid "Home page"
 msgstr ""
 
-#: class-mml-admin.php:368
+#: class-alba-admin.php:368
 msgid "Home page only (recommended)"
 msgstr ""
 
-#: class-mml-forms.php:490
+#: class-alba-forms.php:490
 msgid "How it works: open the page with the form once in the default language, then all texts appear in"
 msgstr ""
 
-#: class-mml-editor.php:1085
+#: class-alba-editor.php:1085
 msgid "Image alt text"
 msgstr ""
 
-#: class-mml-admin.php:287
+#: class-alba-admin.php:287
 msgid "Image captions are normal text and already appear in the editor. This adds the hidden texts that search engines and screen readers read."
 msgstr ""
 
-#: class-mml-admin.php:284
+#: class-alba-admin.php:284
 msgid "Images & attributes"
 msgstr ""
 
-#: class-mml-po.php:80
+#: class-alba-po.php:80
 msgid "Import"
 msgstr ""
 
-#: class-mml-po.php:34
+#: class-alba-po.php:34
 msgid "Import / Export"
 msgstr ""
 
-#: class-mml-dashboard.php:83 class-mml-po.php:34
+#: class-alba-dashboard.php:83 class-alba-po.php:34
 msgid "Import / Export (.po)"
 msgstr ""
 
-#: class-mml-xliff.php:910
+#: class-alba-xliff.php:910
 msgid "Import everything and"
 msgstr ""
 
-#: class-mml-po.php:96
+#: class-alba-po.php:96
 msgid "Import file"
 msgstr ""
 
-#: class-mml-wpml.php:138
+#: class-alba-wpml.php:138
 msgid "Import finished. Please check pages and translations and re-save the permalinks (Settings > Permalinks)."
 msgstr ""
 
-#: class-mml-wpml.php:117
+#: class-alba-wpml.php:117
 msgid "Import languages, default language, content types and taxonomies"
 msgstr ""
 
-#: class-mml-roles.php:347 class-mml-workflow.php:70
+#: class-alba-roles.php:347 class-alba-workflow.php:70
 msgid "In progress"
 msgstr ""
 
-#: class-mml-dashboard.php:120
+#: class-alba-dashboard.php:120
 msgid "In the editor, box \"Language & Translations\": translate in the side-by-side editor (red ⟳ in the language code = original changed), or create a separate post or link one. The lists have the \"Languages\" column and the language filter."
 msgstr ""
 
-#: class-mml-admin.php:399
+#: class-alba-admin.php:399
 msgid "In the editor, every field has a \"Suggest automatically\" button. The suggestion is only displayed; it is put into the field only when you click \"Apply\", and it is saved as usual with \"Save\". Glossary terms are protected and inserted correctly afterwards."
 msgstr ""
 
-#: class-mml-glossary.php:289
+#: class-alba-glossary.php:289
 msgid "In the translation editor, matches are shown below the field. \"Copy original\" inserts the terms correctly right away, and if a term is missing in your translation it is marked red. Only whole words are matched."
 msgstr ""
 
-#: class-mml-xliff.php:812
+#: class-alba-xliff.php:812
 msgid "Include existing translations as target (for checking and revising)"
 msgstr ""
 
-#: class-mml-xliff.php:815
+#: class-alba-xliff.php:815
 msgid "Included are title, URL slug, SEO fields, excerpt and all text sections (including alt texts, block and field texts). Glossary terms appear as a note at the relevant place. You can export single items via the \"Export as XLIFF\" link in the side-by-side editor."
 msgstr ""
 
-#: class-mml-editor.php:1369
+#: class-alba-editor.php:1369
 msgid "Insert suggestions from translation memory"
 msgstr ""
 
-#: class-mml-bulk.php:132
+#: class-alba-bulk.php:132
 msgid "Invalid bulk action. Please select the content and language again."
 msgstr ""
 
-#: class-mml-workflow.php:93
+#: class-alba-workflow.php:93
 msgid "Invalid content or language."
 msgstr ""
 
-#: class-mml-editor.php:1427
+#: class-alba-editor.php:1427
 msgid "Invalid data."
 msgstr ""
 
-#: class-mml-areas.php:264
+#: class-alba-areas.php:264
 msgid "Invalid input."
 msgstr ""
 
-#: class-mml-mt.php:52
+#: class-alba-mt.php:52
 msgid "Invalid languages."
 msgstr ""
 
-#: class-mml-bulk.php:236 class-mml-mt.php:57
+#: class-alba-bulk.php:236 class-alba-mt.php:57
 msgid "Invalid request."
 msgstr ""
 
-#: class-mml-xliff.php:534
+#: class-alba-xliff.php:534
 msgid "Invalid target language."
 msgstr ""
 
-#: class-mml-admin.php:452
+#: class-alba-admin.php:452
 msgid "Keep data"
 msgstr ""
 
-#: class-mml-glossary.php:274 class-mml-glossary.php:297
+#: class-alba-glossary.php:274 class-alba-glossary.php:297
 msgid "Keep unchanged"
 msgstr ""
 
-#: class-mml-admin.php:292
+#: class-alba-admin.php:292
 msgid "Known text fields such as label, title, text and alt text are translated. For ACF blocks, every value with several words is included as well. URLs, colors and field keys are left untouched."
 msgstr ""
 
-#: class-mml-i18n.php:38 class-mml-i18n.php:38
+#: class-alba-i18n.php:38 class-alba-i18n.php:38
 msgid "Label"
 msgstr ""
 
-#: class-mml-forms.php:489
+#: class-alba-forms.php:489
 msgid "Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:"
 msgstr ""
 
-#: class-mml-areas.php:515 class-mml-dashboard.php:205 class-mml-frontend.php:252
+#: class-alba-areas.php:515 class-alba-dashboard.php:205 class-alba-frontend.php:253
 msgid "Language"
 msgstr ""
 
-#: class-mml-admin.php:611
+#: class-alba-admin.php:611
 msgid "Language & Translations"
 msgstr ""
 
-#: class-mml-admin.php:211 class-mml-admin.php:362
+#: class-alba-admin.php:211 class-alba-admin.php:362
 msgid "Language detection"
 msgstr ""
 
-#: class-mml-wpml.php:314 class-mml-wpml.php:322 class-mml-wpml.php:371
+#: class-alba-wpml.php:314 class-alba-wpml.php:322 class-alba-wpml.php:371
 msgid "Language missing"
 msgstr ""
 
-#: class-mml-admin.php:326
+#: class-alba-admin.php:326
 msgid "Language name"
 msgstr ""
 
-#: class-mml-i18n.php:39 class-mml-i18n.php:39
+#: class-alba-i18n.php:39 class-alba-i18n.php:39
 msgid "Language name (full)"
 msgstr ""
 
-#: class-mml-admin.php:644
+#: class-alba-admin.php:644
 msgid "Language of this content"
 msgstr ""
 
-#: class-mml-terms.php:394
+#: class-alba-terms.php:394
 msgid "Language of this term. You create translations after saving."
 msgstr ""
 
-#: class-mml-admin.php:210 class-mml-admin.php:313 class-mml-dashboard.php:119
+#: class-alba-admin.php:210 class-alba-admin.php:313 class-alba-dashboard.php:119
 msgid "Language switcher"
 msgstr ""
 
-#: class-mml-admin.php:226 class-mml-admin.php:544 class-mml-areas.php:544
+#: class-alba-admin.php:226 class-alba-admin.php:544 class-alba-areas.php:544
 msgid "Languages"
 msgstr ""
 
-#: class-mml-admin.php:209
+#: class-alba-admin.php:209
 msgid "Languages & Content"
 msgstr ""
 
-#: class-mml-media.php:200
+#: class-alba-media.php:200
 msgid "Languages (Alba)"
 msgstr ""
 
-#: class-mml-admin.php:440
+#: class-alba-admin.php:440
 msgid "Languages > Log"
 msgstr ""
 
-#: class-mml-admin.php:332
+#: class-alba-admin.php:332
 msgid "Languages side by side as menu items"
 msgstr ""
 
-#: class-mml-admin.php:356
+#: class-alba-admin.php:356
 msgid "Languages without translation"
 msgstr ""
 
-#: class-mml-glossary.php:218
+#: class-alba-glossary.php:218
 msgid "Languages – Glossary"
 msgstr ""
 
-#: class-mml-log.php:124
+#: class-alba-log.php:124
 msgid "Languages – Log"
 msgstr ""
 
-#: class-mml-admin.php:28 class-mml-admin.php:173
+#: class-alba-admin.php:28 class-alba-admin.php:173
 msgid "Languages – Settings"
 msgstr ""
 
-#: class-mml-xliff.php:31
+#: class-alba-xliff.php:31
 msgid "Languages – XLIFF"
 msgstr ""
 
-#: class-mml-updater.php:205
+#: class-alba-updater.php:205
 msgid "Lean multilingual plugin: languages, posts, taxonomies, strings, .po import/export and block navigation."
 msgstr ""
 
-#: class-mml-admin.php:397
+#: class-alba-admin.php:397
 msgid "LibreTranslate (own server or service)"
 msgstr ""
 
-#: class-mml-mt.php:199
+#: class-alba-mt.php:199
 msgid "LibreTranslate is not reachable: "
 msgstr ""
 
-#: class-mml-admin.php:410
+#: class-alba-admin.php:410
 msgid "LibreTranslate: API key"
 msgstr ""
 
-#: class-mml-mt.php:186
+#: class-alba-mt.php:186
 msgid "LibreTranslate: Please enter the server URL in the settings."
 msgstr ""
 
-#: class-mml-admin.php:406
+#: class-alba-admin.php:406
 msgid "LibreTranslate: URL"
 msgstr ""
 
-#: class-mml-wpml.php:515 class-mml-wpml.php:561 class-mml-wpml.php:578
+#: class-alba-wpml.php:515 class-alba-wpml.php:561 class-alba-wpml.php:578
 msgid "Limit reached"
 msgstr ""
 
-#: class-mml-i18n.php:44 class-mml-i18n.php:44
+#: class-alba-i18n.php:44 class-alba-i18n.php:44
 msgid "Links or a dropdown for switching the language."
 msgstr ""
 
-#: class-mml-switcher-block.php:42
+#: class-alba-switcher-block.php:42
 msgid "Links or dropdown for switching the language."
 msgstr ""
 
-#: class-mml-i18n.php:35 class-mml-i18n.php:35
+#: class-alba-i18n.php:35 class-alba-i18n.php:35
 msgid "List of links"
 msgstr ""
 
-#: class-mml-admin.php:230 class-mml-dashboard.php:94
+#: class-alba-admin.php:230 class-alba-dashboard.php:94
 msgid "Locale"
 msgstr ""
 
-#: class-mml-dashboard.php:85 class-mml-editor.php:1346 class-mml-log.php:124
+#: class-alba-dashboard.php:85 class-alba-editor.php:1346 class-alba-log.php:124
 msgid "Log"
 msgstr ""
 
-#: class-mml-log.php:180
+#: class-alba-log.php:180
 msgid "Log cleared."
 msgstr ""
 
-#: class-mml-strings.php:453
+#: class-alba-strings.php:454
 msgid "Look for a specific text"
 msgstr ""
 
-#: class-mml-bulk.php:408
+#: class-alba-bulk.php:408
 msgid "Machine pre-translation"
 msgstr ""
 
-#: class-mml-bulk.php:52
+#: class-alba-bulk.php:52
 msgid "Mark as outdated"
 msgstr ""
 
-#: class-mml-bulk.php:313
+#: class-alba-bulk.php:313
 msgid "Marked as outdated (bulk action)"
 msgstr ""
 
-#: class-mml-wpml.php:123
+#: class-alba-wpml.php:123
 msgid "Media"
 msgstr ""
 
-#: class-mml-wpml.php:454 class-mml-wpml.php:493
+#: class-alba-wpml.php:454 class-alba-wpml.php:493
 msgid "Media imported"
 msgstr ""
 
-#: class-mml-admin.php:380
+#: class-alba-admin.php:380
 msgid "Memory & exceptions"
 msgstr ""
 
-#: class-mml-areas.php:195
+#: class-alba-areas.php:195
 msgid "Menu"
 msgstr ""
 
-#: class-mml-admin.php:330
+#: class-alba-admin.php:330
 msgid "Menu layout"
 msgstr ""
 
-#: class-mml-wpml.php:123
+#: class-alba-wpml.php:123
 msgid "Menus"
 msgstr ""
 
-#: class-mml-wpml.php:420 class-mml-wpml.php:436 class-mml-wpml.php:439
+#: class-alba-wpml.php:420 class-alba-wpml.php:436 class-alba-wpml.php:439
 msgid "Menus assigned"
 msgstr ""
 
-#: class-mml-areas.php:174
+#: class-alba-areas.php:174
 msgid "Menus per language"
 msgstr ""
 
-#: class-mml-admin.php:373
+#: class-alba-admin.php:373
 msgid "Method"
 msgstr ""
 
-#: class-mml-admin.php:302
+#: class-alba-admin.php:302
 msgid "More attribute names"
 msgstr ""
 
-#: class-mml-admin.php:298
+#: class-alba-admin.php:298
 msgid "More field names"
 msgstr ""
 
-#: class-mml-dashboard.php:222
+#: class-alba-dashboard.php:222
 msgid "Most open texts:"
 msgstr ""
 
-#: class-mml-roles.php:116 class-mml-roles.php:116
+#: class-alba-roles.php:116 class-alba-roles.php:116
 msgid "My translations"
 msgstr ""
 
-#: class-mml-admin.php:396
+#: class-alba-admin.php:396
 msgid "MyMemory (free, no key)"
 msgstr ""
 
-#: class-mml-mt.php:168
+#: class-alba-mt.php:168
 msgid "MyMemory is not reachable: "
 msgstr ""
 
-#: class-mml-admin.php:402
+#: class-alba-admin.php:402
 msgid "MyMemory: email"
 msgstr ""
 
-#: class-mml-admin.php:230 class-mml-dashboard.php:94
+#: class-alba-admin.php:230 class-alba-dashboard.php:94
 msgid "Name"
 msgstr ""
 
-#: class-mml-admin.php:304
+#: class-alba-admin.php:304
 msgid "Names of attributes that contain text in WPBakery elements (e.g."
 msgstr ""
 
-#: class-mml-areas.php:301 class-mml-blocks.php:108
+#: class-alba-areas.php:301 class-alba-blocks.php:108
 msgid "Navigation"
 msgstr ""
 
-#: class-mml-areas.php:245
+#: class-alba-areas.php:245
 msgid "Navigation #"
 msgstr ""
 
-#: class-mml-bulk.php:213 class-mml-wpml.php:150
+#: class-alba-bulk.php:213 class-alba-wpml.php:150
 msgid "Network error"
 msgstr ""
 
-#: class-mml-i18n.php:32 class-mml-i18n.php:32
+#: class-alba-i18n.php:32 class-alba-i18n.php:32
 msgid "Network error."
 msgstr ""
 
-#: class-mml-admin.php:425
+#: class-alba-admin.php:425
 msgid "Never automatically"
 msgstr ""
 
-#: class-mml-admin.php:341
+#: class-alba-admin.php:341
 msgid "Never show"
 msgstr ""
 
-#: class-mml-xliff.php:860
+#: class-alba-xliff.php:860
 msgid "New"
 msgstr ""
 
-#: class-mml-areas.php:159
+#: class-alba-areas.php:159
 msgid "New comments remember the language of the page they were written on. Visitors only see and count the comments of their own language (comment list, count, \"Recent comments\"). Existing comments without a language belong to the language of their post, which for side-by-side translations means the default language. In the backend, the comment list shows a \"Language\" column."
 msgstr ""
 
-#: class-mml-wpml.php:215 class-mml-wpml.php:243
+#: class-alba-wpml.php:215 class-alba-wpml.php:243
 msgid "New languages"
 msgstr ""
 
-#: class-mml-workflow.php:255
+#: class-alba-workflow.php:255
 msgid "New translation assignment: "
 msgstr ""
 
-#: class-mml-frontend.php:219
+#: class-alba-frontend.php:220
 msgid "No active arrow option found in the Salient settings. Choose \"Always show\" if the arrow is wanted anyway. Related options found: %s"
 msgstr ""
 
-#: class-mml-roles.php:358
+#: class-alba-roles.php:358
 msgid "No content found."
 msgstr ""
 
-#: class-mml-log.php:209
+#: class-alba-log.php:209
 msgid "No entries yet."
 msgstr ""
 
-#: class-mml-roles.php:239
+#: class-alba-roles.php:239
 msgid "No languages have been assigned to you for translating."
 msgstr ""
 
-#: class-mml-xliff.php:446
+#: class-alba-xliff.php:446
 msgid "No matching content found (everything translated or separate translation posts exist)."
 msgstr ""
 
-#: class-mml-bulk.php:144
+#: class-alba-bulk.php:144
 msgid "No matching content."
 msgstr ""
 
-#: class-mml-bulk.php:254 class-mml-bulk.php:318
+#: class-alba-bulk.php:254 class-alba-bulk.php:318
 msgid "No permission."
 msgstr ""
 
-#: class-mml-mt.php:177
+#: class-alba-mt.php:177
 msgid "No response"
 msgstr ""
 
-#: class-mml-wpml.php:510
+#: class-alba-wpml.php:510
 msgid "No string tables found."
 msgstr ""
 
-#: class-mml-dashboard.php:441
+#: class-alba-dashboard.php:441
 msgid "No strings captured yet."
 msgstr ""
 
-#: class-mml-i18n.php:47 class-mml-i18n.php:47
+#: class-alba-i18n.php:47 class-alba-i18n.php:47
 msgid "No suggestion:"
 msgstr ""
 
-#: class-mml-strings.php:277
+#: class-alba-strings.php:278
 msgid "No texts yet. Choose your theme under \"Find texts of your theme and plugins\" above and click \"Save and scan now\"."
 msgstr ""
 
-#: class-mml-dashboard.php:375
+#: class-alba-dashboard.php:375
 msgid "No translatable content types selected."
 msgstr ""
 
-#: class-mml-bulk.php:270 class-mml-bulk.php:296
+#: class-alba-bulk.php:270 class-alba-bulk.php:296
 msgid "No translation yet."
 msgstr ""
 
-#: class-mml-bulk.php:251
+#: class-alba-bulk.php:251
 msgid "Not a translatable original."
 msgstr ""
 
-#: class-mml-wpml.php:167
+#: class-alba-wpml.php:167
 msgid "Not allowed or no WPML data found."
 msgstr ""
 
-#: class-mml-mt.php:46
+#: class-alba-mt.php:46
 msgid "Not allowed, or automatic translation is turned off."
 msgstr ""
 
-#: class-mml-admin.php:748 class-mml-areas.php:257 class-mml-bulk.php:124
+#: class-alba-admin.php:748 class-alba-areas.php:257 class-alba-bulk.php:124
 msgid "Not allowed."
 msgstr ""
 
-#: class-mml-roles.php:343
+#: class-alba-roles.php:343
 msgid "Not assigned"
 msgstr ""
 
-#: class-mml-strings.php:552
+#: class-alba-strings.php:553
 msgid "Not found in the collected texts, the theme files or the settings. The text may come from a plugin, from page content (translate that page in the translation editor) or from an element of your page builder."
 msgstr ""
 
-#: class-mml-wpml.php:218
+#: class-alba-wpml.php:218
 msgid "Not selected: languages and types are not adjusted."
 msgstr ""
 
-#: class-mml-workflow.php:402
+#: class-alba-workflow.php:402
 msgid "Note for the translator (optional)"
 msgstr ""
 
-#: class-mml-seo.php:443
+#: class-alba-seo.php:443
 msgid "Note:"
 msgstr ""
 
-#: class-mml-strings.php:745
+#: class-alba-strings.php:746
 msgid "Nothing new: either everything was found already, or the texts do not come from the selected sources."
 msgstr ""
 
-#: class-mml-areas.php:548
+#: class-alba-areas.php:548
 msgid "Nothing selected: visible in all languages."
 msgstr ""
 
-#: class-mml-i18n.php:29 class-mml-i18n.php:29
+#: class-alba-i18n.php:29 class-alba-i18n.php:29
 msgid "Nothing to translate."
 msgstr ""
 
-#: class-mml-roles.php:358
+#: class-alba-roles.php:358
 msgid "Nothing to translate. Everything is done or nothing matches the filter."
 msgstr ""
 
-#: class-mml-admin.php:367 class-mml-admin.php:395
+#: class-alba-admin.php:367 class-alba-admin.php:395
 msgid "Off"
 msgstr ""
 
-#: class-mml-roles.php:160
+#: class-alba-roles.php:160
 msgid "Off (default): translators only save. Editors and administrators decide whether a translation appears on the frontend (\"Show on the frontend\" in the editor). Translations that are already published stay published when saved."
 msgstr ""
 
-#: class-mml-admin.php:440
+#: class-alba-admin.php:440
 msgid "Older entries are deleted automatically. You can find the log under"
 msgstr ""
 
-#: class-mml-workflow.php:438
+#: class-alba-workflow.php:438
 msgid "On assignment, submission for review, return, changed original after translation, and at the deadline (the day before and when overdue, once a day)."
 msgstr ""
 
-#: class-mml-admin.php:371
+#: class-alba-admin.php:371
 msgid "On the first visit, visitors are redirected to the matching language based on their browser language. If there is no matching language, the page stays unchanged."
 msgstr ""
 
-#: class-mml-areas.php:146
+#: class-alba-areas.php:146
 msgid "On the frontend, search only ever shows content in the visitor's current language. With the first setting, the English search also finds words from translations in the side-by-side editor (title, excerpt, texts), not the German original text. The search form stays in the language because the address carries the language prefix ("
 msgstr ""
 
-#: class-mml-i18n.php:43 class-mml-i18n.php:43
+#: class-alba-i18n.php:43 class-alba-i18n.php:43
 msgid "Only affects the frontend, not this preview."
 msgstr ""
 
-#: class-mml-xliff.php:811
+#: class-alba-xliff.php:811
 msgid "Only content with open texts"
 msgstr ""
 
-#: class-mml-xliff.php:295
+#: class-alba-xliff.php:295
 msgid "Only lowercase letters, numbers and hyphens."
 msgstr ""
 
-#: class-mml-dashboard.php:76
+#: class-alba-dashboard.php:76
 msgid "Only one language has been added."
 msgstr ""
 
-#: class-mml-strings.php:408
+#: class-alba-strings.php:409
 msgid "Only save the selection"
 msgstr ""
 
-#: class-mml-log.php:223
+#: class-alba-log.php:223
 msgid "Only this content"
 msgstr ""
 
-#: class-mml-log.php:195
+#: class-alba-log.php:195
 msgid "Only:"
 msgstr ""
 
-#: class-mml-dashboard.php:205
+#: class-alba-dashboard.php:205
 msgid "Open"
 msgstr ""
 
-#: class-mml-dashboard.php:439 class-mml-dashboard.php:441
+#: class-alba-dashboard.php:439 class-alba-dashboard.php:441
 msgid "Open strings"
 msgstr ""
 
-#: class-mml-dashboard.php:203
+#: class-alba-dashboard.php:203
 msgid "Open texts"
 msgstr ""
 
-#: class-mml-admin.php:412
+#: class-alba-admin.php:412
 msgid "Optional, depending on the server. It is saved in the settings and only used for requests to your server."
 msgstr ""
 
-#: class-mml-admin.php:404
+#: class-alba-admin.php:404
 msgid "Optional. With an email address MyMemory allows considerably more characters per day (about 50,000 instead of 5,000). The address is only sent to MyMemory."
 msgstr ""
 
-#: class-mml-strings.php:286
+#: class-alba-strings.php:287
 msgid "Original"
 msgstr ""
 
-#: class-mml-editor.php:1236
+#: class-alba-editor.php:1236
 msgid "Original changed"
 msgstr ""
 
-#: class-mml-admin.php:667
+#: class-alba-admin.php:667
 msgid "Original changed – update the translation and save"
 msgstr ""
 
-#: class-mml-workflow.php:285
+#: class-alba-workflow.php:285
 msgid "Original changed: "
 msgstr ""
 
-#: class-mml-log.php:234
+#: class-alba-log.php:234
 msgid "Original:"
 msgstr ""
 
-#: class-mml-frontend.php:184
+#: class-alba-frontend.php:185
 msgid "Other menu items with a submenu already show an arrow."
 msgstr ""
 
-#: class-mml-frontend.php:187
+#: class-alba-frontend.php:188
 msgid "Other menu items with a submenu show no arrow."
 msgstr ""
 
-#: class-mml-strings.php:405
+#: class-alba-strings.php:406
 msgid "Other text domains (comma-separated)"
 msgstr ""
 
-#: class-mml-roles.php:349
+#: class-alba-roles.php:349
 msgid "Overdue"
 msgstr ""
 
-#: class-mml-workflow.php:298
+#: class-alba-workflow.php:298
 msgid "Overdue: "
 msgstr ""
 
-#: class-mml-dashboard.php:30 class-mml-dashboard.php:30 class-mml-dashboard.php:34
+#: class-alba-dashboard.php:30 class-alba-dashboard.php:30 class-alba-dashboard.php:34
 msgid "Overview"
 msgstr ""
 
-#: class-mml-admin.php:418
+#: class-alba-admin.php:418
 msgid "Page cache"
 msgstr ""
 
-#: class-mml-strings.php:360
+#: class-alba-strings.php:361
 msgid "Parent theme: %s"
 msgstr ""
 
-#: class-mml-dashboard.php:231
+#: class-alba-dashboard.php:231
 msgid "Partially calculated"
 msgstr ""
 
-#: class-mml-seo.php:437
+#: class-alba-seo.php:437
 msgid "Passed to %s."
 msgstr ""
 
-#: class-mml-glossary.php:321
+#: class-alba-glossary.php:321
 msgid "Per language, the last"
 msgstr ""
 
-#: class-mml-seo.php:443
+#: class-alba-seo.php:443
 msgid "Permalinks are active."
 msgstr ""
 
-#: class-mml-editor.php:1085
+#: class-alba-editor.php:1085
 msgid "Placeholder"
 msgstr ""
 
-#: class-mml-editor.php:1290
+#: class-alba-editor.php:1290
 msgid "Please check the texts and save to confirm. The import did not change publication on the frontend."
 msgstr ""
 
-#: class-mml-xliff.php:433
+#: class-alba-xliff.php:433
 msgid "Please choose a target language (not the default language)."
 msgstr ""
 
-#: class-mml-xliff.php:441
+#: class-alba-xliff.php:441
 msgid "Please choose at least one content type."
 msgstr ""
 
-#: class-mml-strings.php:733
+#: class-alba-strings.php:734
 msgid "Please select at least one source first."
 msgstr ""
 
-#: class-mml-po.php:247
+#: class-alba-po.php:247
 msgid "Please upload a .po or .pot file."
 msgstr ""
 
-#: class-mml-xliff.php:695
+#: class-alba-xliff.php:695
 msgid "Please upload an .xlf or .xliff file."
 msgstr ""
 
-#: class-mml-strings.php:381
+#: class-alba-strings.php:382
 msgid "Plugin: %s"
 msgstr ""
 
-#: class-mml-wpml.php:314 class-mml-wpml.php:326
+#: class-alba-wpml.php:314 class-alba-wpml.php:326
 msgid "Post missing"
 msgstr ""
 
-#: class-mml-dashboard.php:120
+#: class-alba-dashboard.php:120
 msgid "Posts & pages"
 msgstr ""
 
-#: class-mml-wpml.php:123
+#: class-alba-wpml.php:123
 msgid "Posts and pages"
 msgstr ""
 
-#: class-mml-bulk.php:45
+#: class-alba-bulk.php:45
 msgid "Pre-translate empty fields automatically"
 msgstr ""
 
-#: class-mml-dashboard.php:73
+#: class-alba-dashboard.php:73
 msgid "Pretty permalinks are not active. Language URLs then only work as"
 msgstr ""
 
-#: class-mml-xliff.php:858
+#: class-alba-xliff.php:858
 msgid "Preview"
 msgstr ""
 
-#: class-mml-admin.php:400
+#: class-alba-admin.php:400
 msgid "Privacy:"
 msgstr ""
 
-#: class-mml-xliff.php:776
+#: class-alba-xliff.php:776
 msgid "Process: export as"
 msgstr ""
 
-#: class-mml-dashboard.php:205
+#: class-alba-dashboard.php:205
 msgid "Progress"
 msgstr ""
 
-#: class-mml-seo.php:431
+#: class-alba-seo.php:431
 msgid "Provide a sitemap for all languages"
 msgstr ""
 
-#: class-mml-admin.php:393
+#: class-alba-admin.php:393
 msgid "Provider"
 msgstr ""
 
-#: class-mml-bulk.php:280
+#: class-alba-bulk.php:280
 msgid "Published (bulk action)"
 msgstr ""
 
-#: class-mml-dashboard.php:79
+#: class-alba-dashboard.php:79
 msgid "Quick access"
 msgstr ""
 
-#: class-mml-dashboard.php:116
+#: class-alba-dashboard.php:116
 msgid "Quick help"
 msgstr ""
 
-#: class-mml-log.php:201
+#: class-alba-log.php:201
 msgid "Really clear the entire log?"
 msgstr ""
 
-#: class-mml-glossary.php:319
+#: class-alba-glossary.php:319
 msgid "Really clear the translation memory? The translations on the pages are kept."
 msgstr ""
 
-#: class-mml-wpml.php:134
+#: class-alba-wpml.php:134
 msgid "Really import? Please create a database backup first."
 msgstr ""
 
-#: class-mml-glossary.php:318
+#: class-alba-glossary.php:318
 msgid "Rebuild from existing translations"
 msgstr ""
 
-#: class-mml-seo.php:445
+#: class-alba-seo.php:445
 msgid "Rebuild sitemap"
 msgstr ""
 
-#: class-mml-workflow.php:442
+#: class-alba-workflow.php:442
 msgid "Receives notifications about submitted translations, changed originals and overdue deadlines. Separate several addresses with commas. If empty, submissions go to the person who made the assignment (otherwise to the administrator address)."
 msgstr ""
 
-#: class-mml-xliff.php:300
+#: class-alba-xliff.php:300
 msgid "Recommended: at most 160 characters."
 msgstr ""
 
-#: class-mml-xliff.php:299
+#: class-alba-xliff.php:299
 msgid "Recommended: at most 60 characters."
 msgstr ""
 
-#: class-mml-admin.php:365
+#: class-alba-admin.php:365
 msgid "Redirect"
 msgstr ""
 
-#: class-mml-admin.php:238 class-mml-glossary.php:278 class-mml-glossary.php:298
+#: class-alba-admin.php:238 class-alba-glossary.php:278 class-alba-glossary.php:298
 msgid "Remove"
 msgstr ""
 
-#: class-mml-admin.php:450
+#: class-alba-admin.php:450
 msgid "Remove data, ask first"
 msgstr ""
 
-#: class-mml-admin.php:451
+#: class-alba-admin.php:451
 msgid "Remove data, without asking"
 msgstr ""
 
-#: class-mml-log.php:195
+#: class-alba-log.php:195
 msgid "Remove filter"
 msgstr ""
 
-#: class-mml-bulk.php:182 class-mml-wpml.php:120
+#: class-alba-bulk.php:182 class-alba-wpml.php:120
 msgid "Result"
 msgstr ""
 
-#: class-mml-admin.php:436
+#: class-alba-admin.php:436
 msgid "Retention"
 msgstr ""
 
-#: class-mml-workflow.php:403
+#: class-alba-workflow.php:403
 msgid "Return for revision"
 msgstr ""
 
-#: class-mml-workflow.php:356
+#: class-alba-workflow.php:356
 msgid "Returned for revision."
 msgstr ""
 
-#: class-mml-workflow.php:378
+#: class-alba-workflow.php:378
 msgid "Review, correct if necessary, then tick \"Show on the frontend\" and save. This completes the assignment."
 msgstr ""
 
-#: class-mml-workflow.php:380
+#: class-alba-workflow.php:380
 msgid "Reviewer's note:"
 msgstr ""
 
-#: class-mml-xliff.php:917
+#: class-alba-xliff.php:917
 msgid "Run import"
 msgstr ""
 
-#: class-mml-editor.php:838 class-mml-editor.php:957 class-mml-xliff.php:300
+#: class-alba-editor.php:838 class-alba-editor.php:957 class-alba-xliff.php:300
 msgid "SEO description"
 msgstr ""
 
-#: class-mml-editor.php:1388
+#: class-alba-editor.php:1388
 msgid "SEO description ("
 msgstr ""
 
-#: class-mml-editor.php:838 class-mml-editor.php:957 class-mml-xliff.php:299
+#: class-alba-editor.php:838 class-alba-editor.php:957 class-alba-xliff.php:299
 msgid "SEO title"
 msgstr ""
 
-#: class-mml-editor.php:1387
+#: class-alba-editor.php:1387
 msgid "SEO title ("
 msgstr ""
 
-#: class-mml-frontend.php:206
+#: class-alba-frontend.php:207
 msgid "Salient option \"%s\" is on."
 msgstr ""
 
-#: class-mml-editor.php:1374 class-mml-editor.php:1404
+#: class-alba-editor.php:1374 class-alba-editor.php:1404
 msgid "Save"
 msgstr ""
 
-#: class-mml-editor.php:1373
+#: class-alba-editor.php:1373
 msgid "Save & submit for review"
 msgstr ""
 
-#: class-mml-strings.php:407
+#: class-alba-strings.php:408
 msgid "Save and scan now"
 msgstr ""
 
-#: class-mml-admin.php:477
+#: class-alba-admin.php:477
 msgid "Save changes"
 msgstr ""
 
-#: class-mml-admin.php:652
+#: class-alba-admin.php:652
 msgid "Save first, then translations can be created."
 msgstr ""
 
-#: class-mml-glossary.php:290
+#: class-alba-glossary.php:290
 msgid "Save glossary"
 msgstr ""
 
-#: class-mml-strings.php:309
+#: class-alba-strings.php:310
 msgid "Save translations"
 msgstr ""
 
-#: class-mml-dashboard.php:400
+#: class-alba-dashboard.php:400
 msgid "Saved in the editor but not yet published on the frontend"
 msgstr ""
 
-#: class-mml-glossary.php:312
+#: class-alba-glossary.php:312
 msgid "Saved sections"
 msgstr ""
 
-#: class-mml-glossary.php:242 class-mml-strings.php:257
+#: class-alba-glossary.php:242 class-alba-strings.php:258
 msgid "Saved."
 msgstr ""
 
-#: class-mml-admin.php:477
+#: class-alba-admin.php:477
 msgid "Saves the settings of all sections."
 msgstr ""
 
-#: class-mml-strings.php:739
+#: class-alba-strings.php:740
 msgid "Scan finished: %1$d new texts found on %2$d pages."
 msgstr ""
 
-#: class-mml-areas.php:139
+#: class-alba-areas.php:139
 msgid "Search"
 msgstr ""
 
-#: class-mml-seo.php:441
+#: class-alba-seo.php:441
 msgid "Search engines are allowed."
 msgstr ""
 
-#: class-mml-areas.php:141
+#: class-alba-areas.php:141
 msgid "Search results"
 msgstr ""
 
-#: class-mml-roles.php:351 class-mml-strings.php:270
+#: class-alba-roles.php:351 class-alba-strings.php:271
 msgid "Search …"
 msgstr ""
 
-#: class-mml-admin.php:212
+#: class-alba-admin.php:212
 msgid "Search, Comments & Menus"
 msgstr ""
 
-#: class-mml-editor.php:1087
+#: class-alba-editor.php:1087
 msgid "Section "
 msgstr ""
 
-#: class-mml-workflow.php:437
+#: class-alba-workflow.php:437
 msgid "Send notifications by email"
 msgstr ""
 
-#: class-mml-areas.php:156
+#: class-alba-areas.php:156
 msgid "Separate per language"
 msgstr ""
 
-#: class-mml-seo.php:436
+#: class-alba-seo.php:436
 msgid "Set language for social media previews ("
 msgstr ""
 
-#: class-mml-admin.php:28 class-mml-dashboard.php:81 class-mml-wpml.php:123
+#: class-alba-admin.php:28 class-alba-dashboard.php:81 class-alba-wpml.php:123
 msgid "Settings"
 msgstr ""
 
-#: class-mml-bulk.php:169
+#: class-alba-bulk.php:169
 msgid "Show %d translations on the frontend."
 msgstr ""
 
-#: class-mml-areas.php:157
+#: class-alba-areas.php:157
 msgid "Show all comments in all languages"
 msgstr ""
 
-#: class-mml-i18n.php:55 class-mml-i18n.php:55
+#: class-alba-i18n.php:55 class-alba-i18n.php:55
 msgid "Show block only in these languages. Nothing selected: in all languages."
 msgstr ""
 
-#: class-mml-log.php:228
+#: class-alba-log.php:228
 msgid "Show changes ("
 msgstr ""
 
-#: class-mml-areas.php:165
+#: class-alba-areas.php:165
 msgid "Show content only in certain languages."
 msgstr ""
 
-#: class-mml-editor.php:1372
+#: class-alba-editor.php:1372
 msgid "Show on the frontend"
 msgstr ""
 
-#: class-mml-bulk.php:48
+#: class-alba-bulk.php:48
 msgid "Show on the frontend (publish)"
 msgstr ""
 
-#: class-mml-roles.php:155
+#: class-alba-roles.php:155
 msgid "Show translators"
 msgstr ""
 
-#: class-mml-dashboard.php:88
+#: class-alba-dashboard.php:88
 msgid "Site Editor (navigation, switcher block)"
 msgstr ""
 
-#: class-mml-strings.php:194
+#: class-alba-strings.php:195
 msgid "Site title"
 msgstr ""
 
-#: class-mml-seo.php:430
+#: class-alba-seo.php:430
 msgid "Sitemap"
 msgstr ""
 
-#: class-mml-admin.php:213
+#: class-alba-admin.php:213
 msgid "Sitemap & SEO"
 msgstr ""
 
-#: class-mml-seo.php:426
+#: class-alba-seo.php:426
 msgid "Sitemap & language references"
 msgstr ""
 
-#: class-mml-xliff.php:860
+#: class-alba-xliff.php:860
 msgid "Skipped"
 msgstr ""
 
-#: class-mml-bulk.php:277
+#: class-alba-bulk.php:277
 msgid "Skipped: %1$d of %2$d texts are still open."
 msgstr ""
 
-#: class-mml-admin.php:418
+#: class-alba-admin.php:418
 msgid "So visitors see changes immediately."
 msgstr ""
 
-#: class-mml-editor.php:1273
+#: class-alba-editor.php:1273
 msgid "Source and target language are the same."
 msgstr ""
 
-#: class-mml-wpml.php:119
+#: class-alba-wpml.php:119
 msgid "Start import"
 msgstr ""
 
-#: class-mml-roles.php:346
+#: class-alba-roles.php:346
 msgid "Status: all"
 msgstr ""
 
-#: class-mml-wpml.php:120
+#: class-alba-wpml.php:120
 msgid "Step"
 msgstr ""
 
-#: class-mml-wpml.php:111
+#: class-alba-wpml.php:111
 msgid "String translations (strings)"
 msgstr ""
 
-#: class-mml-dashboard.php:82 class-mml-dashboard.php:113 class-mml-forms.php:490
+#: class-alba-dashboard.php:82 class-alba-dashboard.php:113 class-alba-forms.php:490
 msgid "Strings"
 msgstr ""
 
-#: class-mml-workflow.php:378
+#: class-alba-workflow.php:378
 msgid "Submitted. An editor will review the translation."
 msgstr ""
 
-#: class-mml-editor.php:1246
+#: class-alba-editor.php:1246
 msgid "Suggest automatically"
 msgstr ""
 
-#: class-mml-admin.php:390
+#: class-alba-admin.php:390
 msgid "Suggestions in the translation editor, without a DeepL key. You confirm every text yourself."
 msgstr ""
 
-#: class-mml-i18n.php:30 class-mml-i18n.php:30
+#: class-alba-i18n.php:30 class-alba-i18n.php:30
 msgid "Suggestions inserted, please check and save."
 msgstr ""
 
-#: class-mml-log.php:276
+#: class-alba-log.php:276
 msgid "Summary"
 msgstr ""
 
-#: class-mml-admin.php:428
+#: class-alba-admin.php:428
 msgid "Supported: WP Rocket, LiteSpeed Cache (including the LiteSpeed server cache, e.g. on Hostinger), W3 Total Cache, WP Super Cache, WP Fastest Cache, Breeze, SG Optimizer and Nginx Helper. The entire cache is also cleared when you change language settings or strings. Caches that cannot clear individual pages (and the LiteSpeed server cache without the plugin) are always cleared completely."
 msgstr ""
 
-#: class-mml-log.php:157
+#: class-alba-log.php:157
 msgid "System"
 msgstr ""
 
-#: class-mml-strings.php:194
+#: class-alba-strings.php:195
 msgid "Tagline"
 msgstr ""
 
-#: class-mml-po.php:85 class-mml-xliff.php:784 class-mml-xliff.php:825
+#: class-alba-po.php:85 class-alba-xliff.php:784 class-alba-xliff.php:825
 msgid "Target language"
 msgstr ""
 
-#: class-mml-dashboard.php:121 class-mml-wpml.php:215 class-mml-wpml.php:277
+#: class-alba-dashboard.php:121 class-alba-wpml.php:215 class-alba-wpml.php:277
 msgid "Taxonomies"
 msgstr ""
 
-#: class-mml-po.php:66
+#: class-alba-po.php:66
 msgid "Template (.pot, without translations)"
 msgstr ""
 
-#: class-mml-glossary.php:296
+#: class-alba-glossary.php:296
 msgid "Term"
 msgstr ""
 
-#: class-mml-wpml.php:371 class-mml-wpml.php:382
+#: class-alba-wpml.php:371 class-alba-wpml.php:382
 msgid "Term missing"
 msgstr ""
 
-#: class-mml-glossary.php:271
+#: class-alba-glossary.php:271
 msgid "Term, e.g. Acme Studio"
 msgstr ""
 
-#: class-mml-wpml.php:123
+#: class-alba-wpml.php:123
 msgid "Terms (categories, tags …)"
 msgstr ""
 
-#: class-mml-glossary.php:266
+#: class-alba-glossary.php:266
 msgid "Terms in"
 msgstr ""
 
-#: class-mml-editor.php:1096
+#: class-alba-editor.php:1096
 msgid "Text"
 msgstr ""
 
-#: class-mml-strings.php:456
+#: class-alba-strings.php:457
 msgid "Text exactly as it appears on the site"
 msgstr ""
 
-#: class-mml-strings.php:410
+#: class-alba-strings.php:411
 msgid "Texts are collected whenever a page is built, so also while visitors browse. Pages delivered from a cache (e.g. LiteSpeed) collect nothing; \"Scan now\" asks for your pages without the cache."
 msgstr ""
 
-#: class-mml-admin.php:291
+#: class-alba-admin.php:291
 msgid "Texts in block settings (including ACF blocks)"
 msgstr ""
 
-#: class-mml-editor.php:1353
+#: class-alba-editor.php:1353
 msgid "Texts that are already translated have been added, removed or repeated (e.g. another paragraph with identical wording). Please check the page and save to confirm. "
 msgstr ""
 
-#: class-mml-admin.php:228
+#: class-alba-admin.php:228
 msgid "The"
 msgstr ""
 
-#: class-mml-wpml.php:107
+#: class-alba-wpml.php:107
 msgid "The \"Dry run\" only counts; nothing is written."
 msgstr ""
 
-#: class-mml-roles.php:422
+#: class-alba-roles.php:422
 msgid "The 300 most recently changed items are considered. Use the search to narrow it down further. Assignments (responsibility, status) can be found with the filters regardless of this."
 msgstr ""
 
-#: class-mml-xliff.php:504
+#: class-alba-xliff.php:504
 msgid "The PHP extension \"DOM\" (libxml) is missing on the server. Please ask your host to enable it."
 msgstr ""
 
-#: class-mml-frontend.php:197
+#: class-alba-frontend.php:198
 msgid "The Salient option \"header-dropdown-arrows\" is not switched off (value: %s)."
 msgstr ""
 
-#: class-mml-frontend.php:194
+#: class-alba-frontend.php:195
 msgid "The Salient option \"header-dropdown-arrows\" is switched off."
 msgstr ""
 
-#: class-mml-editor.php:1401
+#: class-alba-editor.php:1401
 msgid "The content contains no translatable text."
 msgstr ""
 
-#: class-mml-mt.php:174
+#: class-alba-mt.php:174
 msgid "The daily limit of MyMemory has been reached. With an email address in the settings it increases considerably; otherwise try again tomorrow or use LibreTranslate."
 msgstr ""
 
-#: class-mml-workflow.php:298
+#: class-alba-workflow.php:298
 msgid ""
 "The deadline for this translation has passed:\n"
 "\n"
 msgstr ""
 
-#: class-mml-admin.php:335
+#: class-alba-admin.php:335
 msgid "The dropdown menu uses the menu classes of your theme or navigation blocks and therefore appears in your theme's design. Applies to \"Append to menu\" and \"Block navigation\"."
 msgstr ""
 
-#: class-mml-seo.php:433
+#: class-alba-seo.php:433
 msgid "The entry in"
 msgstr ""
 
-#: class-mml-xliff.php:508
+#: class-alba-xliff.php:508
 msgid "The file contains entity declarations and is not read for security reasons."
 msgstr ""
 
-#: class-mml-xliff.php:548
+#: class-alba-xliff.php:548
 msgid "The file contains no entries that belong to this plugin (export with \"Alba\" required)."
 msgstr ""
 
-#: class-mml-po.php:250
+#: class-alba-po.php:250
 msgid "The file is larger than 3 MB."
 msgstr ""
 
-#: class-mml-xliff.php:698
+#: class-alba-xliff.php:698
 msgid "The file is larger than 5 MB."
 msgstr ""
 
-#: class-mml-po.php:255 class-mml-xliff.php:703
+#: class-alba-po.php:255 class-alba-xliff.php:703
 msgid "The file is not UTF-8 encoded."
 msgstr ""
 
-#: class-mml-areas.php:169
+#: class-alba-areas.php:169
 msgid "The language switcher itself and all widgets without a selection remain unchanged."
 msgstr ""
 
-#: class-mml-wpml.php:579
+#: class-alba-wpml.php:579
 msgid "The limit of "
 msgstr ""
 
-#: class-mml-strings.php:748
+#: class-alba-strings.php:749
 msgid "The list of collected texts is full. Use \"Delete untranslated entries\" at the bottom and scan again with fewer sources (for example without \"WordPress core\")."
 msgstr ""
 
-#: class-mml-dashboard.php:412
+#: class-alba-dashboard.php:412
 msgid "The number per language covers content in this language and content translated in the side-by-side editor (published)."
 msgstr ""
 
@@ -2369,792 +2369,792 @@ msgstr ""
 msgid "The old version \"Mads Multilang\" is still active. Please deactivate it (do not delete it) and then activate Alba. Settings and translations are kept."
 msgstr ""
 
-#: class-mml-editor.php:1353
+#: class-alba-editor.php:1353
 msgid "The original has been changed since the last translation."
 msgstr ""
 
-#: class-mml-dashboard.php:397
+#: class-alba-dashboard.php:397
 msgid "The original was changed after the last translation"
 msgstr ""
 
-#: class-mml-workflow.php:285
+#: class-alba-workflow.php:285
 msgid ""
 "The original was changed after the translation. The translation is outdated:\n"
 "\n"
 msgstr ""
 
-#: class-mml-admin.php:220
+#: class-alba-admin.php:220
 msgid "The page cache has been cleared."
 msgstr ""
 
-#: class-mml-updater.php:227
+#: class-alba-updater.php:227
 msgid "The plugin folder could not be renamed."
 msgstr ""
 
-#: class-mml-xliff.php:724 class-mml-xliff.php:767
+#: class-alba-xliff.php:724 class-alba-xliff.php:767
 msgid "The preview has expired. Please upload the file again."
 msgstr ""
 
-#: class-mml-roles.php:152
+#: class-alba-roles.php:152
 msgid "The role"
 msgstr ""
 
-#: class-mml-i18n.php:51 class-mml-i18n.php:51
+#: class-alba-i18n.php:51 class-alba-i18n.php:51
 msgid "The service is not reachable."
 msgstr ""
 
-#: class-mml-seo.php:428
+#: class-alba-seo.php:428
 msgid "The sitemap is rebuilt on the next request."
 msgstr ""
 
-#: class-mml-admin.php:466
+#: class-alba-admin.php:466
 msgid "The source comes from the constant"
 msgstr ""
 
-#: class-mml-xliff.php:534
+#: class-alba-xliff.php:534
 msgid "The target language"
 msgstr ""
 
-#: class-mml-mt.php:119
+#: class-alba-mt.php:119
 msgid "The text is too long for MyMemory. Please translate it section by section."
 msgstr ""
 
-#: class-mml-frontend.php:225
+#: class-alba-frontend.php:226
 msgid "The theme could not be asked about arrows. Choose \"Always show\" if the arrow is wanted."
 msgstr ""
 
-#: class-mml-workflow.php:97
+#: class-alba-workflow.php:97
 msgid "The user may not translate."
 msgstr ""
 
-#: class-mml-roles.php:194
+#: class-alba-roles.php:194
 msgid "The user may translate into these languages. Nothing selected: all. Does not apply to administrators."
 msgstr ""
 
-#: class-mml-dashboard.php:122
+#: class-alba-dashboard.php:122
 msgid "Theme texts"
 msgstr ""
 
-#: class-mml-areas.php:188
+#: class-alba-areas.php:188
 msgid "There are no menus yet. Create one under Appearance → Menus."
 msgstr ""
 
-#: class-mml-seo.php:442
+#: class-alba-seo.php:442
 msgid "There is a real robots.txt in the root directory; WordPress cannot add the sitemap entry there. Please add the line"
 msgstr ""
 
-#: class-mml-bulk.php:257
+#: class-alba-bulk.php:257
 msgid "There is a separate translation post (please edit it there)."
 msgstr ""
 
-#: class-mml-editor.php:1280
+#: class-alba-editor.php:1280
 msgid "There is already a separate post for %s."
 msgstr ""
 
-#: class-mml-editor.php:1421
+#: class-alba-editor.php:1421
 msgid "There is already a separate post for this language."
 msgstr ""
 
-#: class-mml-xliff.php:899
+#: class-alba-xliff.php:899
 msgid "There is nothing to import."
 msgstr ""
 
-#: class-mml-xliff.php:772
+#: class-alba-xliff.php:772
 msgid "There is only one language. First add a target language under Settings."
 msgstr ""
 
-#: class-mml-strings.php:535
+#: class-alba-strings.php:536
 msgid "These texts are typed into a settings screen and are not translatable theme texts. Alba can translate such a text for you: click \"Translate this text\", then translate it in the table below."
 msgstr ""
 
-#: class-mml-core.php:438
+#: class-alba-core.php:438
 msgid "This content cannot be translated."
 msgstr ""
 
-#: class-mml-xliff.php:517
+#: class-alba-xliff.php:517
 msgid "This is not a valid XLIFF file."
 msgstr ""
 
-#: class-mml-terms.php:132
+#: class-alba-terms.php:132
 msgid "This term cannot be translated."
 msgstr ""
 
-#: class-mml-editor.php:1353
+#: class-alba-editor.php:1353
 msgid "This translation was saved with an older version; all sections that are still empty are marked. "
 msgstr ""
 
-#: class-mml-log.php:276
+#: class-alba-log.php:276
 msgid "Time (UTC)"
 msgstr ""
 
-#: class-mml-editor.php:838 class-mml-editor.php:957 class-mml-editor.php:1379
+#: class-alba-editor.php:838 class-alba-editor.php:957 class-alba-editor.php:1379
 msgid "Title"
 msgstr ""
 
-#: class-mml-editor.php:1085
+#: class-alba-editor.php:1085
 msgid "Title attribute"
 msgstr ""
 
-#: class-mml-workflow.php:300
+#: class-alba-workflow.php:300
 msgid ""
 "Tomorrow is the deadline for this translation:\n"
 "\n"
 msgstr ""
 
-#: class-mml-dashboard.php:386 class-mml-xliff.php:886
+#: class-alba-dashboard.php:386 class-alba-xliff.php:886
 msgid "Total"
 msgstr ""
 
-#: class-mml-admin.php:255
+#: class-alba-admin.php:255
 msgid "Translatable content types"
 msgstr ""
 
-#: class-mml-admin.php:268
+#: class-alba-admin.php:268
 msgid "Translatable taxonomies"
 msgstr ""
 
-#: class-mml-editor.php:1195 class-mml-editor.php:1195 class-mml-roles.php:185
+#: class-alba-editor.php:1195 class-alba-editor.php:1195 class-alba-roles.php:185
 msgid "Translate"
 msgstr ""
 
-#: class-mml-admin.php:672
+#: class-alba-admin.php:672
 msgid "Translate (side by side)"
 msgstr ""
 
-#: class-mml-glossary.php:275 class-mml-glossary.php:297
+#: class-alba-glossary.php:275 class-alba-glossary.php:297
 msgid "Translate consistently"
 msgstr ""
 
-#: class-mml-forms.php:488
+#: class-alba-forms.php:488
 msgid "Translate form texts per language"
 msgstr ""
 
-#: class-mml-strings.php:254
+#: class-alba-strings.php:255
 msgid "Translate strings"
 msgstr ""
 
-#: class-mml-media.php:153
+#: class-alba-media.php:153
 msgid "Translate texts from the original"
 msgstr ""
 
-#: class-mml-strings.php:396
+#: class-alba-strings.php:397
 msgid "Translate the texts in the table below and save."
 msgstr ""
 
-#: class-mml-strings.php:544
+#: class-alba-strings.php:545
 msgid "Translate this text"
 msgstr ""
 
-#: class-mml-editor.php:1276
+#: class-alba-editor.php:1276
 msgid "Translate:"
 msgstr ""
 
-#: class-mml-admin.php:574
+#: class-alba-admin.php:574
 msgid "Translate: "
 msgstr ""
 
-#: class-mml-dashboard.php:205
+#: class-alba-dashboard.php:205
 msgid "Translated"
 msgstr ""
 
-#: class-mml-forms.php:487
+#: class-alba-forms.php:487
 msgid "Translation"
 msgstr ""
 
-#: class-mml-bulk.php:88
+#: class-alba-bulk.php:88
 msgid "Translation ("
 msgstr ""
 
-#: class-mml-xliff.php:875
+#: class-alba-xliff.php:875
 msgid "Translation is visible on the frontend"
 msgstr ""
 
-#: class-mml-glossary.php:309
+#: class-alba-glossary.php:309
 msgid "Translation memory"
 msgstr ""
 
-#: class-mml-glossary.php:243
+#: class-alba-glossary.php:243
 msgid "Translation memory updated."
 msgstr ""
 
-#: class-mml-workflow.php:309
+#: class-alba-workflow.php:309
 msgid "Translation returned: "
 msgstr ""
 
-#: class-mml-editor.php:1285
+#: class-alba-editor.php:1285
 msgid "Translation saved."
 msgstr ""
 
-#: class-mml-editor.php:886
+#: class-alba-editor.php:886
 msgid "Translation started"
 msgstr ""
 
-#: class-mml-dashboard.php:110
+#: class-alba-dashboard.php:110
 msgid "Translation status"
 msgstr ""
 
-#: class-mml-admin.php:214
+#: class-alba-admin.php:214
 msgid "Translation tools"
 msgstr ""
 
-#: class-mml-admin.php:657 class-mml-roles.php:114 class-mml-roles.php:114
+#: class-alba-admin.php:657 class-alba-roles.php:114 class-alba-roles.php:114
 msgid "Translations"
 msgstr ""
 
-#: class-mml-roles.php:44 class-mml-roles.php:150 class-mml-roles.php:152
+#: class-alba-migrate.php:131 class-alba-roles.php:44 class-alba-roles.php:150
 msgid "Translator"
 msgstr ""
 
-#: class-mml-roles.php:159
+#: class-alba-roles.php:159
 msgid "Translators may publish translations on the frontend"
 msgstr ""
 
-#: class-mml-roles.php:374
+#: class-alba-roles.php:374
 msgid "Type"
 msgstr ""
 
-#: class-mml-admin.php:408
+#: class-alba-admin.php:408
 msgid "URL of your LibreTranslate server (without"
 msgstr ""
 
-#: class-mml-editor.php:838 class-mml-editor.php:957 class-mml-xliff.php:295
+#: class-alba-editor.php:838 class-alba-editor.php:957 class-alba-xliff.php:295
 msgid "URL slug"
 msgstr ""
 
-#: class-mml-editor.php:1381
+#: class-alba-editor.php:1381
 msgid "URL slug (address)"
 msgstr ""
 
-#: class-mml-xliff.php:860
+#: class-alba-xliff.php:860
 msgid "Unchanged"
 msgstr ""
 
-#: class-mml-admin.php:445
+#: class-alba-admin.php:445
 msgid "Uninstall"
 msgstr ""
 
-#: class-mml-bulk.php:328
+#: class-alba-bulk.php:328
 msgid "Unknown action."
 msgstr ""
 
-#: class-mml-i18n.php:50 class-mml-i18n.php:50
+#: class-alba-i18n.php:50 class-alba-i18n.php:50
 msgid "Unknown error."
 msgstr ""
 
-#: class-mml-po.php:137
+#: class-alba-po.php:137
 msgid "Unknown language."
 msgstr ""
 
-#: class-mml-wpml.php:201
+#: class-alba-wpml.php:201
 msgid "Unknown step."
 msgstr ""
 
-#: class-mml-po.php:238
+#: class-alba-po.php:238
 msgid "Unknown target language."
 msgstr ""
 
-#: class-mml-admin.php:464
+#: class-alba-admin.php:464
 msgid "Update source"
 msgstr ""
 
-#: class-mml-admin.php:672
+#: class-alba-admin.php:672
 msgid "Update translation (original changed)"
 msgstr ""
 
-#: class-mml-admin.php:461
+#: class-alba-admin.php:461
 msgid "Updates"
 msgstr ""
 
-#: class-mml-admin.php:216
+#: class-alba-admin.php:216
 msgid "Updates & System"
 msgstr ""
 
-#: class-mml-po.php:243 class-mml-xliff.php:691
+#: class-alba-po.php:243 class-alba-xliff.php:691
 msgid "Upload failed."
 msgstr ""
 
-#: class-mml-strings.php:333
+#: class-alba-strings.php:334
 msgid "Usage in the theme"
 msgstr ""
 
-#: class-mml-areas.php:195
+#: class-alba-areas.php:195
 msgid "Used in"
 msgstr ""
 
-#: class-mml-log.php:276
+#: class-alba-log.php:276
 msgid "User"
 msgstr ""
 
-#: class-mml-log.php:157
+#: class-alba-log.php:157
 msgid "User #"
 msgstr ""
 
-#: class-mml-roles.php:150
+#: class-alba-roles.php:150
 msgid "Users who may only translate."
 msgstr ""
 
-#: class-mml-dashboard.php:70
+#: class-alba-dashboard.php:70
 msgid "Version"
 msgstr ""
 
-#: class-mml-editor.php:1349
+#: class-alba-editor.php:1349
 msgid "View translation"
 msgstr ""
 
-#: class-mml-wpml.php:92
+#: class-alba-wpml.php:92
 msgid "WPML also puts a directory in front of the default language. In Alba the default language has no prefix; the URLs of the default language change."
 msgstr ""
 
-#: class-mml-wpml.php:57 class-mml-wpml.php:57 class-mml-wpml.php:106
+#: class-alba-wpml.php:57 class-alba-wpml.php:57 class-alba-wpml.php:106
 msgid "WPML import"
 msgstr ""
 
-#: class-mml-wpml.php:87
+#: class-alba-wpml.php:87
 msgid "WPML uses a separate domain per language. Alba uses language directories (/en/). The data can be imported, but the URLs change."
 msgstr ""
 
-#: class-mml-wpml.php:89
+#: class-alba-wpml.php:89
 msgid "WPML uses the ?lang= parameter. Alba uses language directories (/en/); the URLs change."
 msgstr ""
 
-#: class-mml-seo.php:441 class-mml-seo.php:442
+#: class-alba-seo.php:441 class-alba-seo.php:442
 msgid "Warning:"
 msgstr ""
 
-#: class-mml-log.php:206
+#: class-alba-log.php:206
 msgid "What"
 msgstr ""
 
-#: class-mml-admin.php:445
+#: class-alba-admin.php:445
 msgid "What happens to your data when the plugin is deleted."
 msgstr ""
 
-#: class-mml-areas.php:139
+#: class-alba-areas.php:139
 msgid "What visitors find in their language."
 msgstr ""
 
-#: class-mml-log.php:206
+#: class-alba-log.php:206
 msgid "When"
 msgstr ""
 
-#: class-mml-admin.php:688
+#: class-alba-admin.php:688
 msgid "When creating, content, featured image and meta fields are copied; the new content starts as a draft."
 msgstr ""
 
-#: class-mml-admin.php:448
+#: class-alba-admin.php:448
 msgid "When deleting the plugin"
 msgstr ""
 
-#: class-mml-admin.php:597
+#: class-alba-admin.php:597
 msgid "When deleting, all settings, strings, and language and translation data of Alba are removed (including the translations from the side-by-side editor). Separate translation posts remain as normal content. Delete the plugin anyway?"
 msgstr ""
 
-#: class-mml-admin.php:423
+#: class-alba-admin.php:423
 msgid "When saving a translation: affected pages and home pages"
 msgstr ""
 
-#: class-mml-admin.php:424
+#: class-alba-admin.php:424
 msgid "When saving a translation: the entire cache"
 msgstr ""
 
-#: class-mml-admin.php:313
+#: class-alba-admin.php:313
 msgid "Where and how visitors switch the language."
 msgstr ""
 
-#: class-mml-strings.php:457
+#: class-alba-strings.php:458
 msgid "Where does this text come from?"
 msgstr ""
 
-#: class-mml-admin.php:461
+#: class-alba-admin.php:461
 msgid "Where updates for this plugin come from."
 msgstr ""
 
-#: class-mml-log.php:206
+#: class-alba-log.php:206
 msgid "Who"
 msgstr ""
 
-#: class-mml-admin.php:434
+#: class-alba-admin.php:434
 msgid "Who saved which translation, and when."
 msgstr ""
 
-#: class-mml-log.php:181
+#: class-alba-log.php:181
 msgid "Who saved which translation, and when. Retention:"
 msgstr ""
 
-#: class-mml-areas.php:165
+#: class-alba-areas.php:165
 msgid "Widgets and blocks"
 msgstr ""
 
-#: class-mml-xliff.php:883
+#: class-alba-xliff.php:883
 msgid "Will not be imported:"
 msgstr ""
 
-#: class-mml-admin.php:378
+#: class-alba-admin.php:378
 msgid "With a page cache (e.g. LiteSpeed on Hostinger) the home page is often served without PHP: in that case choose \"via JavaScript\"."
 msgstr ""
 
-#: class-mml-seo.php:437
+#: class-alba-seo.php:437
 msgid "Without an SEO plugin, Alba outputs the meta tag itself."
 msgstr ""
 
-#: class-mml-wpml.php:454 class-mml-wpml.php:466
+#: class-alba-wpml.php:454 class-alba-wpml.php:466
 msgid "Without original"
 msgstr ""
 
-#: class-mml-seo.php:443
+#: class-alba-seo.php:443
 msgid "Without pretty permalinks, the language URLs use"
 msgstr ""
 
-#: class-mml-wpml.php:515 class-mml-wpml.php:532
+#: class-alba-wpml.php:515 class-alba-wpml.php:532
 msgid "Without translation"
 msgstr ""
 
-#: class-mml-strings.php:364
+#: class-alba-strings.php:365
 msgid "WordPress core (many texts, e.g. \"Search\", \"Read more\")"
 msgstr ""
 
-#: class-mml-dashboard.php:86
+#: class-alba-dashboard.php:86
 msgid "XLIFF (Export / Import)"
 msgstr ""
 
-#: class-mml-xliff.php:795
+#: class-alba-xliff.php:795
 msgid "XLIFF 1.2 (most widely used)"
 msgstr ""
 
-#: class-mml-xliff.php:796
+#: class-alba-xliff.php:796
 msgid "XLIFF 2.0"
 msgstr ""
 
-#: class-mml-editor.php:932
+#: class-alba-editor.php:932
 msgid "XLIFF import"
 msgstr ""
 
-#: class-mml-xliff.php:741
+#: class-alba-xliff.php:741
 msgid "XLIFF – Export & import for external translators"
 msgstr ""
 
-#: class-mml-seo.php:426
+#: class-alba-seo.php:426
 msgid "XML sitemap per language, hreflang, og:locale, canonical."
 msgstr ""
 
-#: class-mml-workflow.php:434
+#: class-alba-workflow.php:434
 msgid "You assign translations in the translation editor or via bulk action in the \"My translations\" list. Translators submit finished texts \"for review\"; an editor approves or returns them."
 msgstr ""
 
-#: class-mml-admin.php:255
+#: class-alba-admin.php:255
 msgid "You can create translations for these content types."
 msgstr ""
 
-#: class-mml-workflow.php:309
+#: class-alba-workflow.php:309
 msgid ""
 "Your submitted translation has been returned for revision:\n"
 "\n"
 msgstr ""
 
-#: class-mml-po.php:112
+#: class-alba-po.php:112
 msgid "already existed and were kept"
 msgstr ""
 
-#: class-mml-bulk.php:169
+#: class-alba-bulk.php:169
 msgid "also publish translations with open texts"
 msgstr ""
 
-#: class-mml-admin.php:345
+#: class-alba-admin.php:345
 msgid "arrow shown"
 msgstr ""
 
-#: class-mml-admin.php:298
+#: class-alba-admin.php:298
 msgid "as a wildcard):"
 msgstr ""
 
-#: class-mml-wpml.php:314 class-mml-wpml.php:333 class-mml-wpml.php:371
+#: class-alba-wpml.php:314 class-alba-wpml.php:333 class-alba-wpml.php:371
 msgid "assigned"
 msgstr ""
 
-#: class-mml-roles.php:393
+#: class-alba-roles.php:393
 msgid "complete"
 msgstr ""
 
-#: class-mml-admin.php:228
+#: class-alba-admin.php:228
 msgid "default language"
 msgstr ""
 
-#: class-mml-xliff.php:828
+#: class-alba-xliff.php:828
 msgid "detect from file"
 msgstr ""
 
-#: class-mml-dashboard.php:412
+#: class-alba-dashboard.php:412
 msgid "entries per type are counted, and for \"outdated\" at most"
 msgstr ""
 
-#: class-mml-log.php:251
+#: class-alba-log.php:251
 msgid "entries ·"
 msgstr ""
 
-#: class-mml-xliff.php:909
+#: class-alba-xliff.php:909
 msgid "existing translations remain unchanged"
 msgstr ""
 
-#: class-mml-seo.php:432
+#: class-alba-seo.php:432
 msgid "files. Each entry lists all language versions (hreflang, x-default)."
 msgstr ""
 
-#: class-mml-roles.php:366
+#: class-alba-roles.php:366
 msgid "for"
 msgstr ""
 
-#: class-mml-roles.php:152
+#: class-alba-roles.php:152
 msgid "has access to the \"Translations\" page and the translation editor, but nothing else: no posts, pages, media or settings. A translator can only read originals, not change them. They do not see private and password-protected content. Languages can be restricted per user (in the user profile)."
 msgstr ""
 
-#: class-mml-xliff.php:566
+#: class-alba-xliff.php:566
 msgid "has its own translation post in this language or is itself a translation"
 msgstr ""
 
-#: class-mml-admin.php:228
+#: class-alba-admin.php:228
 msgid "has no URL prefix ("
 msgstr ""
 
-#: class-mml-editor.php:889
+#: class-alba-editor.php:889
 msgid "hidden on the frontend"
 msgstr ""
 
-#: class-mml-admin.php:356
+#: class-alba-admin.php:356
 msgid "hide in the menu switcher"
 msgstr ""
 
-#: class-mml-po.php:114
+#: class-alba-po.php:114
 msgid "ignored (fuzzy, empty or plural)"
 msgstr ""
 
-#: class-mml-admin.php:381
+#: class-alba-admin.php:381
 msgid "in the address."
 msgstr ""
 
-#: class-mml-bulk.php:273
+#: class-alba-bulk.php:273
 msgid "is already published"
 msgstr ""
 
-#: class-mml-admin.php:470
+#: class-alba-admin.php:470
 msgid "is available there, the update appears like for any other plugin under Dashboard > Updates and in the plugin list."
 msgstr ""
 
-#: class-mml-seo.php:433
+#: class-alba-seo.php:433
 msgid "is made automatically"
 msgstr ""
 
-#: class-mml-xliff.php:914
+#: class-alba-xliff.php:914
 msgid "items (●) the translation is already published on the frontend. New and changed texts appear there immediately."
 msgstr ""
 
-#: class-mml-bulk.php:314
+#: class-alba-bulk.php:314
 msgid "marked as outdated"
 msgstr ""
 
-#: class-mml-dashboard.php:412
+#: class-alba-dashboard.php:412
 msgid "missing"
 msgstr ""
 
-#: class-mml-admin.php:403
+#: class-alba-admin.php:403
 msgid "name@example.com"
 msgstr ""
 
-#: class-mml-roles.php:389
+#: class-alba-roles.php:389
 msgid "new"
 msgstr ""
 
-#: class-mml-admin.php:345
+#: class-alba-admin.php:345
 msgid "no arrow"
 msgstr ""
 
-#: class-mml-xliff.php:562
+#: class-alba-xliff.php:562
 msgid "no permission"
 msgstr ""
 
-#: class-mml-forms.php:489
+#: class-alba-forms.php:489
 msgid "no supported form plugin"
 msgstr ""
 
-#: class-mml-workflow.php:375
+#: class-alba-workflow.php:375
 msgid "nobody"
 msgstr ""
 
-#: class-mml-roles.php:201 class-mml-workflow.php:375
+#: class-alba-roles.php:201 class-alba-workflow.php:375
 msgid "none"
 msgstr ""
 
-#: class-mml-dashboard.php:400 class-mml-dashboard.php:412
+#: class-alba-dashboard.php:400 class-alba-dashboard.php:412
 msgid "not published"
 msgstr ""
 
-#: class-mml-bulk.php:378
+#: class-alba-bulk.php:378
 msgid "nothing open"
 msgstr ""
 
-#: class-mml-dashboard.php:214 class-mml-wpml.php:111
+#: class-alba-dashboard.php:214 class-alba-wpml.php:111
 msgid "of"
 msgstr ""
 
-#: class-mml-roles.php:353
+#: class-alba-roles.php:353
 msgid "only with open texts"
 msgstr ""
 
-#: class-mml-dashboard.php:122
+#: class-alba-dashboard.php:122
 msgid "or gettext scan under Strings."
 msgstr ""
 
-#: class-mml-dashboard.php:397 class-mml-dashboard.php:412 class-mml-wpml.php:314
+#: class-alba-dashboard.php:397 class-alba-dashboard.php:412 class-alba-wpml.php:314
 msgid "outdated"
 msgstr ""
 
-#: class-mml-wpml.php:116
+#: class-alba-wpml.php:116
 msgid "overwrite content that is already assigned"
 msgstr ""
 
-#: class-mml-xliff.php:910
+#: class-alba-xliff.php:910
 msgid "overwrite existing translations"
 msgstr ""
 
-#: class-mml-roles.php:389
+#: class-alba-roles.php:389
 msgid "published"
 msgstr ""
 
-#: class-mml-editor.php:889
+#: class-alba-editor.php:889
 msgid "published on the frontend"
 msgstr ""
 
-#: class-mml-xliff.php:756
+#: class-alba-xliff.php:756
 msgid "ready for review. The import did not change whether a translation is visible on the frontend."
 msgstr ""
 
-#: class-mml-seo.php:442
+#: class-alba-seo.php:442
 msgid "robots.txt is generated by WordPress and contains the sitemap."
 msgstr ""
 
-#: class-mml-bulk.php:204 class-mml-bulk.php:208 class-mml-wpml.php:140
+#: class-alba-bulk.php:204 class-alba-bulk.php:208 class-alba-wpml.php:140
 msgid "running …"
 msgstr ""
 
-#: class-mml-roles.php:389
+#: class-alba-roles.php:389
 msgid "saved"
 msgstr ""
 
-#: class-mml-editor.php:892
+#: class-alba-editor.php:892
 msgid "saved without text changes (confirmed)"
 msgstr ""
 
-#: class-mml-glossary.php:321
+#: class-alba-glossary.php:321
 msgid "sections are stored. Suggestions are only made for identical original text."
 msgstr ""
 
-#: class-mml-roles.php:370
+#: class-alba-roles.php:370
 msgid "select all on this page"
 msgstr ""
 
-#: class-mml-wpml.php:218 class-mml-wpml.php:314 class-mml-wpml.php:330
+#: class-alba-wpml.php:218 class-alba-wpml.php:314 class-alba-wpml.php:330
 msgid "skipped"
 msgstr ""
 
-#: class-mml-wpml.php:111
+#: class-alba-wpml.php:111
 msgid "strings"
 msgstr ""
 
-#: class-mml-strings.php:499
+#: class-alba-strings.php:500
 msgid "translatable text of the text domain \"%s\""
 msgstr ""
 
-#: class-mml-forms.php:490
+#: class-alba-forms.php:490
 msgid "under the domain \""
 msgstr ""
 
-#: class-mml-strings.php:271
+#: class-alba-strings.php:272
 msgid "untranslated only"
 msgstr ""
 
-#: class-mml-admin.php:376
+#: class-alba-admin.php:376
 msgid "via JavaScript (cache-friendly)"
 msgstr ""
 
-#: class-mml-admin.php:375
+#: class-alba-admin.php:375
 msgid "via server (HTTP redirect)"
 msgstr ""
 
-#: class-mml-bulk.php:184
+#: class-alba-bulk.php:184
 msgid "waiting …"
 msgstr ""
 
-#: class-mml-bulk.php:288
+#: class-alba-bulk.php:288
 msgid "was not visible"
 msgstr ""
 
-#: class-mml-po.php:113
+#: class-alba-po.php:113
 msgid "without matching entry"
 msgstr ""
 
-#: class-mml-strings.php:511
+#: class-alba-strings.php:512
 msgid "written directly in the code (not translatable by text domain)"
 msgstr ""
 
-#: class-mml-seo.php:442
+#: class-alba-seo.php:442
 msgid "yourself."
 msgstr ""
 
-#: class-mml-workflow.php:375
+#: class-alba-workflow.php:375
 msgid "· Assigned to:"
 msgstr ""
 
-#: class-mml-workflow.php:375
+#: class-alba-workflow.php:375
 msgid "· Deadline:"
 msgstr ""
 
-#: class-mml-xliff.php:858
+#: class-alba-xliff.php:858
 msgid "· File"
 msgstr ""
 
-#: class-mml-editor.php:1346
+#: class-alba-editor.php:1346
 msgid "· Last saved by"
 msgstr ""
 
-#: class-mml-workflow.php:376
+#: class-alba-workflow.php:376
 msgid "· Status:"
 msgstr ""
 
-#: class-mml-xliff.php:858
+#: class-alba-xliff.php:858
 msgid "· Target language"
 msgstr ""
 
-#: class-mml-xliff.php:858
+#: class-alba-xliff.php:858
 msgid "· XLIFF"
 msgstr ""
 
-#: class-mml-areas.php:206
+#: class-alba-areas.php:206
 msgid "– like original –"
 msgstr ""
 
-#: class-mml-workflow.php:389
+#: class-alba-workflow.php:389
 msgid "– nobody –"
 msgstr ""
 
-#: class-mml-admin.php:318 class-mml-admin.php:350
+#: class-alba-admin.php:318 class-alba-admin.php:350
 msgid "– not automatic –"
 msgstr ""
 
-#: class-mml-bulk.php:163
+#: class-alba-bulk.php:163
 msgid "– remove assignment –"
 msgstr ""
 
-#: class-mml-strings.php:501
+#: class-alba-strings.php:502
 msgid "– select this source above and scan again."
 msgstr ""
 
-#: class-mml-log.php:241
+#: class-alba-log.php:241
 msgid "… and"
 msgstr ""
 
-#: class-mml-admin.php:678
+#: class-alba-admin.php:678
 msgid "… or link to an existing one"
 msgstr ""
 
-#: class-mml-xliff.php:776
+#: class-alba-xliff.php:776
 msgid "→ translator edits the file in their translation tool (Trados, memoQ, Phrase, Crowdin, Poedit …) → import here. Imported texts end up in the side-by-side editor and must be checked and saved there by you."
 msgstr ""

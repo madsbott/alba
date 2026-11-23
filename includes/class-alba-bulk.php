@@ -15,21 +15,21 @@ if (!defined('ABSPATH')) {
  * Aufruf aus der Liste „Meine Übersetzungen“ oder per Sammelaktion in den Beitragslisten. Die Ausführung läuft
  * Inhalt für Inhalt per AJAX, damit lange Vorübersetzungen nicht in ein Zeitlimit laufen.
  */
-class MML_Bulk {
+class ALBA_Bulk {
 	const PAGE = 'alba-bulk';
 	const MAX = 300;
 	const MT_STEP = 12;
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->bulk = $this;
 		if (!is_admin()) {
 			return;
 		}
 		add_action('admin_menu', [$this, 'menu']);
-		add_action('wp_ajax_mml_bulk_item', [$this, 'ajax']);
+		add_action('wp_ajax_alba_bulk_item', [$this, 'ajax']);
 		add_action('admin_init', [$this, 'list_hooks']);
 	}
 
@@ -41,10 +41,10 @@ class MML_Bulk {
 	public function ops() {
 		$ed = current_user_can('edit_others_posts');
 		$out = [];
-		if (MML_MT::enabled()) {
+		if (ALBA_MT::enabled()) {
 			$out['mt'] = __('Pre-translate empty fields automatically', 'alba');
 		}
-		if (current_user_can('edit_posts') || get_option('mml_translator_publish', '0') === '1') {
+		if (current_user_can('edit_posts') || get_option('alba_translator_publish', '0') === '1') {
 			$out['publish'] = __('Show on the frontend (publish)', 'alba');
 			$out['unpublish'] = __('Hide on the frontend', 'alba');
 		}
@@ -57,7 +57,7 @@ class MML_Bulk {
 	}
 
 	public function url($op, $lang, array $ids, array $extra = []) {
-		return wp_nonce_url(add_query_arg(array_merge(['page' => self::PAGE, 'op' => $op, 'lang' => $lang, 'ids' => implode(',', array_map('intval', $ids))], $extra), admin_url('admin.php')), 'mml_bulk_run');
+		return wp_nonce_url(add_query_arg(array_merge(['page' => self::PAGE, 'op' => $op, 'lang' => $lang, 'ids' => implode(',', array_map('intval', $ids))], $extra), admin_url('admin.php')), 'alba_bulk_run');
 	}
 
 	/* ---------------------------------------------------------------
@@ -85,14 +85,14 @@ class MML_Bulk {
 				if ($op === 'unpublish') {
 					continue;
 				}
-				$a['mml_' . $op . '|' . $code] = __('Translation (', 'alba') . $l['name'] . '): ' . $label;
+				$a['alba_' . $op . '|' . $code] = __('Translation (', 'alba') . $l['name'] . '): ' . $label;
 			}
 		}
 		return $a;
 	}
 
 	public function list_handle($redirect, $action, $ids) {
-		if (strpos((string) $action, 'mml_') !== 0 || !strpos($action, '|')) {
+		if (strpos((string) $action, 'alba_') !== 0 || !strpos($action, '|')) {
 			return $redirect;
 		}
 		list($op, $lang) = explode('|', substr($action, 4), 2);
@@ -123,7 +123,7 @@ class MML_Bulk {
 		if (!current_user_can('read')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
-		check_admin_referer('mml_bulk_run');
+		check_admin_referer('alba_bulk_run');
 		$op = isset($_GET['op']) ? sanitize_key(wp_unslash($_GET['op'])) : '';
 		$lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
 		$ops = $this->ops();
@@ -131,7 +131,7 @@ class MML_Bulk {
 		if (!isset($ops[$op]) || !isset($c->langs[$lang]) || $lang === $c->default || !$c->roles->lang_allowed($lang) || !$ids) {
 			wp_die(esc_html__('Invalid bulk action. Please select the content and language again.', 'alba'));
 		}
-		$back = admin_url('admin.php?page=' . ($c->roles->is_translator_only() ? MML_Roles::PAGE : MML_Roles::PAGE));
+		$back = admin_url('admin.php?page=' . ($c->roles->is_translator_only() ? ALBA_Roles::PAGE : ALBA_Roles::PAGE));
 		$rows = [];
 		foreach ($ids as $id) {
 			$p = get_post($id);
@@ -146,7 +146,7 @@ class MML_Bulk {
 		}
 
 		if ($op === 'xliff') {
-			$u = wp_nonce_url(add_query_arg(['action' => 'mml_xliff_export', 'lang' => $lang, 'fmt' => '1.2', 'tr' => 1, 'ids' => implode(',', array_keys($rows))], admin_url('admin-post.php')), 'mml_xliff_export');
+			$u = wp_nonce_url(add_query_arg(['action' => 'alba_xliff_export', 'lang' => $lang, 'fmt' => '1.2', 'tr' => 1, 'ids' => implode(',', array_keys($rows))], admin_url('admin-post.php')), 'alba_xliff_export');
 			echo '<p>' . esc_html(sprintf(/* translators: %d: number of items */ __('%d items are exported in one file. Items that already have their own translation post are skipped.', 'alba'), count($rows))) . '</p>';
 			echo '<p><a class="button button-primary" href="' . esc_url($u) . '">' . esc_html__('Download XLIFF file', 'alba') . '</a> <a class="button" href="' . esc_url($back) . '">' . esc_html__('Back', 'alba') . '</a></p></div>';
 			return;
@@ -156,7 +156,7 @@ class MML_Bulk {
 		$need_form = ($op === 'assign') || ($op === 'publish' && !isset($_GET['go']));
 		if ($need_form && !isset($_GET['go'])) {
 			echo '<form method="get" action="' . esc_url(admin_url('admin.php')) . '">';
-			foreach (['page' => self::PAGE, 'op' => $op, 'lang' => $lang, 'ids' => implode(',', array_keys($rows)), 'go' => '1', '_wpnonce' => wp_create_nonce('mml_bulk_run')] as $k => $v) {
+			foreach (['page' => self::PAGE, 'op' => $op, 'lang' => $lang, 'ids' => implode(',', array_keys($rows)), 'go' => '1', '_wpnonce' => wp_create_nonce('alba_bulk_run')] as $k => $v) {
 				echo '<input type="hidden" name="' . esc_attr($k) . '" value="' . esc_attr($v) . '">';
 			}
 			if ($op === 'assign') {
@@ -178,19 +178,19 @@ class MML_Bulk {
 			$extra = ['force' => !empty($_GET['force']) ? 1 : 0];
 		}
 		?>
-		<p><progress id="mml-bp" max="<?php echo count($rows); ?>" value="0" style="width:420px;max-width:100%"></progress> <span id="mml-bc">0 / <?php echo count($rows); ?></span></p>
+		<p><progress id="alba-bp" max="<?php echo count($rows); ?>" value="0" style="width:420px;max-width:100%"></progress> <span id="alba-bc">0 / <?php echo count($rows); ?></span></p>
 		<table class="widefat striped" style="max-width:900px"><thead><tr><th><?php echo esc_html__('Content', 'alba'); ?></th><th><?php echo esc_html__('Result', 'alba'); ?></th></tr></thead><tbody>
 		<?php foreach ($rows as $id => $t) : ?>
 			<tr data-id="<?php echo (int) $id; ?>"><td><?php echo esc_html($t); ?></td><td class="r"><?php echo esc_html__('waiting …', 'alba'); ?></td></tr>
 		<?php endforeach; ?>
 		</tbody></table>
-		<p id="mml-bd" style="display:none"><strong><?php echo esc_html__('Done.', 'alba'); ?></strong> <a class="button" href="<?php echo esc_url($back); ?>"><?php echo esc_html__('Back to the list', 'alba'); ?></a></p>
+		<p id="alba-bd" style="display:none"><strong><?php echo esc_html__('Done.', 'alba'); ?></strong> <a class="button" href="<?php echo esc_url($back); ?>"><?php echo esc_html__('Back to the list', 'alba'); ?></a></p>
 		<script>
 		(function () {
 			var rows = Array.prototype.slice.call(document.querySelectorAll('tr[data-id]'));
-			var base = {action: 'mml_bulk_item', nonce: <?php echo wp_json_encode(wp_create_nonce('mml_bulk')); ?>, op: <?php echo wp_json_encode($op); ?>, lang: <?php echo wp_json_encode($lang); ?>};
+			var base = {action: 'alba_bulk_item', nonce: <?php echo wp_json_encode(wp_create_nonce('alba_bulk')); ?>, op: <?php echo wp_json_encode($op); ?>, lang: <?php echo wp_json_encode($lang); ?>};
 			var extra = <?php echo wp_json_encode((object) $extra); ?>;
-			var done = 0, bar = document.getElementById('mml-bp'), cnt = document.getElementById('mml-bc');
+			var done = 0, bar = document.getElementById('alba-bp'), cnt = document.getElementById('alba-bc');
 			function post(id) {
 				var fd = new FormData();
 				Object.keys(base).forEach(function (k) { fd.append(k, base[k]); });
@@ -199,7 +199,7 @@ class MML_Bulk {
 				return fetch(<?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>, {method: 'POST', credentials: 'same-origin', body: fd}).then(function (r) { return r.json(); });
 			}
 			function step(i) {
-				if (i >= rows.length) { document.getElementById('mml-bd').style.display = ''; return; }
+				if (i >= rows.length) { document.getElementById('alba-bd').style.display = ''; return; }
 				var tr = rows[i], cell = tr.querySelector('.r');
 				cell.textContent = <?php echo wp_json_encode(__('running …', 'alba')); ?>;
 				(function run(n) {
@@ -227,7 +227,7 @@ class MML_Bulk {
 	 * ------------------------------------------------------------- */
 
 	public function ajax() {
-		check_ajax_referer('mml_bulk', 'nonce');
+		check_ajax_referer('alba_bulk', 'nonce');
 		$c = $this->core;
 		$op = isset($_POST['op']) ? sanitize_key(wp_unslash($_POST['op'])) : '';
 		$lang = isset($_POST['lang']) ? sanitize_key(wp_unslash($_POST['lang'])) : '';
@@ -256,7 +256,7 @@ class MML_Bulk {
 		if ($c->translation($post->ID, $lang, false)) {
 			return __('There is a separate translation post (please edit it there).', 'alba');
 		}
-		$has = metadata_exists('post', $post->ID, MML_Editor::TR . $lang);
+		$has = metadata_exists('post', $post->ID, ALBA_Editor::TR . $lang);
 
 		switch ($op) {
 			case 'mt':
@@ -276,7 +276,7 @@ class MML_Bulk {
 				if ($oc[0] && empty($in['force'])) {
 					return sprintf(/* translators: 1: open texts, 2: total texts */ __('Skipped: %1$d of %2$d texts are still open.', 'alba'), (int) $oc[0], (int) $oc[1]);
 				}
-				update_post_meta($post->ID, MML_Editor::ON . $lang, '1');
+				update_post_meta($post->ID, ALBA_Editor::ON . $lang, '1');
 				$this->after($post->ID, $lang, __('Published (bulk action)', 'alba'), true);
 				return ['msg' => 'freigegeben', 'more' => false];
 
@@ -287,7 +287,7 @@ class MML_Bulk {
 				if (!$e->is_on($post->ID, $lang)) {
 					return ['msg' => __('was not visible', 'alba'), 'more' => false];
 				}
-				delete_post_meta($post->ID, MML_Editor::ON . $lang);
+				delete_post_meta($post->ID, ALBA_Editor::ON . $lang);
 				$this->after($post->ID, $lang, __('Hidden (bulk action)', 'alba'), false);
 				return ['msg' => 'ausgeblendet', 'more' => false];
 
@@ -295,14 +295,14 @@ class MML_Bulk {
 				if (!$has) {
 					return __('No translation yet.', 'alba');
 				}
-				$d = get_post_meta($post->ID, MML_Editor::TR . $lang, true);
+				$d = get_post_meta($post->ID, ALBA_Editor::TR . $lang, true);
 				$d = is_array($d) ? $d : [];
 				$d['sig'] = '__stale__';
 				$d['hs'] = [];
 				$d['th'] = '';
 				$d['eh'] = '';
 				$d['seo_h'] = [];
-				update_post_meta($post->ID, MML_Editor::TR . $lang, wp_slash($d));
+				update_post_meta($post->ID, ALBA_Editor::TR . $lang, wp_slash($d));
 				if ($c->workflow) {
 					$w = $c->workflow->get($post->ID, $lang);
 					if ($w['to'] && $w['st'] !== 'review') {
@@ -331,7 +331,7 @@ class MML_Bulk {
 	private function after($id, $lang, $text, $on) {
 		$c = $this->core;
 		$c->editor->reset($id);
-		do_action('mml_translation_saved', $id, $lang);
+		do_action('alba_translation_saved', $id, $lang);
 		if ($on === true && $c->workflow) {
 			$c->workflow->after_save($id, $lang, false, true);
 		}
@@ -347,7 +347,7 @@ class MML_Bulk {
 	private function op_mt($post, $lang) {
 		$c = $this->core;
 		$e = $c->editor;
-		if (!MML_MT::enabled() || !$c->mt) {
+		if (!ALBA_MT::enabled() || !$c->mt) {
 			return __('Automatic translation is turned off.', 'alba');
 		}
 		$kinds = [];

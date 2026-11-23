@@ -8,21 +8,21 @@ if (!defined('ABSPATH')) {
  * Schnellzugriff auf alle Bereiche und Kurzhilfe. Unterseiten (Einstellungen, Zeichenfolgen,
  * Import/Export) registrieren sich selbst unter diesem Menü.
  */
-class MML_Dashboard {
+class ALBA_Dashboard {
 	const SLUG = 'alba';
 	const LIMIT = 2000;
 	const OLD_CHECK = 300;   // höchstens so viele Inhalte werden auf "veraltet" geprüft
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		if (!is_admin()) {
 			return;
 		}
 		add_action('admin_menu', [$this, 'menu'], 9);
 		add_action('admin_init', [$this, 'legacy_redirect']);
-		add_filter('plugin_action_links_' . plugin_basename(MML_FILE), [$this, 'action_links']);
+		add_filter('plugin_action_links_' . plugin_basename(ALBA_FILE), [$this, 'action_links']);
 	}
 
 	public function menu() {
@@ -67,7 +67,7 @@ class MML_Dashboard {
 		$c = $this->core;
 		?>
 		<div class="wrap">
-			<h1>Alba <span style="font-size:13px;color:#646970;font-weight:400"><?php echo esc_html__('Version', 'alba'); ?> <?php echo esc_html(MML_VERSION); ?></span></h1>
+			<h1>Alba <span style="font-size:13px;color:#646970;font-weight:400"><?php echo esc_html__('Version', 'alba'); ?> <?php echo esc_html(ALBA_VERSION); ?></span></h1>
 
 			<?php if (!get_option('permalink_structure')) : ?>
 				<div class="notice notice-warning inline"><p><?php echo esc_html__('Pretty permalinks are not active. Language URLs then only work as', 'alba'); ?> <code>?lang=xx</code><?php echo esc_html__('. Recommended: choose a structure under Settings > Permalinks.', 'alba'); ?></p></div>
@@ -116,11 +116,11 @@ class MML_Dashboard {
 			<h2><?php echo esc_html__('Quick help', 'alba'); ?></h2>
 			<table class="widefat striped" style="max-width:900px">
 				<tbody>
-					<tr><td><strong><?php echo esc_html__('Language switcher', 'alba'); ?></strong></td><td><?php echo esc_html__('Block "Language switcher" (widgets), shortcode', 'alba'); ?> <code>[mml_switcher style="dropdown" display="code"]</code><?php echo esc_html__(', function', 'alba'); ?> <code>mml_switcher()</code><?php echo esc_html__(', or automatically appended to the menu or block navigation (Settings).', 'alba'); ?></td></tr>
+					<tr><td><strong><?php echo esc_html__('Language switcher', 'alba'); ?></strong></td><td><?php echo esc_html__('Block "Language switcher" (widgets), shortcode', 'alba'); ?> <code>[alba_switcher style="dropdown" display="code"]</code><?php echo esc_html__(', function', 'alba'); ?> <code>alba_switcher()</code><?php echo esc_html__(', or automatically appended to the menu or block navigation (Settings).', 'alba'); ?></td></tr>
 					<tr><td><strong><?php echo esc_html__('Posts & pages', 'alba'); ?></strong></td><td><?php echo esc_html__('In the editor, box "Language & Translations": translate in the side-by-side editor (red ⟳ in the language code = original changed), or create a separate post or link one. The lists have the "Languages" column and the language filter.', 'alba'); ?></td></tr>
 					<tr><td><strong><?php echo esc_html__('Taxonomies', 'alba'); ?></strong></td><td><?php echo esc_html__('Categories, tags & co.: language per term, translations in the edit form. In the editor, the selection only shows terms in the post\'s language.', 'alba'); ?></td></tr>
-					<tr><td><strong><?php echo esc_html__('Theme texts', 'alba'); ?></strong></td><td><code>mml__('Text', 'Domain', 'name')</code>, <code>mml_e()</code>, <code>[mml_string domain="Theme"]Text[/mml_string]</code> <?php echo esc_html__('or gettext scan under Strings.', 'alba'); ?></td></tr>
-					<tr><td><strong><?php echo esc_html__('For developers', 'alba'); ?></strong></td><td><code>mml_current_lang()</code>, <code>mml_get_translation($post_id, $lang)</code>, <code>mml_get_term_translation($term_id, $lang)</code>.</td></tr>
+					<tr><td><strong><?php echo esc_html__('Theme texts', 'alba'); ?></strong></td><td><code>alba__('Text', 'Domain', 'name')</code>, <code>alba_e()</code>, <code>[alba_string domain="Theme"]Text[/alba_string]</code> <?php echo esc_html__('or gettext scan under Strings.', 'alba'); ?></td></tr>
+					<tr><td><strong><?php echo esc_html__('For developers', 'alba'); ?></strong></td><td><code>alba_current_lang()</code>, <code>alba_get_translation($post_id, $lang)</code>, <code>alba_get_term_translation($term_id, $lang)</code>.</td></tr>
 				</tbody>
 			</table>
 		</div>
@@ -142,13 +142,13 @@ class MML_Dashboard {
 		if (!$targets || !$c->editor) {
 			return $res;
 		}
-		$cache = get_option('mml_open_cache', []);
+		$cache = get_option('alba_open_cache', []);
 		$cache = is_array($cache) ? $cache : [];
 		$seen = [];
 		$start = microtime(true);
-		$salt = md5(implode('|', [get_option('mml_meta_keys', ''), get_option('mml_extra_attrs', ''), get_option('mml_t_attrs', 1), get_option('mml_t_blocks', 1), get_option('mml_t_acf', 1), (int) floor(time() / 3600)]));
+		$salt = md5(implode('|', [get_option('alba_meta_keys', ''), get_option('alba_extra_attrs', ''), get_option('alba_t_attrs', 1), get_option('alba_t_blocks', 1), get_option('alba_t_acf', 1), (int) floor(time() / 3600)]));
 		foreach ($c->post_types as $t) {
-			$posts = get_posts(['post_type' => $t, 'post_status' => 'publish', 'posts_per_page' => self::LIMIT, 'orderby' => 'none', 'no_found_rows' => true, 'suppress_filters' => true, 'mml_skip' => 1]);
+			$posts = get_posts(['post_type' => $t, 'post_status' => 'publish', 'posts_per_page' => self::LIMIT, 'orderby' => 'none', 'no_found_rows' => true, 'suppress_filters' => true, 'alba_skip' => 1]);
 			update_meta_cache('post', wp_list_pluck($posts, 'ID'));
 			foreach ($posts as $post) {
 				$id = (int) $post->ID;
@@ -185,7 +185,7 @@ class MML_Dashboard {
 		if (!$res['partial']) {
 			$cache = $seen;
 		}
-		update_option('mml_open_cache', $cache, false);
+		update_option('alba_open_cache', $cache, false);
 		usort($res['top'], function ($a, $b) {
 			return $b[0] - $a[0];
 		});
@@ -278,7 +278,7 @@ class MML_Dashboard {
 				'orderby'          => 'none',
 				'no_found_rows'    => true,
 				'suppress_filters' => true,
-				'mml_skip'         => 1,
+				'alba_skip'         => 1,
 			]);
 			$items = [];
 			$extra = [];
@@ -290,7 +290,7 @@ class MML_Dashboard {
 			update_meta_cache('post', $ids);
 			foreach ($ids as $id) {
 				$id = (int) $id;
-				$g = (string) get_post_meta($id, '_mml_group', true);
+				$g = (string) get_post_meta($id, '_alba_group', true);
 				$lang = $c->post_lang($id);
 				$items[] = [$lang, $g, $id];
 				if (!$c->editor) {
@@ -336,7 +336,7 @@ class MML_Dashboard {
 				'link'    => function ($code) use ($t, $ov_on, $ov_draft) {
 					$url = 'edit.php?post_type=' . rawurlencode($t);
 					if (($ov_on[$code] + $ov_draft[$code]) === 0) {
-						$url .= '&mml_lang=' . rawurlencode($code);
+						$url .= '&alba_lang=' . rawurlencode($code);
 					}
 					return admin_url($url);
 				},
@@ -348,13 +348,13 @@ class MML_Dashboard {
 			if (!$obj) {
 				continue;
 			}
-			$ids = get_terms(['taxonomy' => $tx, 'hide_empty' => false, 'fields' => 'ids', 'number' => self::LIMIT, 'mml_skip' => 1]);
+			$ids = get_terms(['taxonomy' => $tx, 'hide_empty' => false, 'fields' => 'ids', 'number' => self::LIMIT, 'alba_skip' => 1]);
 			if (is_wp_error($ids)) {
 				continue;
 			}
 			$items = [];
 			foreach ($ids as $id) {
-				$items[] = [$c->terms ? $c->terms->lang((int) $id) : $c->default, (string) get_term_meta($id, '_mml_group', true), (int) $id];
+				$items[] = [$c->terms ? $c->terms->lang((int) $id) : $c->default, (string) get_term_meta($id, '_alba_group', true), (int) $id];
 			}
 			list($count, $missing, $total, $capped) = $this->tally($items);
 			$rows[] = [
@@ -415,7 +415,7 @@ class MML_Dashboard {
 
 	private function strings_status() {
 		$c = $this->core;
-		$all = get_option(MML_Strings::OPT, []);
+		$all = get_option(ALBA_Strings::OPT, []);
 		$all = is_array($all) ? $all : [];
 		$open = array_fill_keys(array_keys($c->langs), 0);
 		foreach ($all as $s) {

@@ -6,22 +6,22 @@ if (!defined('ABSPATH')) {
 /**
  * Rolle „Übersetzer“: Zugriff nur auf den Übersetzungseditor, ohne Originale bearbeiten zu dürfen.
  *
- * - Rolle mml_translator mit den Rechten read und mml_translate (kein edit_posts, kein Medien-Upload).
+ * - Rolle alba_translator mit den Rechten read und alba_translate (kein edit_posts, kein Medien-Upload).
  * - Wer ein Original bearbeiten darf (edit_post), darf es auch übersetzen. Übersetzer dürfen veröffentlichte, geplante,
  *   ausstehende und Entwurfs-Inhalte übersetzen, aber keine privaten oder passwortgeschützten.
- * - Pro Benutzer lassen sich die Sprachen einschränken (Benutzermeta mml_langs, leer = alle). Administratoren sind ausgenommen.
+ * - Pro Benutzer lassen sich die Sprachen einschränken (Benutzermeta alba_langs, leer = alle). Administratoren sind ausgenommen.
  * - Freigabe („Im Frontend anzeigen“): nur mit Original-Bearbeitungsrecht oder wenn die Einstellung „Übersetzer dürfen freigeben“ an ist.
  * - Eigene Seite „Übersetzungen“ (Liste der offenen Texte) statt Dashboard.
  */
-class MML_Roles {
-	const ROLE = 'mml_translator';
-	const CAP = 'mml_translate';
+class ALBA_Roles {
+	const ROLE = 'alba_translator';
+	const CAP = 'alba_translate';
 	const PAGE = 'alba-mine';
 	const STATUSES = ['publish', 'draft', 'pending', 'future'];
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->roles = $this;
 
@@ -71,7 +71,7 @@ class MML_Roles {
 		if (user_can($uid, 'manage_options')) {
 			return $all;
 		}
-		$m = get_user_meta($uid, 'mml_langs', true);
+		$m = get_user_meta($uid, 'alba_langs', true);
 		if (!is_array($m) || !$m) {
 			return $all;
 		}
@@ -102,7 +102,7 @@ class MML_Roles {
 
 	/** Darf der Benutzer die Übersetzung im Frontend freigeben? */
 	public function can_publish($post_id) {
-		return current_user_can('edit_post', (int) $post_id) || get_option('mml_translator_publish', '0') === '1';
+		return current_user_can('edit_post', (int) $post_id) || get_option('alba_translator_publish', '0') === '1';
 	}
 
 	/* ---------------------------------------------------------------
@@ -113,7 +113,7 @@ class MML_Roles {
 		if ($this->is_translator_only()) {
 			add_menu_page(__('Translations', 'alba'), __('Translations', 'alba'), self::CAP, self::PAGE, [$this, 'page'], 'dashicons-translation', 58);
 		} elseif (current_user_can('edit_posts')) {
-			add_submenu_page(MML_Dashboard::SLUG, __('My translations', 'alba'), __('My translations', 'alba'), 'edit_posts', self::PAGE, [$this, 'page']);
+			add_submenu_page(ALBA_Dashboard::SLUG, __('My translations', 'alba'), __('My translations', 'alba'), 'edit_posts', self::PAGE, [$this, 'page']);
 		}
 	}
 
@@ -138,7 +138,7 @@ class MML_Roles {
 	 * ------------------------------------------------------------- */
 
 	public function register() {
-		register_setting('mml', 'mml_translator_publish', ['sanitize_callback' => function ($v) {
+		register_setting('alba', 'alba_translator_publish', ['sanitize_callback' => function ($v) {
 			return $v === '1' ? '1' : '0';
 		}]);
 	}
@@ -146,18 +146,18 @@ class MML_Roles {
 	public function card() {
 		$n = count(get_users(['role' => self::ROLE, 'fields' => 'ID']));
 		?>
-		<section class="mml-card" data-tab="lang">
-			<header class="mml-card-h"><span class="dashicons dashicons-businessperson"></span><div><h2><?php echo esc_html__('Translator', 'alba'); ?></h2><p><?php echo esc_html__('Users who may only translate.', 'alba'); ?></p></div></header>
-			<div class="mml-card-b">
+		<section class="alba-card" data-tab="lang">
+			<header class="alba-card-h"><span class="dashicons dashicons-businessperson"></span><div><h2><?php echo esc_html__('Translator', 'alba'); ?></h2><p><?php echo esc_html__('Users who may only translate.', 'alba'); ?></p></div></header>
+			<div class="alba-card-b">
 				<p><?php echo esc_html__('The role', 'alba'); ?> <strong><?php echo esc_html__('Translator', 'alba'); ?></strong> <?php echo esc_html__('has access to the "Translations" page and the translation editor, but nothing else: no posts, pages, media or settings. A translator can only read originals, not change them. They do not see private and password-protected content. Languages can be restricted per user (in the user profile).', 'alba'); ?></p>
 				<p>
 					<a class="button" href="<?php echo esc_url(admin_url('user-new.php')); ?>"><?php echo esc_html__('Create user (choose role "Translator")', 'alba'); ?></a>
 					<a class="button" href="<?php echo esc_url(admin_url('users.php?role=' . self::ROLE)); ?>"><?php echo (int) $n; ?> <?php echo esc_html__('Show translators', 'alba'); ?></a>
 				</p>
-				<div class="mml-fields">
-					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Approval', 'alba'); ?></div><div class="mml-ctl">
-						<label><input type="checkbox" name="mml_translator_publish" value="1" <?php checked(get_option('mml_translator_publish', '0'), '1'); ?>> <?php echo esc_html__('Translators may publish translations on the frontend', 'alba'); ?></label>
-						<p class="mml-hint"><?php echo esc_html__('Off (default): translators only save. Editors and administrators decide whether a translation appears on the frontend ("Show on the frontend" in the editor). Translations that are already published stay published when saved.', 'alba'); ?></p>
+				<div class="alba-fields">
+					<div class="alba-field"><div class="alba-label"><?php echo esc_html__('Approval', 'alba'); ?></div><div class="alba-ctl">
+						<label><input type="checkbox" name="alba_translator_publish" value="1" <?php checked(get_option('alba_translator_publish', '0'), '1'); ?>> <?php echo esc_html__('Translators may publish translations on the frontend', 'alba'); ?></label>
+						<p class="alba-hint"><?php echo esc_html__('Off (default): translators only save. Editors and administrators decide whether a translation appears on the frontend ("Show on the frontend" in the editor). Translations that are already published stay published when saved.', 'alba'); ?></p>
 					</div></div>
 				</div>
 			</div>
@@ -179,7 +179,7 @@ class MML_Roles {
 		if (!$is_admin_view && !user_can($user, self::CAP)) {
 			return;
 		}
-		$m = get_user_meta($user->ID, 'mml_langs', true);
+		$m = get_user_meta($user->ID, 'alba_langs', true);
 		$sel = is_array($m) ? $m : [];
 		?>
 		<h2><?php echo esc_html__('Translate', 'alba'); ?></h2>
@@ -189,7 +189,7 @@ class MML_Roles {
 				<td>
 					<?php if ($is_admin_view) : ?>
 						<?php foreach ($targets as $code => $l) : ?>
-							<label style="margin-right:14px"><input type="checkbox" name="mml_langs[]" value="<?php echo esc_attr($code); ?>" <?php checked(in_array($code, $sel, true)); ?>> <?php echo esc_html($l['name']); ?></label>
+							<label style="margin-right:14px"><input type="checkbox" name="alba_langs[]" value="<?php echo esc_attr($code); ?>" <?php checked(in_array($code, $sel, true)); ?>> <?php echo esc_html($l['name']); ?></label>
 						<?php endforeach; ?>
 						<p class="description"><?php echo esc_html__('The user may translate into these languages. Nothing selected: all. Does not apply to administrators.', 'alba'); ?></p>
 					<?php else : ?>
@@ -213,12 +213,12 @@ class MML_Roles {
 		}
 		$c = $this->core;
 		$targets = array_keys(array_diff_key($c->langs, [$c->default => 1]));
-		$sel = (isset($_POST['mml_langs']) && is_array($_POST['mml_langs'])) ? array_map('sanitize_key', wp_unslash($_POST['mml_langs'])) : [];
+		$sel = (isset($_POST['alba_langs']) && is_array($_POST['alba_langs'])) ? array_map('sanitize_key', wp_unslash($_POST['alba_langs'])) : [];
 		$sel = array_values(array_intersect($targets, $sel));
 		if ($sel && count($sel) < count($targets)) {
-			update_user_meta($uid, 'mml_langs', $sel);
+			update_user_meta($uid, 'alba_langs', $sel);
 		} else {
-			delete_user_meta($uid, 'mml_langs');
+			delete_user_meta($uid, 'alba_langs');
 		}
 	}
 
@@ -267,7 +267,7 @@ class MML_Roles {
 			's'                => $search,
 			'no_found_rows'    => true,
 			'suppress_filters' => false,
-			'mml_skip'         => 1,
+			'alba_skip'         => 1,
 		];
 		if ($jobs && $wf) {
 			$ids = $wf->job_post_ids();
@@ -358,8 +358,8 @@ class MML_Roles {
 			<p><em><?php echo $only ? esc_html__('Nothing to translate. Everything is done or nothing matches the filter.', 'alba') : esc_html__('No content found.', 'alba'); ?></em></p>
 		<?php else : ?>
 			<form method="get" action="<?php echo esc_url(admin_url('admin.php')); ?>">
-				<input type="hidden" name="page" value="<?php echo esc_attr(MML_Bulk::PAGE); ?>">
-				<input type="hidden" name="_wpnonce" value="<?php echo esc_attr(wp_create_nonce('mml_bulk_run')); ?>">
+				<input type="hidden" name="page" value="<?php echo esc_attr(ALBA_Bulk::PAGE); ?>">
+				<input type="hidden" name="_wpnonce" value="<?php echo esc_attr(wp_create_nonce('alba_bulk_run')); ?>">
 				<?php if ($ops) : ?>
 				<p>
 					<select name="op"><?php foreach ($ops as $k => $lbl) : ?><option value="<?php echo esc_attr($k); ?>"><?php echo esc_html($lbl); ?></option><?php endforeach; ?></select>
@@ -367,7 +367,7 @@ class MML_Roles {
 
 					<select name="lang"><?php foreach ($use as $l) : ?><option value="<?php echo esc_attr($l); ?>"><?php echo esc_html($c->langs[$l]['name']); ?></option><?php endforeach; ?></select>
 					<button class="button"><?php echo esc_html__('Apply to selection', 'alba'); ?></button>
-					<label style="margin-left:10px"><input type="checkbox" id="mml-all"> <?php echo esc_html__('select all on this page', 'alba'); ?></label>
+					<label style="margin-left:10px"><input type="checkbox" id="alba-all"> <?php echo esc_html__('select all on this page', 'alba'); ?></label>
 				</p>
 				<?php endif; ?>
 			<table class="widefat striped" style="max-width:1100px">
@@ -378,7 +378,7 @@ class MML_Roles {
 					$o = get_post_type_object($p->post_type);
 					?>
 					<tr>
-						<?php if ($ops) : ?><th class="check-column"><input type="checkbox" class="mml-pick" name="ids[]" value="<?php echo (int) $p->ID; ?>"></th><?php endif; ?>
+						<?php if ($ops) : ?><th class="check-column"><input type="checkbox" class="alba-pick" name="ids[]" value="<?php echo (int) $p->ID; ?>"></th><?php endif; ?>
 						<td><strong><?php echo esc_html($p->post_title !== '' ? $p->post_title : __('(no title)', 'alba')); ?></strong><?php echo $p->post_status !== 'publish' ? ' <span class="description">(' . esc_html(get_post_status_object($p->post_status)->label) . ')</span>' : ''; ?></td>
 						<td><?php echo esc_html($o ? $o->labels->singular_name : $p->post_type); ?></td>
 						<?php foreach ($use as $l) : ?>
@@ -404,8 +404,8 @@ class MML_Roles {
 			</form>
 			<script>
 			(function () {
-				var all = document.getElementById('mml-all');
-				if (all) { all.addEventListener('change', function () { document.querySelectorAll('.mml-pick').forEach(function (b) { b.checked = all.checked; }); }); }
+				var all = document.getElementById('alba-all');
+				if (all) { all.addEventListener('change', function () { document.querySelectorAll('.alba-pick').forEach(function (b) { b.checked = all.checked; }); }); }
 			})();
 			</script>
 			<?php if ($pages > 1) : ?>

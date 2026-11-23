@@ -7,30 +7,30 @@ if (!defined('ABSPATH')) {
 
 /**
  * Änderungsprotokoll: wer hat wann welchen Text übersetzt.
- * Eigene Tabelle {prefix}mml_log. Protokolliert werden das Speichern im Links-rechts-Editor (mit Vorher/Nachher je Text)
+ * Eigene Tabelle {prefix}alba_log. Protokolliert werden das Speichern im Links-rechts-Editor (mit Vorher/Nachher je Text)
  * und das Anlegen eigener Übersetzungs-Beiträge. Aufbewahrung einstellbar (Standard 365 Tage).
  */
-class MML_Log {
+class ALBA_Log {
 	const DB = '1';
 	const PAGE = 'alba-log';
 	const PER_PAGE = 30;
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->log = $this;
 
 		add_action('admin_init', [$this, 'ensure_table']);
 		add_action('admin_menu', [$this, 'menu']);
-		add_action('mml_translation_created', [$this, 'on_created'], 10, 4);
-		add_action('admin_post_mml_log_csv', [$this, 'csv']);
-		add_action('admin_post_mml_log_clear', [$this, 'clear']);
+		add_action('alba_translation_created', [$this, 'on_created'], 10, 4);
+		add_action('admin_post_alba_log_csv', [$this, 'csv']);
+		add_action('admin_post_alba_log_clear', [$this, 'clear']);
 	}
 
 	public static function table() {
 		global $wpdb;
-		return $wpdb->prefix . 'mml_log';
+		return $wpdb->prefix . 'alba_log';
 	}
 
 	public static function install() {
@@ -51,17 +51,17 @@ class MML_Log {
 			KEY post_id (post_id),
 			KEY user_id (user_id)
 		) " . $wpdb->get_charset_collate() . ';');
-		update_option('mml_log_db', self::DB, false);
+		update_option('alba_log_db', self::DB, false);
 	}
 
 	public function ensure_table() {
-		if (get_option('mml_log_db') !== self::DB) {
+		if (get_option('alba_log_db') !== self::DB) {
 			self::install();
 		}
 	}
 
 	public static function days() {
-		$d = (int) get_option('mml_log_days', 365);
+		$d = (int) get_option('alba_log_days', 365);
 		return in_array($d, [0, 30, 90, 180, 365], true) ? $d : 365;
 	}
 
@@ -121,7 +121,7 @@ class MML_Log {
 	 * ------------------------------------------------------------- */
 
 	public function menu() {
-		add_submenu_page(MML_Dashboard::SLUG, __('Languages – Log', 'alba'), __('Log', 'alba'), 'edit_others_posts', self::PAGE, [$this, 'page']);
+		add_submenu_page(ALBA_Dashboard::SLUG, __('Languages – Log', 'alba'), __('Log', 'alba'), 'edit_others_posts', self::PAGE, [$this, 'page']);
 	}
 
 	private function filters() {
@@ -196,9 +196,9 @@ class MML_Log {
 				<?php endif; ?>
 				<button class="button"><?php echo esc_html__('Filter', 'alba'); ?></button>
 				<span style="flex:1"></span>
-				<a class="button" href="<?php echo esc_url(wp_nonce_url(add_query_arg(array_merge($qs, ['action' => 'mml_log_csv']), admin_url('admin-post.php')), 'mml_log')); ?>"><?php echo esc_html__('Export as CSV', 'alba'); ?></a>
+				<a class="button" href="<?php echo esc_url(wp_nonce_url(add_query_arg(array_merge($qs, ['action' => 'alba_log_csv']), admin_url('admin-post.php')), 'alba_log')); ?>"><?php echo esc_html__('Export as CSV', 'alba'); ?></a>
 				<?php if (current_user_can('manage_options')) : ?>
-					<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=mml_log_clear'), 'mml_log')); ?>" onclick="return confirm('<?php echo esc_js(__('Really clear the entire log?', 'alba')); ?>');"><?php echo esc_html__('Clear log', 'alba'); ?></a>
+					<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=alba_log_clear'), 'alba_log')); ?>" onclick="return confirm('<?php echo esc_js(__('Really clear the entire log?', 'alba')); ?>');"><?php echo esc_html__('Clear log', 'alba'); ?></a>
 				<?php endif; ?>
 			</form>
 
@@ -260,7 +260,7 @@ class MML_Log {
 	}
 
 	public function csv() {
-		check_admin_referer('mml_log');
+		check_admin_referer('alba_log');
 		if (!current_user_can('edit_others_posts')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
@@ -287,7 +287,7 @@ class MML_Log {
 	}
 
 	public function clear() {
-		check_admin_referer('mml_log');
+		check_admin_referer('alba_log');
 		if (!current_user_can('manage_options')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}

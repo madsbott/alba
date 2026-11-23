@@ -13,7 +13,7 @@ The admin interface is English (text domain `alba`) and ships with a German tran
 - Language URLs: default language without prefix, others as `/en/`, `/fr/` …
 - Posts, pages, custom post types and taxonomies per language, linked via translation groups
 - Side-by-side translation editor, XLIFF export/import, .po import/export, glossary and translation memory
-- Language switcher: block, shortcode `[mml_switcher]`, template function `mml_switcher()`, menu and block-navigation integration
+- Language switcher: block, shortcode `[alba_switcher]`, template function `alba_switcher()`, menu and block-navigation integration
 - hreflang, canonical, og:locale and an XML sitemap per language
 - Translator role, assignments with deadlines, review status, email notifications
 - Forms (Contact Form 7, WPForms, Gravity Forms, Fluent Forms), media per language

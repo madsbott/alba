@@ -3,10 +3,10 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class MML_Frontend {
+class ALBA_Frontend {
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->frontend = $this;
 
@@ -14,7 +14,8 @@ class MML_Frontend {
 			return;
 		}
 
-		add_shortcode('mml_switcher', [$this, 'shortcode']);
+		add_shortcode('alba_switcher', [$this, 'shortcode']);
+		add_shortcode('mml_switcher', [$this, 'shortcode']); // alias: shortcode name used before 0.12.0
 		add_action('wp_head', [$this, 'hreflang'], 1);
 		add_action('wp_head', [$this, 'css'], 99);
 		add_filter('wp_get_nav_menu_items', [$this, 'translate_menu']);
@@ -23,7 +24,7 @@ class MML_Frontend {
 	}
 
 	public function body_class($classes) {
-		$classes[] = 'mml-lang-' . $this->core->lang;
+		$classes[] = 'alba-lang-' . $this->core->lang;
 		return $classes;
 	}
 
@@ -105,7 +106,7 @@ class MML_Frontend {
 			if (($a['hide_missing'] && $l['missing']) || ($a['hide_current'] && $l['current'])) {
 				continue;
 			}
-			$cls = 'mml-lang mml-lang-' . $l['code'] . ($l['current'] ? ' mml-current' : '') . ($l['missing'] ? ' mml-missing' : '');
+			$cls = 'alba-lang alba-lang-' . $l['code'] . ($l['current'] ? ' alba-current' : '') . ($l['missing'] ? ' alba-missing' : '');
 			$html .= '<li class="' . esc_attr($cls) . '"><a href="' . esc_url($l['url']) . '" hreflang="' . esc_attr($l['code']) . '" lang="' . esc_attr($l['code']) . '"'
 				. ($l['current'] ? ' aria-current="true"' : '') . '>' . esc_html($this->label($l, $a)) . '</a></li>';
 		}
@@ -156,12 +157,12 @@ class MML_Frontend {
 		$sub = '';
 		foreach ($others as $l) {
 			$cls = ($block ? 'wp-block-navigation-item wp-block-navigation-link' : 'menu-item menu-item-type-custom menu-item-object-custom')
-				. ' mml-lang mml-lang-' . $l['code'] . ($l['missing'] ? ' mml-missing' : '');
+				. ' alba-lang alba-lang-' . $l['code'] . ($l['missing'] ? ' alba-missing' : '');
 			$sub .= '<li class="' . esc_attr($cls) . '">' . $link($l, false) . '</li>';
 		}
 
 		$pcls = ($block ? 'wp-block-navigation-item has-child wp-block-navigation-submenu' : 'menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children')
-			. ' mml-dd mml-lang mml-lang-' . $cur['code'] . ' mml-current';
+			. ' alba-dd alba-lang alba-lang-' . $cur['code'] . ' alba-current';
 		$icon = $block
 			? '<span class="wp-block-navigation__submenu-icon"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke="currentColor" stroke-width="1.5"></path></svg></span>'
 			: '';
@@ -219,8 +220,8 @@ class MML_Frontend {
 			$msg = __('No active arrow option found in the Salient settings. Choose "Always show" if the arrow is wanted anyway. Related options found: %s', 'alba');
 			return [false, sprintf($msg, $seen ? implode(', ', $seen) : '–')];
 		}
-		if (apply_filters('mml_theme_dropdown_arrow', false)) {
-			return [true, __('Enabled by the filter mml_theme_dropdown_arrow.', 'alba')];
+		if (apply_filters('alba_theme_dropdown_arrow', false)) {
+			return [true, __('Enabled by the filter alba_theme_dropdown_arrow.', 'alba')];
 		}
 		return [false, __('The theme could not be asked about arrows. Choose "Always show" if the arrow is wanted.', 'alba')];
 	}
@@ -232,24 +233,24 @@ class MML_Frontend {
 
 	/** Pfeil-Markup für den Dropdown-Menüpunkt (Einstellung: automatisch / immer / nie) */
 	private function arrow($items_html = '') {
-		$mode = get_option('mml_dd_arrow', 'auto');
+		$mode = get_option('alba_dd_arrow', 'auto');
 		if ($mode === 'off' || ($mode === 'auto' && !$this->theme_shows_arrows($items_html))) {
 			return '';
 		}
 		if ($this->is_salient()) {
 			return '<span class="sf-sub-indicator"><i class="icon-angle-down" aria-hidden="true"></i></span>';
 		}
-		return '<span class="mml-arrow" aria-hidden="true"><svg viewBox="0 0 12 12" width="10" height="10" fill="none"><path d="M1.5 4L6 8l4.5-4" stroke="currentColor" stroke-width="1.5"/></svg></span>';
+		return '<span class="alba-arrow" aria-hidden="true"><svg viewBox="0 0 12 12" width="10" height="10" fill="none"><path d="M1.5 4L6 8l4.5-4" stroke="currentColor" stroke-width="1.5"/></svg></span>';
 	}
 
 	public function render($args = []) {
 		$a = $this->defaults($args);
 		if ($a['style'] === 'menu') {
 			$item = $this->dropdown_item($a, 'classic');
-			return $item === '' ? '' : '<ul class="mml-switcher mml-menu menu">' . $item . '</ul>';
+			return $item === '' ? '' : '<ul class="alba-switcher alba-menu menu">' . $item . '</ul>';
 		}
 		if ($a['style'] === 'dropdown') {
-			$html = '<select class="mml-switcher mml-dropdown" aria-label="' . esc_attr__('Language', 'alba') . '" onchange="if(this.value)location.href=this.value">';
+			$html = '<select class="alba-switcher alba-dropdown" aria-label="' . esc_attr__('Language', 'alba') . '" onchange="if(this.value)location.href=this.value">';
 			foreach ($this->links() as $l) {
 				if (($a['hide_missing'] && $l['missing']) || ($a['hide_current'] && $l['current'])) {
 					continue;
@@ -258,7 +259,7 @@ class MML_Frontend {
 			}
 			return $html . '</select>';
 		}
-		return '<ul class="mml-switcher">' . $this->items($a) . '</ul>';
+		return '<ul class="alba-switcher">' . $this->items($a) . '</ul>';
 	}
 
 	public function shortcode($atts) {
@@ -267,7 +268,7 @@ class MML_Frontend {
 			'display'      => 'name',
 			'hide_missing' => 0,
 			'hide_current' => 0,
-		], $atts, 'mml_switcher');
+		], $atts, 'alba_switcher');
 		$atts['hide_missing'] = (int) $atts['hide_missing'];
 		$atts['hide_current'] = (int) $atts['hide_current'];
 		return $this->render($atts);
@@ -275,20 +276,20 @@ class MML_Frontend {
 
 	/** Umschalter automatisch an ein Menü anhängen (Einstellung) */
 	public function menu_switcher($items, $args) {
-		$loc = get_option('mml_menu_location', '');
+		$loc = get_option('alba_menu_location', '');
 		if ($loc && isset($args->theme_location) && $args->theme_location === $loc) {
 			$args = [
-				'display'      => get_option('mml_display', 'name'),
-				'hide_missing' => (int) get_option('mml_hide_missing', 0),
+				'display'      => get_option('alba_display', 'name'),
+				'hide_missing' => (int) get_option('alba_hide_missing', 0),
 			];
-			$dd = get_option('mml_menu_style', 'list') === 'dropdown' ? $this->dropdown_item($args, 'classic', $items) : '';
+			$dd = get_option('alba_menu_style', 'list') === 'dropdown' ? $this->dropdown_item($args, 'classic', $items) : '';
 			$items .= $dd !== '' ? $dd : $this->items($args);
 		}
 		return $items;
 	}
 
 	public function css() {
-		echo '<style id="mml-css">.mml-switcher:not(select){list-style:none;margin:0;padding:0;display:flex;gap:.75rem;flex-wrap:wrap}.mml-current a{font-weight:700}.mml-missing a{opacity:.6}select.mml-switcher{font:inherit;color:inherit;background:transparent;border:1px solid currentColor;border:1px solid color-mix(in srgb,currentColor 35%,transparent);border-radius:4px;padding:.25em .5em;cursor:pointer}.mml-menu{align-items:flex-start}.mml-menu li{position:relative;list-style:none}.mml-menu .sub-menu{display:none;position:absolute;left:0;top:100%;min-width:100%;z-index:9999;list-style:none;margin:0;padding:.25rem 0;background:var(--mml-sub-bg,#fff);color:var(--mml-sub-color,#1d2327);box-shadow:0 4px 16px rgba(0,0,0,.12);border-radius:4px}.mml-menu li:hover>.sub-menu,.mml-menu li:focus-within>.sub-menu{display:block}.mml-menu .sub-menu a{display:block;padding:.4rem .9rem;white-space:nowrap;color:inherit;text-decoration:none}.mml-menu .sub-menu a:hover{background:rgba(0,0,0,.06)}.mml-menu>li>a{color:inherit;text-decoration:none}.mml-arrow{display:inline-block;margin-left:.35em;vertical-align:middle;line-height:0}.mml-dd>a .sf-sub-indicator~.sf-sub-indicator{display:none}</style>' . "\n";
+		echo '<style id="alba-css">.alba-switcher:not(select){list-style:none;margin:0;padding:0;display:flex;gap:.75rem;flex-wrap:wrap}.alba-current a{font-weight:700}.alba-missing a{opacity:.6}select.alba-switcher{font:inherit;color:inherit;background:transparent;border:1px solid currentColor;border:1px solid color-mix(in srgb,currentColor 35%,transparent);border-radius:4px;padding:.25em .5em;cursor:pointer}.alba-menu{align-items:flex-start}.alba-menu li{position:relative;list-style:none}.alba-menu .sub-menu{display:none;position:absolute;left:0;top:100%;min-width:100%;z-index:9999;list-style:none;margin:0;padding:.25rem 0;background:var(--alba-sub-bg,#fff);color:var(--alba-sub-color,#1d2327);box-shadow:0 4px 16px rgba(0,0,0,.12);border-radius:4px}.alba-menu li:hover>.sub-menu,.alba-menu li:focus-within>.sub-menu{display:block}.alba-menu .sub-menu a{display:block;padding:.4rem .9rem;white-space:nowrap;color:inherit;text-decoration:none}.alba-menu .sub-menu a:hover{background:rgba(0,0,0,.06)}.alba-menu>li>a{color:inherit;text-decoration:none}.alba-arrow{display:inline-block;margin-left:.35em;vertical-align:middle;line-height:0}.alba-dd>a .sf-sub-indicator~.sf-sub-indicator{display:none}</style>' . "\n";
 	}
 
 	/* ---------------------------------------------------------------

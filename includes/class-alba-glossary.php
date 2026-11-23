@@ -6,16 +6,16 @@ if (!defined('ABSPATH')) {
 /**
  * Glossar und Übersetzungsspeicher.
  *
- * Glossar (Option mml_glossary): Begriffe der Standardsprache, die entweder unverändert bleiben (Firmen-/Produktnamen)
+ * Glossar (Option alba_glossary): Begriffe der Standardsprache, die entweder unverändert bleiben (Firmen-/Produktnamen)
  * oder in jeder Sprache einheitlich übersetzt werden. Im Übersetzungseditor werden Treffer angezeigt, "Original übernehmen"
  * wendet das Glossar an, und fehlende Begriffe in der Übersetzung werden markiert.
  *
- * Übersetzungsspeicher (Option mml_tm, nicht autoloaded): merkt sich jeden gespeicherten Abschnitt (md5 des Originaltexts =>
+ * Übersetzungsspeicher (Option alba_tm, nicht autoloaded): merkt sich jeden gespeicherten Abschnitt (md5 des Originaltexts =>
  * Übersetzung) je Sprache. Taucht derselbe Text in einem anderen Beitrag auf, wird die bekannte Übersetzung vorgeschlagen.
  */
-class MML_Glossary {
-	const OPT = 'mml_glossary';
-	const TM = 'mml_tm';
+class ALBA_Glossary {
+	const OPT = 'alba_glossary';
+	const TM = 'alba_tm';
 	const TM_MAX = 3000;
 	const PAGE = 'alba-glossary';
 
@@ -23,14 +23,14 @@ class MML_Glossary {
 	private $tm = null;
 	private $entries = null;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->glossary = $this;
 
 		add_action('admin_menu', [$this, 'menu']);
-		add_action('admin_post_mml_save_glossary', [$this, 'handle_save']);
-		add_action('admin_post_mml_tm', [$this, 'handle_tm']);
-		add_action('mml_translation_saved', [$this, 'remember'], 5, 2);
+		add_action('admin_post_alba_save_glossary', [$this, 'handle_save']);
+		add_action('admin_post_alba_tm', [$this, 'handle_tm']);
+		add_action('alba_translation_saved', [$this, 'remember'], 5, 2);
 		add_action('admin_enqueue_scripts', [$this, 'assets']);
 	}
 
@@ -162,9 +162,9 @@ class MML_Glossary {
 	private function scan() {
 		global $wpdb;
 		$tm = [];
-		$rows = $wpdb->get_results("SELECT meta_key, meta_value FROM {$wpdb->postmeta} WHERE meta_key LIKE '\\_mml\\_tr\\_%' ORDER BY meta_id DESC LIMIT 4000");
+		$rows = $wpdb->get_results("SELECT meta_key, meta_value FROM {$wpdb->postmeta} WHERE meta_key LIKE '\\_alba\\_tr\\_%' ORDER BY meta_id DESC LIMIT 4000");
 		foreach ((array) $rows as $r) {
-			$lang = substr($r->meta_key, strlen('_mml_tr_'));
+			$lang = substr($r->meta_key, strlen('_alba_tr_'));
 			$d = maybe_unserialize($r->meta_value);
 			if (!isset($this->core->langs[$lang]) || !is_array($d) || empty($d['seg']) || !is_array($d['seg'])) {
 				continue;
@@ -222,7 +222,7 @@ class MML_Glossary {
 		if (!isset($_GET['page']) || $_GET['page'] !== self::PAGE) {
 			return;
 		}
-		wp_enqueue_script('mml-glossary', MML_URL . 'assets/glossary.js', [], MML_VERSION, true);
+		wp_enqueue_script('alba-glossary', ALBA_URL . 'assets/glossary.js', [], ALBA_VERSION, true);
 	}
 
 	public function page() {
@@ -237,86 +237,86 @@ class MML_Glossary {
 		}
 		$tm = $this->tm();
 		?>
-		<div class="wrap mml-gl">
+		<div class="wrap alba-gl">
 			<h1><?php echo esc_html__('Glossary & Translation memory', 'alba'); ?></h1>
 			<?php if (!empty($_GET['saved'])) : ?><div class="notice notice-success is-dismissible"><p><?php echo esc_html__('Saved.', 'alba'); ?></p></div><?php endif; ?>
 			<?php if (!empty($_GET['tm_done'])) : ?><div class="notice notice-success is-dismissible"><p><?php echo esc_html__('Translation memory updated.', 'alba'); ?></p></div><?php endif; ?>
 			<style>
-				.mml-gl{max-width:960px}
-				.mml-gl .mml-card{background:#fff;border:1px solid #dcdcde;border-radius:8px;margin:16px 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-				.mml-gl .mml-card-h{padding:16px 22px;background:#f6f7f7;border-bottom:1px solid #dcdcde}
-				.mml-gl .mml-card-h h2{margin:0 0 2px;padding:0;font-size:16px}
-				.mml-gl .mml-card-h p{margin:0;color:#646970}
-				.mml-gl .mml-card-b{padding:16px 22px}
-				.mml-gl .mml-gl-row{display:grid;grid-template-columns:1fr 200px auto;gap:10px 14px;align-items:start;padding:14px;border:1px solid #dcdcde;border-radius:6px;margin-bottom:10px;background:#fcfcfc}
-				.mml-gl .mml-gl-row input[type=text]{width:100%}
-				.mml-gl .mml-gl-tr{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 14px;padding-top:4px}
-				.mml-gl .mml-gl-tr label{display:block;font-size:12px;color:#646970;margin-bottom:2px}
-				.mml-gl .mml-gl-row.is-keep .mml-gl-tr{display:none}
-				.mml-gl .mml-gl-opts{grid-column:1/-1;font-size:13px;color:#50575e}
-				.mml-gl .mml-save{margin-top:14px;display:flex;gap:12px;align-items:center}
-				.mml-gl table.mml-stat{border-collapse:collapse}
-				.mml-gl table.mml-stat td,.mml-gl table.mml-stat th{padding:6px 18px 6px 0;text-align:left}
+				.alba-gl{max-width:960px}
+				.alba-gl .alba-card{background:#fff;border:1px solid #dcdcde;border-radius:8px;margin:16px 0;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+				.alba-gl .alba-card-h{padding:16px 22px;background:#f6f7f7;border-bottom:1px solid #dcdcde}
+				.alba-gl .alba-card-h h2{margin:0 0 2px;padding:0;font-size:16px}
+				.alba-gl .alba-card-h p{margin:0;color:#646970}
+				.alba-gl .alba-card-b{padding:16px 22px}
+				.alba-gl .alba-gl-row{display:grid;grid-template-columns:1fr 200px auto;gap:10px 14px;align-items:start;padding:14px;border:1px solid #dcdcde;border-radius:6px;margin-bottom:10px;background:#fcfcfc}
+				.alba-gl .alba-gl-row input[type=text]{width:100%}
+				.alba-gl .alba-gl-tr{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 14px;padding-top:4px}
+				.alba-gl .alba-gl-tr label{display:block;font-size:12px;color:#646970;margin-bottom:2px}
+				.alba-gl .alba-gl-row.is-keep .alba-gl-tr{display:none}
+				.alba-gl .alba-gl-opts{grid-column:1/-1;font-size:13px;color:#50575e}
+				.alba-gl .alba-save{margin-top:14px;display:flex;gap:12px;align-items:center}
+				.alba-gl table.alba-stat{border-collapse:collapse}
+				.alba-gl table.alba-stat td,.alba-gl table.alba-stat th{padding:6px 18px 6px 0;text-align:left}
 			</style>
 
-			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" id="mml-gl-form">
-				<input type="hidden" name="action" value="mml_save_glossary">
-				<?php wp_nonce_field('mml_glossary'); ?>
-				<section class="mml-card">
-					<header class="mml-card-h"><h2><?php echo esc_html__('Glossary', 'alba'); ?></h2><p><?php echo esc_html__('Terms in', 'alba'); ?> <?php echo esc_html($c->langs[$c->default]['name']); ?> <?php echo esc_html__('(default language) that should be treated consistently, e.g. company and product names.', 'alba'); ?></p></header>
-					<div class="mml-card-b">
-						<div id="mml-gl-rows">
+			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" id="alba-gl-form">
+				<input type="hidden" name="action" value="alba_save_glossary">
+				<?php wp_nonce_field('alba_glossary'); ?>
+				<section class="alba-card">
+					<header class="alba-card-h"><h2><?php echo esc_html__('Glossary', 'alba'); ?></h2><p><?php echo esc_html__('Terms in', 'alba'); ?> <?php echo esc_html($c->langs[$c->default]['name']); ?> <?php echo esc_html__('(default language) that should be treated consistently, e.g. company and product names.', 'alba'); ?></p></header>
+					<div class="alba-card-b">
+						<div id="alba-gl-rows">
 						<?php foreach ($entries as $i => $e) : $keep = !isset($e['keep']) || !empty($e['keep']); ?>
-							<div class="mml-gl-row<?php echo $keep ? ' is-keep' : ''; ?>">
+							<div class="alba-gl-row<?php echo $keep ? ' is-keep' : ''; ?>">
 								<div><input type="text" name="gl[<?php echo (int) $i; ?>][term]" value="<?php echo esc_attr(isset($e['term']) ? $e['term'] : ''); ?>" placeholder="<?php echo esc_attr__('Term, e.g. Acme Studio', 'alba'); ?>"></div>
 								<div>
-									<select name="gl[<?php echo (int) $i; ?>][mode]" class="mml-gl-mode">
+									<select name="gl[<?php echo (int) $i; ?>][mode]" class="alba-gl-mode">
 										<option value="keep" <?php selected($keep); ?>><?php echo esc_html__('Keep unchanged', 'alba'); ?></option>
 										<option value="tr" <?php selected(!$keep); ?>><?php echo esc_html__('Translate consistently', 'alba'); ?></option>
 									</select>
 								</div>
-								<div><button type="button" class="button-link-delete mml-gl-del"><?php echo esc_html__('Remove', 'alba'); ?></button></div>
-								<div class="mml-gl-tr">
+								<div><button type="button" class="button-link-delete alba-gl-del"><?php echo esc_html__('Remove', 'alba'); ?></button></div>
+								<div class="alba-gl-tr">
 									<?php foreach ($targets as $code => $l) : ?>
 										<div><label><?php echo esc_html($l['name']); ?></label><input type="text" name="gl[<?php echo (int) $i; ?>][tr][<?php echo esc_attr($code); ?>]" value="<?php echo esc_attr(isset($e['tr'][$code]) ? $e['tr'][$code] : ''); ?>"></div>
 									<?php endforeach; ?>
 								</div>
-								<div class="mml-gl-opts"><label><input type="checkbox" name="gl[<?php echo (int) $i; ?>][cs]" value="1" <?php checked(!empty($e['cs'])); ?>> <?php echo esc_html__('Case sensitive', 'alba'); ?></label></div>
+								<div class="alba-gl-opts"><label><input type="checkbox" name="gl[<?php echo (int) $i; ?>][cs]" value="1" <?php checked(!empty($e['cs'])); ?>> <?php echo esc_html__('Case sensitive', 'alba'); ?></label></div>
 							</div>
 						<?php endforeach; ?>
 						</div>
-						<p><button type="button" class="button" id="mml-gl-add"><?php echo esc_html__('Add term', 'alba'); ?></button></p>
+						<p><button type="button" class="button" id="alba-gl-add"><?php echo esc_html__('Add term', 'alba'); ?></button></p>
 						<p class="description"><?php echo esc_html__('In the translation editor, matches are shown below the field. "Copy original" inserts the terms correctly right away, and if a term is missing in your translation it is marked red. Only whole words are matched.', 'alba'); ?></p>
-						<div class="mml-save"><button type="submit" class="button button-primary"><?php echo esc_html__('Save glossary', 'alba'); ?></button></div>
+						<div class="alba-save"><button type="submit" class="button button-primary"><?php echo esc_html__('Save glossary', 'alba'); ?></button></div>
 					</div>
 				</section>
 			</form>
-			<template id="mml-gl-tpl">
-				<div class="mml-gl-row is-keep">
+			<template id="alba-gl-tpl">
+				<div class="alba-gl-row is-keep">
 					<div><input type="text" name="gl[__i__][term]" value="" placeholder="<?php echo esc_attr__('Term', 'alba'); ?>"></div>
-					<div><select name="gl[__i__][mode]" class="mml-gl-mode"><option value="keep"><?php echo esc_html__('Keep unchanged', 'alba'); ?></option><option value="tr"><?php echo esc_html__('Translate consistently', 'alba'); ?></option></select></div>
-					<div><button type="button" class="button-link-delete mml-gl-del"><?php echo esc_html__('Remove', 'alba'); ?></button></div>
-					<div class="mml-gl-tr">
+					<div><select name="gl[__i__][mode]" class="alba-gl-mode"><option value="keep"><?php echo esc_html__('Keep unchanged', 'alba'); ?></option><option value="tr"><?php echo esc_html__('Translate consistently', 'alba'); ?></option></select></div>
+					<div><button type="button" class="button-link-delete alba-gl-del"><?php echo esc_html__('Remove', 'alba'); ?></button></div>
+					<div class="alba-gl-tr">
 						<?php foreach ($targets as $code => $l) : ?>
 							<div><label><?php echo esc_html($l['name']); ?></label><input type="text" name="gl[__i__][tr][<?php echo esc_attr($code); ?>]" value=""></div>
 						<?php endforeach; ?>
 					</div>
-					<div class="mml-gl-opts"><label><input type="checkbox" name="gl[__i__][cs]" value="1"> <?php echo esc_html__('Case sensitive', 'alba'); ?></label></div>
+					<div class="alba-gl-opts"><label><input type="checkbox" name="gl[__i__][cs]" value="1"> <?php echo esc_html__('Case sensitive', 'alba'); ?></label></div>
 				</div>
 			</template>
 
-			<section class="mml-card">
-				<header class="mml-card-h"><h2><?php echo esc_html__('Translation memory', 'alba'); ?></h2><p><?php echo esc_html__('Every saved section is remembered. If the same text appears elsewhere, the editor suggests the known translation.', 'alba'); ?></p></header>
-				<div class="mml-card-b">
-					<table class="mml-stat">
+			<section class="alba-card">
+				<header class="alba-card-h"><h2><?php echo esc_html__('Translation memory', 'alba'); ?></h2><p><?php echo esc_html__('Every saved section is remembered. If the same text appears elsewhere, the editor suggests the known translation.', 'alba'); ?></p></header>
+				<div class="alba-card-b">
+					<table class="alba-stat">
 						<tr><th><?php echo esc_html__('Language', 'alba'); ?></th><th><?php echo esc_html__('Saved sections', 'alba'); ?></th></tr>
 						<?php foreach ($targets as $code => $l) : ?>
 							<tr><td><?php echo esc_html($l['name']); ?></td><td><?php echo (int) count(isset($tm[$code]) ? $tm[$code] : []); ?></td></tr>
 						<?php endforeach; ?>
 					</table>
 					<p>
-						<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=mml_tm&do=rebuild'), 'mml_tm')); ?>"><?php echo esc_html__('Rebuild from existing translations', 'alba'); ?></a>
-						<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=mml_tm&do=clear'), 'mml_tm')); ?>" onclick="return confirm('<?php echo esc_js(__('Really clear the translation memory? The translations on the pages are kept.', 'alba')); ?>');"><?php echo esc_html__('Clear', 'alba'); ?></a>
+						<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=alba_tm&do=rebuild'), 'alba_tm')); ?>"><?php echo esc_html__('Rebuild from existing translations', 'alba'); ?></a>
+						<a class="button" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=alba_tm&do=clear'), 'alba_tm')); ?>" onclick="return confirm('<?php echo esc_js(__('Really clear the translation memory? The translations on the pages are kept.', 'alba')); ?>');"><?php echo esc_html__('Clear', 'alba'); ?></a>
 					</p>
 					<p class="description"><?php echo esc_html__('Per language, the last', 'alba'); ?> <?php echo (int) self::TM_MAX; ?> <?php echo esc_html__('sections are stored. Suggestions are only made for identical original text.', 'alba'); ?></p>
 				</div>
@@ -326,7 +326,7 @@ class MML_Glossary {
 	}
 
 	public function handle_save() {
-		check_admin_referer('mml_glossary');
+		check_admin_referer('alba_glossary');
 		if (!current_user_can('manage_options')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}
@@ -363,7 +363,7 @@ class MML_Glossary {
 	}
 
 	public function handle_tm() {
-		check_admin_referer('mml_tm');
+		check_admin_referer('alba_tm');
 		if (!current_user_can('manage_options')) {
 			wp_die(esc_html__('Not allowed.', 'alba'));
 		}

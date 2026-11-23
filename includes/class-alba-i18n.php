@@ -7,20 +7,20 @@ if (!defined('ABSPATH')) {
  * Übersetzungen: lädt die Textdomain „alba“ (Ordner languages/) und stellt den JavaScript-Dateien ihre Texte bereit.
  * Quelltexte sind englisch; die deutsche Übersetzung liegt als alba-de_DE.mo bei.
  */
-class MML_I18n {
+class ALBA_I18n {
 	public function __construct() {
 		add_action('init', [$this, 'load'], 0);
 		add_action('init', [$this, 'register'], 1);
 	}
 
 	public function load() {
-		load_plugin_textdomain('alba', false, dirname(plugin_basename(MML_FILE)) . '/languages');
+		load_plugin_textdomain('alba', false, dirname(plugin_basename(ALBA_FILE)) . '/languages');
 	}
 
-	/** Skript-Handle „mml-i18n“: setzt window.mmlI18n (englischer Text => übersetzter Text) für assets/*.js */
+	/** Skript-Handle „alba-i18n“: setzt window.albaI18n (englischer Text => übersetzter Text) für assets/*.js */
 	public function register() {
-		wp_register_script('mml-i18n', false, [], MML_VERSION, false);
-		wp_add_inline_script('mml-i18n', 'window.mmlI18n = ' . wp_json_encode($this->js()) . ';', 'after');
+		wp_register_script('alba-i18n', false, [], ALBA_VERSION, false);
+		wp_add_inline_script('alba-i18n', 'window.albaI18n = ' . wp_json_encode($this->js()) . ';', 'after');
 	}
 
 	private function js() {

@@ -15,13 +15,13 @@ if (!defined('ABSPATH')) {
  * (Referer) der Seite bestimmt, auf der das Formular stand; Sprache und Locale gelten dann auch für Fehlermeldungen,
  * Bestätigung und E-Mail.
  */
-class MML_Forms {
+class ALBA_Forms {
 	const DOMAIN = 'Forms';
-	const OPT = 'mml_forms';
+	const OPT = 'alba_forms';
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		$core->forms = $this;
 
@@ -454,7 +454,7 @@ class MML_Forms {
 	 * ------------------------------------------------------------- */
 
 	public function register() {
-		register_setting('mml', self::OPT, ['sanitize_callback' => function ($v) {
+		register_setting('alba', self::OPT, ['sanitize_callback' => function ($v) {
 			return $v === '1' ? '1' : '0';
 		}]);
 	}
@@ -480,14 +480,14 @@ class MML_Forms {
 	public function card() {
 		$det = $this->detected();
 		?>
-		<section class="mml-card" data-tab="areas">
-			<header class="mml-card-h"><span class="dashicons dashicons-feedback"></span><div><h2><?php echo esc_html__('Forms', 'alba'); ?></h2><p>Contact Form 7, WPForms, Gravity Forms, Fluent Forms.</p></div></header>
-			<div class="mml-card-b">
-				<div class="mml-fields">
-					<div class="mml-field"><div class="mml-label"><?php echo esc_html__('Translation', 'alba'); ?></div><div class="mml-ctl">
-						<label><input type="checkbox" name="mml_forms" value="1" <?php checked($this->enabled()); ?>> <?php echo esc_html__('Translate form texts per language', 'alba'); ?></label>
-						<p class="mml-hint"><?php echo esc_html__('Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:', 'alba'); ?> <strong><?php echo $det ? esc_html(implode(', ', $det)) : esc_html__('no supported form plugin', 'alba'); ?></strong>.</p>
-						<p class="mml-hint"><?php echo esc_html__('How it works: open the page with the form once in the default language, then all texts appear in', 'alba'); ?> <a href="<?php echo esc_url(admin_url('admin.php?page=alba-strings')); ?>"><?php echo esc_html__('Strings', 'alba'); ?></a> <?php echo esc_html__('under the domain "', 'alba'); ?><?php echo esc_html(self::DOMAIN); ?><?php echo esc_html__('". Enter the translations there. Emails to you stay in the language in which the form was filled in.', 'alba'); ?></p>
+		<section class="alba-card" data-tab="areas">
+			<header class="alba-card-h"><span class="dashicons dashicons-feedback"></span><div><h2><?php echo esc_html__('Forms', 'alba'); ?></h2><p>Contact Form 7, WPForms, Gravity Forms, Fluent Forms.</p></div></header>
+			<div class="alba-card-b">
+				<div class="alba-fields">
+					<div class="alba-field"><div class="alba-label"><?php echo esc_html__('Translation', 'alba'); ?></div><div class="alba-ctl">
+						<label><input type="checkbox" name="alba_forms" value="1" <?php checked($this->enabled()); ?>> <?php echo esc_html__('Translate form texts per language', 'alba'); ?></label>
+						<p class="alba-hint"><?php echo esc_html__('Labels, placeholders, select fields, buttons, error messages, confirmation and email texts (subject and content). Detected:', 'alba'); ?> <strong><?php echo $det ? esc_html(implode(', ', $det)) : esc_html__('no supported form plugin', 'alba'); ?></strong>.</p>
+						<p class="alba-hint"><?php echo esc_html__('How it works: open the page with the form once in the default language, then all texts appear in', 'alba'); ?> <a href="<?php echo esc_url(admin_url('admin.php?page=alba-strings')); ?>"><?php echo esc_html__('Strings', 'alba'); ?></a> <?php echo esc_html__('under the domain "', 'alba'); ?><?php echo esc_html(self::DOMAIN); ?><?php echo esc_html__('". Enter the translations there. Emails to you stay in the language in which the form was filled in.', 'alba'); ?></p>
 					</div></div>
 				</div>
 			</div>

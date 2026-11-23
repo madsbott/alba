@@ -6,21 +6,21 @@ if (!defined('ABSPATH')) {
 /**
  * Automatische Spracherkennung: Beim ersten Besuch wird nach der Browsersprache weitergeleitet.
  *
- * - Cookie "mml_lang" merkt sich die Sprache; ist es gesetzt, wird nie weitergeleitet
+ * - Cookie "alba_lang" merkt sich die Sprache; ist es gesetzt, wird nie weitergeleitet
  *   (der Besucher kann also mit dem Umschalter jederzeit die Sprache wechseln).
  * - Suchmaschinen, Social-Media-Vorschauen und andere Bots werden nie weitergeleitet.
  * - Einstellungen (Sprachen > Einstellungen > Spracherkennung):
- *   mml_autodetect:        off | home (nur Startseite) | all (jede Seite, wenn eine Übersetzung existiert)
- *   mml_autodetect_method: server (HTTP-Weiterleitung 302) | js (JavaScript, für Seiten-Cache geeignet)
- * - Mit ?mml_noredirect=1 an der Adresse wird nie weitergeleitet.
+ *   alba_autodetect:        off | home (nur Startseite) | all (jede Seite, wenn eine Übersetzung existiert)
+ *   alba_autodetect_method: server (HTTP-Weiterleitung 302) | js (JavaScript, für Seiten-Cache geeignet)
+ * - Mit ?alba_noredirect=1 an der Adresse wird nie weitergeleitet.
  */
-class MML_Detect {
-	const COOKIE = 'mml_lang';
+class ALBA_Detect {
+	const COOKIE = 'alba_lang';
 	const BOT = '~bot|crawl|spider|slurp|archiver|bing|yandex|baidu|duckduck|facebookexternalhit|facebot|twitter|linkedin|whatsapp|telegram|slack|discord|pinterest|embed|preview|lighthouse|pagespeed|gtmetrix|headless|phantom|curl|wget|python|java/|go-http|okhttp|monitor|uptime|pingdom|semrush|ahrefs|mj12|screaming|validator~i';
 
 	private $core;
 
-	public function __construct(MML_Core $core) {
+	public function __construct(ALBA_Core $core) {
 		$this->core = $core;
 		if (is_admin() || self::mode() === 'off' || count($core->langs) < 2) {
 			return;
@@ -33,12 +33,12 @@ class MML_Detect {
 	}
 
 	public static function mode() {
-		$m = get_option('mml_autodetect', 'off');
+		$m = get_option('alba_autodetect', 'off');
 		return in_array($m, ['home', 'all'], true) ? $m : 'off';
 	}
 
 	public static function method() {
-		return get_option('mml_autodetect_method', 'server') === 'js' ? 'js' : 'server';
+		return get_option('alba_autodetect_method', 'server') === 'js' ? 'js' : 'server';
 	}
 
 	/* ---------------------------------------------------------------
@@ -58,7 +58,7 @@ class MML_Detect {
 		if (is_feed() || is_robots() || is_trackback() || is_preview() || is_customize_preview() || is_404() || is_search() || is_embed()) {
 			return false;
 		}
-		if (isset($_GET['mml_noredirect']) || isset($_GET['lang'])) {
+		if (isset($_GET['alba_noredirect']) || isset($_GET['lang'])) {
 			return false;
 		}
 		if (self::mode() === 'home' && (!is_front_page() || is_paged())) {

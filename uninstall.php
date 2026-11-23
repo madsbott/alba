@@ -11,53 +11,62 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 	exit;
 }
 
-function mml_uninstall_site() {
+function alba_uninstall_site() {
 	global $wpdb;
 
-	if (get_option('mml_uninstall', 'ask') === 'keep') {
+	if (get_option('alba_uninstall', 'ask') === 'keep') {
 		return;
 	}
 
 	$options = [
-		'mml_languages', 'mml_default', 'mml_post_types', 'mml_taxonomies', 'mml_update_url',
-		'mml_menu_location', 'mml_display', 'mml_hide_missing', 'mml_menu_style', 'mml_dd_arrow',
-		'mml_nav_switcher', 'mml_strings', 'mml_scan', 'mml_scan_domains', 'mml_version', 'mml_uninstall', 'mml_cache_purge', 'mml_autodetect', 'mml_autodetect_method', 'mml_glossary', 'mml_tm', 'mml_t_attrs', 'mml_t_blocks', 'mml_t_acf', 'mml_meta_keys', 'mml_extra_attrs', 'mml_mt_provider', 'mml_mt_email', 'mml_mt_url', 'mml_mt_key', 'mml_log_db', 'mml_log_days', 'mml_open_cache', 'mml_search', 'mml_comments', 'mml_menu_map', 'mml_srch_v', 'mml_cmt_v', 'mml_translator_publish', 'mml_forms', 'mml_wf_mail', 'mml_wf_cc', 'mml_sitemap', 'mml_ogloc', 'mml_sm_v', 'mml_roles_v',
+		'alba_languages', 'alba_default', 'alba_post_types', 'alba_taxonomies', 'alba_update_url',
+		'alba_menu_location', 'alba_display', 'alba_hide_missing', 'alba_menu_style', 'alba_dd_arrow',
+		'alba_nav_switcher', 'alba_strings', 'alba_scan', 'alba_scan_domains', 'alba_version', 'alba_uninstall', 'alba_cache_purge', 'alba_autodetect', 'alba_autodetect_method', 'alba_glossary', 'alba_tm', 'alba_t_attrs', 'alba_t_blocks', 'alba_t_acf', 'alba_meta_keys', 'alba_extra_attrs', 'alba_mt_provider', 'alba_mt_email', 'alba_mt_url', 'alba_mt_key', 'alba_log_db', 'alba_log_days', 'alba_open_cache', 'alba_search', 'alba_comments', 'alba_menu_map', 'alba_srch_v', 'alba_cmt_v', 'alba_translator_publish', 'alba_forms', 'alba_wf_mail', 'alba_wf_cc', 'alba_sitemap', 'alba_ogloc', 'alba_sm_v', 'alba_roles_v',
 	];
 	foreach ($options as $o) {
 		delete_option($o);
 	}
-	delete_site_transient('mml_update_info');
+	delete_site_transient('alba_update_info');
 
-	wp_clear_scheduled_hook('mml_wf_daily');
+	wp_clear_scheduled_hook('alba_wf_daily');
 
 	// Reste älterer Versionen und Zwischenspeicher
 	$wpdb->query($wpdb->prepare(
 		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s",
-		$wpdb->esc_like('mml_deepl_') . '%',
-		$wpdb->esc_like('_transient_mml_') . '%',
-		$wpdb->esc_like('_transient_timeout_mml_') . '%'
+		$wpdb->esc_like('alba_deepl_') . '%',
+		$wpdb->esc_like('_transient_alba_') . '%',
+		$wpdb->esc_like('_transient_timeout_alba_') . '%'
 	));
 
 	// Übersetzungsdaten an Beiträgen (Sprache, Gruppe, Editor-Übersetzungen) und Begriffen
+	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s", $wpdb->esc_like('_alba_') . '%'));
+	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->termmeta} WHERE meta_key LIKE %s", $wpdb->esc_like('_alba_') . '%'));
+
+	remove_role('alba_translator');
+	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->usermeta} WHERE meta_key = %s", 'alba_langs'));
+
+	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->commentmeta} WHERE meta_key = %s", '_alba_lang'));
+
+	$wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . 'alba_log');
+
+	// Leftovers of versions before 0.12.0 (old prefix), in case the data was never migrated
+	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $wpdb->esc_like('mml_') . '%'));
 	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s", $wpdb->esc_like('_mml_') . '%'));
 	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->termmeta} WHERE meta_key LIKE %s", $wpdb->esc_like('_mml_') . '%'));
-
-	remove_role('mml_translator');
 	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->usermeta} WHERE meta_key = %s", 'mml_langs'));
-
-	$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->commentmeta} WHERE meta_key = %s", '_mml_lang'));
-
+	remove_role('mml_translator');
 	$wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . 'mml_log');
 
+	delete_option('alba_db_version');
 	wp_cache_flush();
 }
 
 if (is_multisite()) {
-	foreach (get_sites(['fields' => 'ids', 'number' => 0]) as $mml_site_id) {
-		switch_to_blog((int) $mml_site_id);
-		mml_uninstall_site();
+	foreach (get_sites(['fields' => 'ids', 'number' => 0]) as $alba_site_id) {
+		switch_to_blog((int) $alba_site_id);
+		alba_uninstall_site();
 		restore_current_blog();
 	}
 } else {
-	mml_uninstall_site();
+	alba_uninstall_site();
 }
